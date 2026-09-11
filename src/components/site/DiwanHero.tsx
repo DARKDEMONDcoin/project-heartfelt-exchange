@@ -61,20 +61,7 @@ export function DiwanHero() {
       </div>
 
       <div className="diwan-majlis">
-        <div className="diwan-arc" aria-hidden="true">
-          <svg viewBox="0 0 100 62" preserveAspectRatio="none">
-            <ellipse
-              cx="50"
-              cy="46"
-              rx="43"
-              ry="34"
-              fill="none"
-              stroke="oklch(0.55 0.19 255 / 0.22)"
-              strokeWidth="0.25"
-              strokeDasharray="1.6 1.6"
-            />
-          </svg>
-        </div>
+        <div className="diwan-halo" aria-hidden="true" />
 
         <div className="diwan-seats">
           {team.slice(0, 6).map((member, i) => {
@@ -88,7 +75,7 @@ export function DiwanHero() {
                   ["--sx" as string]: "0px",
                   ["--sy" as string]: "0px",
                   left: `${50 + 44 * Math.cos(a)}%`,
-                  top: `${48 + 42 * Math.sin(a)}%`,
+                  top: `${46 + 38 * Math.sin(a)}%`,
                 }}
               >
                 <figure>
