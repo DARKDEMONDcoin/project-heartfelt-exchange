@@ -2705,3 +2705,353 @@ section:has(> .integration-grid-wave) {
   background-image: var(--gradient-aurora);
   color: oklch(1 0 0) !important;
 }
+
+/* ═════ زجاج سهل — سطح عائم واحد لكل الصفحة ═════ */
+.liquid-glass-sahl {
+  background: var(--glass-tint);
+  backdrop-filter: blur(28px) saturate(160%);
+  border: none;
+  box-shadow: var(--glass-shadow);
+  position: relative;
+  overflow: hidden;
+}
+.liquid-glass-sahl::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1.4px;
+  background: linear-gradient(
+    180deg,
+    oklch(0.66 0.116 74 / 0.55) 0%,
+    oklch(0.66 0.116 74 / 0.15) 20%,
+    transparent 40%,
+    transparent 60%,
+    oklch(0.445 0.058 179 / 0.2) 80%,
+    oklch(0.66 0.116 74 / 0.45) 100%
+  );
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* ═════ المعاينة الحية (Hero) ═════ */
+.sahl-live {
+  position: relative;
+  isolation: isolate;
+  padding: clamp(5.5rem, 11vw, 8rem) clamp(0.9rem, 3vw, 2.5rem) clamp(3rem, 6vw, 5rem);
+  background: var(--background);
+  overflow: hidden;
+}
+.sahl-live-glowA,
+.sahl-live-glowB {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(90px);
+  z-index: -1;
+  pointer-events: none;
+}
+.sahl-live-glowA {
+  inset-inline-end: -8%;
+  top: -10%;
+  width: 46vw;
+  height: 46vw;
+  background: oklch(0.487 0.135 38 / 0.5);
+}
+.sahl-live-glowB {
+  inset-inline-start: -12%;
+  bottom: -18%;
+  width: 44vw;
+  height: 44vw;
+  background: oklch(0.445 0.058 179 / 0.42);
+}
+
+.sahl-live-head {
+  margin: 0 auto clamp(1.5rem, 3vw, 2.4rem);
+  max-width: 46rem;
+  text-align: center;
+}
+.sahl-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 999px;
+  background: oklch(0.935 0.019 84 / 0.07);
+  box-shadow: inset 0 0 0 1px oklch(0.66 0.116 74 / 0.35);
+  padding: 0.35rem 0.85rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--amber);
+}
+.sahl-badge i {
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: 50%;
+  background: var(--sky);
+  box-shadow: 0 0 0 0 oklch(0.445 0.058 179 / 0.6);
+  animation: sahl-pulse 1.9s ease-out infinite;
+}
+@keyframes sahl-pulse {
+  70% { box-shadow: 0 0 0 0.5rem oklch(0.445 0.058 179 / 0); }
+  100% { box-shadow: 0 0 0 0 oklch(0.445 0.058 179 / 0); }
+}
+.sahl-live-title {
+  margin: 0.85rem 0 1.1rem;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(1.5rem, 4vw, 2.25rem);
+  line-height: 1.4;
+  text-wrap: balance;
+  letter-spacing: -0.01em;
+  color: var(--foreground);
+}
+.sahl-live-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 999px;
+  background: var(--primary);
+  color: var(--primary-foreground);
+  padding: 0.8rem 1.5rem;
+  font-weight: 700;
+  transition: transform 0.25s var(--ease-enter), box-shadow 0.25s var(--ease-enter);
+}
+.sahl-live-cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 0 1px oklch(0.66 0.116 74 / 0.55), 0 18px 40px -18px oklch(0.66 0.116 74 / 0.55);
+}
+
+.sahl-window {
+  margin: 0 auto;
+  max-width: 74rem;
+  border-radius: 1.6rem;
+}
+.sahl-window-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.7rem 1rem;
+  border-bottom: 1px solid oklch(0.935 0.019 84 / 0.1);
+}
+.sahl-window-bar span {
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 50%;
+  background: oklch(0.935 0.019 84 / 0.22);
+}
+.sahl-window-bar p {
+  margin: 0;
+  margin-inline-start: auto;
+  font-size: 0.75rem;
+  color: var(--muted-foreground);
+}
+.sahl-window-body {
+  display: grid;
+  grid-template-columns: 8.5rem minmax(0, 1fr) 13rem;
+  gap: 1px;
+  min-height: 26rem;
+}
+.sahl-window-body > * {
+  padding: 1rem;
+}
+
+.sahl-rail {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  background: oklch(0.935 0.019 84 / 0.03);
+}
+.sahl-rail-item {
+  display: grid;
+  grid-template-columns: auto auto minmax(0, 1fr);
+  align-items: center;
+  gap: 0.45rem;
+  border-radius: 0.85rem;
+  padding: 0.35rem 0.45rem;
+  transition: background 0.4s ease;
+}
+.sahl-rail-item img {
+  width: 1.85rem;
+  height: 1.85rem;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.sahl-rail-item b {
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 50%;
+  background: oklch(0.935 0.019 84 / 0.2);
+  transition: background 0.4s ease, box-shadow 0.4s ease;
+}
+.sahl-rail-item span {
+  font-size: 0.74rem;
+  font-weight: 600;
+  color: var(--muted-foreground);
+  white-space: nowrap;
+}
+.sahl-rail-item.is-on {
+  background: oklch(0.935 0.019 84 / 0.07);
+}
+.sahl-rail-item.is-on b {
+  background: var(--sky);
+  box-shadow: 0 0 0.5rem oklch(0.445 0.058 179 / 0.9);
+}
+.sahl-rail-item.is-on span {
+  color: var(--foreground);
+}
+
+.sahl-chat {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  justify-content: flex-start;
+  background: oklch(0.935 0.019 84 / 0.02);
+}
+.sahl-bubble {
+  border-radius: 1.1rem;
+  padding: 0.75rem 0.95rem;
+  font-size: 0.86rem;
+  line-height: 1.75;
+  max-width: 92%;
+}
+.sahl-bubble.is-user {
+  align-self: flex-start;
+  background: oklch(0.487 0.135 38 / 0.24);
+  box-shadow: inset 0 0 0 1px oklch(0.487 0.135 38 / 0.35);
+}
+.sahl-bubble.is-agent {
+  align-self: flex-end;
+  background: oklch(0.935 0.019 84 / 0.06);
+  box-shadow: inset 0 0 0 1px oklch(0.935 0.019 84 / 0.1);
+}
+.sahl-bubble p {
+  margin: 0;
+}
+.sahl-bubble.is-agent header {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin-bottom: 0.5rem;
+}
+.sahl-bubble.is-agent header img {
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.sahl-bubble.is-agent header strong {
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+}
+.sahl-bubble.is-agent header small {
+  font-size: 0.68rem;
+  color: var(--muted-foreground);
+}
+.sahl-caret {
+  display: inline-block;
+  width: 2px;
+  height: 0.95em;
+  vertical-align: -0.15em;
+  margin-inline-start: 2px;
+  background: var(--amber);
+  animation: sahl-blink 0.9s steps(2) infinite;
+}
+@keyframes sahl-blink {
+  50% { opacity: 0; }
+}
+.sahl-dots {
+  display: inline-flex;
+  gap: 0.25rem;
+}
+.sahl-dots i {
+  width: 0.35rem;
+  height: 0.35rem;
+  border-radius: 50%;
+  background: var(--muted-foreground);
+  animation: sahl-bounce 1s infinite;
+}
+.sahl-dots i:nth-child(2) { animation-delay: 0.15s; }
+.sahl-dots i:nth-child(3) { animation-delay: 0.3s; }
+@keyframes sahl-bounce {
+  0%, 100% { transform: translateY(0); opacity: 0.5; }
+  50% { transform: translateY(-0.25rem); opacity: 1; }
+}
+
+.sahl-approvals {
+  background: oklch(0.935 0.019 84 / 0.03);
+}
+.sahl-approvals-title {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin: 0 0 0.7rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--amber);
+}
+.sahl-approvals-empty {
+  margin: 0;
+  font-size: 0.74rem;
+  color: var(--muted-foreground);
+}
+.sahl-approval-card {
+  border-radius: 1rem;
+  padding: 0.7rem;
+  background: oklch(0.935 0.019 84 / 0.06);
+  box-shadow: inset 0 0 0 1px oklch(0.66 0.116 74 / 0.35);
+  animation: sahl-drop 0.5s var(--ease-enter) both;
+}
+@keyframes sahl-drop {
+  from { opacity: 0; transform: translateY(-0.75rem) scale(0.97); }
+}
+.sahl-approval-thumb {
+  height: 3.6rem;
+  border-radius: 0.7rem;
+  background: var(--gradient-aurora);
+  margin-bottom: 0.5rem;
+}
+.sahl-approval-card strong {
+  display: block;
+  font-size: 0.78rem;
+  font-family: var(--font-display);
+}
+.sahl-approval-card small {
+  display: block;
+  margin-top: 0.15rem;
+  font-size: 0.68rem;
+  color: var(--muted-foreground);
+}
+.sahl-approval-card span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  margin-top: 0.55rem;
+  border-radius: 999px;
+  padding: 0.2rem 0.6rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  background: oklch(0.66 0.116 74 / 0.18);
+  color: var(--amber);
+}
+.sahl-approval-card.is-done {
+  box-shadow: inset 0 0 0 1px oklch(0.445 0.058 179 / 0.6);
+}
+.sahl-approval-card.is-done span {
+  background: oklch(0.445 0.058 179 / 0.28);
+  color: oklch(0.78 0.07 179);
+}
+
+@media (max-width: 900px) {
+  .sahl-window-body {
+    grid-template-columns: minmax(0, 1fr);
+    min-height: auto;
+  }
+  .sahl-rail {
+    flex-direction: row;
+    overflow: hidden;
+  }
+  .sahl-rail-item span { display: none; }
+  .sahl-approvals { display: none; }
+  .sahl-chat { min-height: 21rem; }
+}
