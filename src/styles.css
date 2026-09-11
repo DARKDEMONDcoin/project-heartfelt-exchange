@@ -2800,8 +2800,9 @@ section:has(> .integration-grid-wave) {
   margin: 0.85rem 0 1.1rem;
   font-family: var(--font-display);
   font-weight: 800;
-  font-size: clamp(1.55rem, 4.4vw, 2.5rem);
-  line-height: 1.35;
+  font-size: clamp(1.5rem, 4vw, 2.25rem);
+  line-height: 1.4;
+  text-wrap: balance;
   letter-spacing: -0.01em;
   color: var(--foreground);
 }
@@ -2904,7 +2905,7 @@ section:has(> .integration-grid-wave) {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
-  justify-content: flex-end;
+  justify-content: flex-start;
   background: oklch(0.935 0.019 84 / 0.02);
 }
 .sahl-bubble {

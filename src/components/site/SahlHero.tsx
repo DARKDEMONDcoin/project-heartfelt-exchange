@@ -83,7 +83,7 @@ export function SahlHero() {
           فريقك شغّال دلوقتي
         </span>
         <h1 id="live-title" className="sahl-live-title">
-          شوف الشغل بيتم قدامك، مش موعود بيه.
+          شوف فريقك بيشتغل قدامك الآن
         </h1>
         <Link to="/auth" search={{ mode: "signup" as const }} className="sahl-live-cta">
           ادخل مساحة عملك
