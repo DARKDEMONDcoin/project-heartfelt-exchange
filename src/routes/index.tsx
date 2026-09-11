@@ -79,8 +79,8 @@ export const Route = createFileRoute("/")({
 function Index() {
   return (
     <main className="min-h-screen bg-background">
-      <Nav variant="over" />
-      <Hero />
+      <Nav variant="solid" />
+      <DiwanHero />
       <Marquee />
       <div id="workspace" className="scroll-mt-20"><ProductShowcase /></div>
       <ImpactStats />
