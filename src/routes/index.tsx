@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 
 import { Nav } from "@/components/site/Nav";
-import { DiwanHero } from "@/components/site/DiwanHero";
+import { SahlHero } from "@/components/site/SahlHero";
 import { Marquee } from "@/components/site/Marquee";
 import { IntegrationFlow } from "@/components/site/IntegrationFlow";
 import { Employees } from "@/components/site/Employees";
