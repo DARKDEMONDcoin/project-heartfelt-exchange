@@ -28,7 +28,7 @@ export function DiwanHero() {
     return () => clearInterval(id);
   }, []);
 
-  const visible = Array.from({ length: 3 }, (_, i) => events[(tick + i) % events.length]);
+  const visible = Array.from({ length: 3 }, (_, i) => events[(tick + i) % events.length]!);
 
   return (
     <section id="top" className="diwan" aria-labelledby="diwan-title" dir="rtl">
