@@ -2574,3 +2574,13 @@ select.glass-input { appearance: none; }
   .diwan-seats { display: grid; grid-template-columns: repeat(auto-fit, minmax(8.5rem, 1fr)); gap: 0.7rem; margin-top: 1rem; }
   .diwan-seat { position: static; width: auto; transform: none; animation: none; }
 }
+
+/* قسم العرض يتماشى مع القماش الأبيض بدل الخلفية الداكنة */
+.product-showcase {
+  background:
+    radial-gradient(60% 50% at 50% 0%, oklch(0.55 0.19 255 / 0.1), transparent 70%),
+    linear-gradient(180deg, oklch(0.985 0.008 250), var(--background));
+  color: var(--foreground);
+}
+.product-showcase .section-kicker { color: var(--jade-deep); }
+.product-showcase .section-lead { color: var(--muted-foreground); }
