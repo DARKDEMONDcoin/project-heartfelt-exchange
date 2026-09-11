@@ -74,66 +74,66 @@
 :root {
   --radius: 1.15rem;
 
-  /* "الديوان" — أبيض نقي + أزرق احترافي + زجاج iOS */
-  --cream: oklch(0.995 0.002 250); /* canvas */
-  --ink: oklch(0.19 0.028 262);
-  --ink-soft: oklch(0.36 0.03 262);
-  --jade: oklch(0.55 0.19 255); /* blue primary */
-  --jade-deep: oklch(0.47 0.2 258); /* deeper blue */
-  --amber: oklch(0.72 0.14 235); /* sky blue accent */
-  --coral: oklch(0.6 0.17 22); /* alerts only */
-  --sky: oklch(0.86 0.06 240);
+  /* هوية سهل النهائية — أسود دافئ + كريمي + قرميدي + تيل + ذهبي نحاسي */
+  --cream: oklch(0.935 0.019 84); /* #F3ECDF */
+  --ink: oklch(0.935 0.019 84);
+  --ink-soft: oklch(0.78 0.016 82);
+  --jade: oklch(0.487 0.135 38); /* #A8492C قرميدي محروق */
+  --jade-deep: oklch(0.415 0.125 36);
+  --amber: oklch(0.66 0.116 74); /* #C68A2E ذهبي نحاسي */
+  --coral: oklch(0.6 0.17 22);
+  --sky: oklch(0.445 0.058 179); /* #2F6B63 تيل عميق */
 
-  --background: var(--cream);
-  --foreground: var(--ink);
-  --card: oklch(1 0 0);
-  --card-foreground: var(--ink);
-  --popover: oklch(1 0 0);
-  --popover-foreground: var(--ink);
+  --background: oklch(0.148 0.012 54); /* #1A1613 */
+  --foreground: var(--cream);
+  --card: oklch(0.19 0.014 56);
+  --card-foreground: var(--cream);
+  --popover: oklch(0.19 0.014 56);
+  --popover-foreground: var(--cream);
   --primary: var(--jade);
-  --primary-foreground: oklch(0.995 0.002 250);
-  --secondary: oklch(0.972 0.011 250);
-  --secondary-foreground: var(--ink);
-  --muted: oklch(0.968 0.01 250);
-  --muted-foreground: oklch(0.545 0.028 258);
-  --accent: oklch(0.955 0.026 248);
-  --accent-foreground: var(--jade-deep);
+  --primary-foreground: oklch(0.97 0.012 84);
+  --secondary: oklch(0.225 0.014 58);
+  --secondary-foreground: var(--cream);
+  --muted: oklch(0.225 0.014 58);
+  --muted-foreground: oklch(0.735 0.018 82);
+  --accent: oklch(0.26 0.03 60);
+  --accent-foreground: var(--amber);
   --destructive: var(--coral);
-  --destructive-foreground: oklch(0.995 0.002 250);
-  --border: oklch(0.925 0.012 250);
-  --input: oklch(0.925 0.012 250);
-  --ring: var(--jade);
+  --destructive-foreground: oklch(0.97 0.012 84);
+  --border: oklch(0.935 0.019 84 / 0.14);
+  --input: oklch(0.935 0.019 84 / 0.18);
+  --ring: var(--amber);
   --chart-1: var(--jade);
   --chart-2: var(--amber);
-  --chart-3: var(--jade-deep);
-  --chart-4: var(--sky);
-  --chart-5: oklch(0.68 0.1 200);
-  --sidebar: oklch(0.985 0.006 250);
-  --sidebar-foreground: var(--ink);
+  --chart-3: var(--sky);
+  --chart-4: var(--jade-deep);
+  --chart-5: oklch(0.55 0.07 179);
+  --sidebar: oklch(0.175 0.013 56);
+  --sidebar-foreground: var(--cream);
   --sidebar-primary: var(--jade);
-  --sidebar-primary-foreground: oklch(0.995 0.002 250);
-  --sidebar-accent: oklch(0.955 0.018 248);
-  --sidebar-accent-foreground: var(--jade-deep);
-  --sidebar-border: oklch(0.925 0.012 250);
-  --sidebar-ring: var(--jade);
+  --sidebar-primary-foreground: oklch(0.97 0.012 84);
+  --sidebar-accent: oklch(0.235 0.016 58);
+  --sidebar-accent-foreground: var(--amber);
+  --sidebar-border: oklch(0.935 0.019 84 / 0.14);
+  --sidebar-ring: var(--amber);
 
   --gradient-aurora: linear-gradient(
     115deg,
-    oklch(0.47 0.2 258) 0%,
-    oklch(0.55 0.19 255) 42%,
-    oklch(0.72 0.14 235) 100%
+    oklch(0.415 0.125 36) 0%,
+    oklch(0.487 0.135 38) 55%,
+    oklch(0.66 0.116 74) 100%
   );
-  --gradient-ink: linear-gradient(160deg, oklch(0.24 0.04 262), oklch(0.17 0.03 262));
-  --shadow-lift: 0 30px 70px -34px oklch(0.35 0.12 258 / 0.32);
-  --shadow-card: 0 1px 2px oklch(0.35 0.09 258 / 0.06), 0 18px 40px -24px oklch(0.35 0.12 258 / 0.22);
+  --gradient-ink: linear-gradient(160deg, oklch(0.2 0.016 56), oklch(0.145 0.012 54));
+  --shadow-lift: 0 34px 80px -36px oklch(0.08 0.01 54 / 0.85);
+  --shadow-card: 0 1px 2px oklch(0.08 0.01 54 / 0.5), 0 22px 46px -26px oklch(0.08 0.01 54 / 0.7);
 
-  /* iOS 26 liquid glass */
-  --glass-tint: oklch(1 0 0 / 0.58);
-  --glass-tint-strong: oklch(1 0 0 / 0.74);
-  --glass-stroke: oklch(1 0 0 / 0.7);
-  --glass-edge: oklch(0.55 0.19 255 / 0.16);
-  --glass-blur: 26px;
-  --glass-shadow: 0 1px 0 oklch(1 0 0 / 0.65) inset, 0 22px 50px -26px oklch(0.35 0.12 258 / 0.35);
+  /* زجاج سهل */
+  --glass-tint: oklch(0.935 0.019 84 / 0.05);
+  --glass-tint-strong: oklch(0.935 0.019 84 / 0.09);
+  --glass-stroke: oklch(0.66 0.116 74 / 0.4);
+  --glass-edge: oklch(0.66 0.116 74 / 0.35);
+  --glass-blur: 28px;
+  --glass-shadow: inset 0 1px 1px oklch(1 0 0 / 0.08), 0 30px 70px -40px oklch(0.05 0.01 54 / 0.9);
 }
 
 
