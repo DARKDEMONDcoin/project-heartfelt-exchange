@@ -6,13 +6,13 @@ import { Marquee } from "@/components/site/Marquee";
 import { IntegrationFlow } from "@/components/site/IntegrationFlow";
 import { Employees } from "@/components/site/Employees";
 import { Features } from "@/components/site/Features";
-import { HowItWorks } from "@/components/site/HowItWorks";
+import { DiwanSteps } from "@/components/site/DiwanSteps";
 import { Testimonials } from "@/components/site/Testimonials";
 import { Pricing } from "@/components/site/Pricing";
 import { Faq, faqs } from "@/components/site/Faq";
 import { CtaFooter } from "@/components/site/CtaFooter";
 import { SiteFooter } from "@/components/site/SiteFooter";
-import { ImpactStats } from "@/components/site/ImpactStats";
+import { DiwanLedger } from "@/components/site/DiwanLedger";
 import { ProductShowcase } from "@/components/site/ProductShowcase";
 
 export const Route = createFileRoute("/")({
@@ -83,9 +83,9 @@ function Index() {
       <DiwanHero />
       <Marquee />
       <div id="workspace" className="scroll-mt-20"><ProductShowcase /></div>
-      <ImpactStats />
-      <HowItWorks />
+      <DiwanSteps />
       <Employees />
+      <DiwanLedger />
       <IntegrationFlow />
       <Features />
       <Testimonials />
