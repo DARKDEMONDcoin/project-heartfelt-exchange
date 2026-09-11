@@ -2398,6 +2398,7 @@ select.glass-input { appearance: none; }
 }
 
 .diwan-title span {
+  display: block;
   background: var(--gradient-aurora);
   -webkit-background-clip: text;
   background-clip: text;

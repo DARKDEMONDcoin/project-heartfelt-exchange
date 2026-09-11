@@ -65,9 +65,9 @@ export function DiwanHero() {
           <svg viewBox="0 0 100 62" preserveAspectRatio="none">
             <ellipse
               cx="50"
-              cy="34"
-              rx="44"
-              ry="26"
+              cy="46"
+              rx="43"
+              ry="34"
               fill="none"
               stroke="oklch(0.55 0.19 255 / 0.22)"
               strokeWidth="0.25"
@@ -88,7 +88,7 @@ export function DiwanHero() {
                   ["--sx" as string]: "0px",
                   ["--sy" as string]: "0px",
                   left: `${50 + 44 * Math.cos(a)}%`,
-                  top: `${56 + 46 * Math.sin(a)}%`,
+                  top: `${48 + 42 * Math.sin(a)}%`,
                 }}
               >
                 <figure>
