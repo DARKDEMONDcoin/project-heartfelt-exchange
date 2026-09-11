@@ -80,7 +80,7 @@ function Index() {
   return (
     <main className="min-h-screen bg-background">
       <Nav variant="solid" />
-      <DiwanHero />
+      <SahlHero />
       <Marquee />
       <div id="workspace" className="scroll-mt-20"><ProductShowcase /></div>
       <DiwanSteps />
