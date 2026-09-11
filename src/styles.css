@@ -2594,3 +2594,114 @@ select.glass-input { appearance: none; }
   box-shadow: inset 0 0 0 1px oklch(0.55 0.19 255 / 0.08);
   pointer-events: none;
 }
+
+/* ============ الديوان — روح واحدة لكل الصفحة ============ */
+.diwan-sec { position: relative; padding: clamp(3.5rem, 7vw, 6.5rem) 0; }
+.diwan-sec-head { max-width: 46rem; margin-inline: auto; text-align: center; }
+.diwan-sec-kicker {
+  display: inline-block; margin: 0 0 0.85rem; padding: 0.3rem 0.85rem; border-radius: 999px;
+  border: 1px solid var(--glass-edge); background: var(--glass-tint);
+  backdrop-filter: blur(var(--glass-blur));
+  color: var(--jade-deep); font-size: 0.75rem; font-weight: 800; letter-spacing: 0.02em;
+}
+.diwan-sec-title {
+  margin: 0; font-family: var(--font-display); font-weight: 800; letter-spacing: -0.02em;
+  font-size: clamp(1.6rem, 3.6vw, 2.75rem); line-height: 1.25; color: var(--foreground); text-wrap: balance;
+}
+.diwan-sec-lead { margin: 0.9rem auto 0; max-width: 40rem; color: var(--muted-foreground); font-size: clamp(0.94rem, 1.15vw, 1.06rem); line-height: 1.9; text-wrap: pretty; }
+
+/* دفتر المحل */
+.ledger-sec { background: linear-gradient(180deg, var(--background), oklch(0.985 0.008 250)); }
+.ledger { margin-top: clamp(2rem, 4vw, 3rem); padding: 0.75rem; border-radius: 1.6rem; overflow: hidden; }
+.ledger-head, .ledger-rows li {
+  display: grid; grid-template-columns: 4.5rem 5.5rem 1fr 8rem; align-items: center;
+  gap: 0.75rem; padding: 0.8rem 1rem;
+}
+.ledger-head { color: var(--muted-foreground); font-size: 0.72rem; font-weight: 800; }
+.ledger-rows { margin: 0; padding: 0; list-style: none; }
+.ledger-rows li {
+  border-top: 1px dashed color-mix(in oklab, var(--jade) 16%, transparent);
+  font-size: 0.86rem; opacity: 0; transform: translateY(6px);
+  transition: opacity 520ms ease, transform 520ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.ledger-rows li.is-written { opacity: 1; transform: none; }
+.ledger-time { color: var(--muted-foreground); font-size: 0.75rem; }
+.ledger-who { font-weight: 800; color: var(--jade-deep); }
+.ledger-act { color: var(--foreground); line-height: 1.7; }
+.ledger-win {
+  justify-self: start; padding: 0.2rem 0.6rem; border-radius: 999px;
+  background: color-mix(in oklab, var(--jade) 12%, transparent);
+  color: var(--jade-deep); font-size: 0.72rem; font-weight: 800; white-space: nowrap;
+}
+.ledger-foot {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-top: 0.4rem; padding: 0.85rem 1rem 0.5rem;
+  border-top: 1px solid var(--border); color: var(--muted-foreground); font-size: 0.74rem;
+}
+.ledger-foot b { color: var(--jade-deep); }
+.ledger-totals {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+  gap: 0.8rem; margin: clamp(1.5rem, 3vw, 2.5rem) 0 0;
+}
+.ledger-totals div {
+  padding: 1.1rem; border-radius: 1.2rem; border: 1px solid var(--glass-edge);
+  background: var(--glass-tint-strong); backdrop-filter: blur(var(--glass-blur));
+  box-shadow: var(--glass-shadow); text-align: center;
+}
+.ledger-totals dt { color: var(--jade); font-size: clamp(1.3rem, 2.4vw, 1.75rem); font-weight: 800; }
+.ledger-totals dd { margin: 0.3rem 0 0; color: var(--muted-foreground); font-size: 0.76rem; line-height: 1.6; }
+
+/* مراسم الدخول */
+.steps-ribbon {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  gap: 0.9rem; margin: clamp(2rem, 4vw, 3rem) 0 0; padding: 0; list-style: none;
+}
+.steps-card { position: relative; padding: 1.5rem 1.35rem; border-radius: 1.5rem; }
+.steps-num {
+  position: absolute; inset-block-start: 1rem; inset-inline-end: 1.1rem;
+  color: color-mix(in oklab, var(--jade) 26%, transparent); font-size: 2rem; font-weight: 800; line-height: 1;
+}
+.steps-icon {
+  display: inline-flex; width: 2.6rem; height: 2.6rem; align-items: center; justify-content: center;
+  border-radius: 0.95rem; background: var(--gradient-aurora); color: oklch(1 0 0);
+  box-shadow: 0 10px 24px -14px oklch(0.47 0.2 258 / 0.7);
+}
+.steps-title { margin: 1rem 0 0; font-size: 1.05rem; font-weight: 800; color: var(--foreground); }
+.steps-body { margin: 0.5rem 0 0; color: var(--muted-foreground); font-size: 0.86rem; line-height: 1.85; }
+
+/* إعادة كسوة بقية الأقسام بروح الديوان الزجاجية */
+.employees-stage,
+.features-section { background: linear-gradient(180deg, oklch(0.985 0.008 250), var(--background)); }
+.features-section::before { opacity: 0.35; }
+.section-kicker, .section-eyebrow { color: var(--jade-deep); }
+.section-title { font-family: var(--font-display); font-weight: 800; letter-spacing: -0.02em; }
+.feature-glass-card,
+.testimonial-card,
+.faq-item {
+  border-color: var(--glass-edge) !important;
+  background: var(--glass-tint-strong) !important;
+  backdrop-filter: blur(var(--glass-blur));
+  box-shadow: var(--glass-shadow);
+}
+.faq-item { border-radius: 1.25rem; }
+
+@media (max-width: 720px) {
+  .ledger-head { display: none; }
+  .ledger-rows li { grid-template-columns: 3.6rem 1fr; grid-template-areas: "t who" "t act" ". win"; row-gap: 0.3rem; }
+  .ledger-time { grid-area: t; }
+  .ledger-who { grid-area: who; }
+  .ledger-act { grid-area: act; }
+  .ledger-win { grid-area: win; }
+}
+
+/* ليل الديوان: الأشرطة الداكنة تصبح أزرق ليلي متدرج بدل الأسود */
+section:has(> .integration-grid-wave) {
+  background-image: linear-gradient(160deg, oklch(0.26 0.07 262), oklch(0.19 0.05 258) 55%, oklch(0.23 0.08 250));
+}
+.pricing-liquid-glass.is-highlight {
+  background-image: linear-gradient(165deg, oklch(0.3 0.09 258), oklch(0.21 0.06 260));
+}
+.cta-glow-button {
+  background-image: var(--gradient-aurora);
+  color: oklch(1 0 0) !important;
+}
