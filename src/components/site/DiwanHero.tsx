@@ -41,7 +41,8 @@ export function DiwanHero() {
           مجلسك الرقمي — ستة موظفين يعملون الآن
         </p>
         <h1 id="diwan-title" className="diwan-title">
-          افتح ديوانك، <span>وخلّي فريقك يشتغل</span>
+          افتح ديوانك،
+          <span>وخلّي فريقك يشتغل</span>
         </h1>
         <p className="diwan-lead">
           سهل يمنحك مجلساً من ستة موظفين بالذكاء الاصطناعي: ينشرون، يصمّمون، يردّون على عملائك،
