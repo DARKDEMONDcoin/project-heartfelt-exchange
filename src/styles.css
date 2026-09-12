@@ -3094,3 +3094,12 @@ section:has(> .integration-grid-wave) * { color: inherit; }
 section:has(> .integration-grid-wave) {
   background: linear-gradient(180deg, oklch(1 0 0), oklch(0.978 0.001 60)) !important;
 }
+.liquid-glass-sahl::before {
+  background: linear-gradient(
+    180deg,
+    oklch(0.16 0.004 60 / 0.18) 0%,
+    oklch(0.16 0.004 60 / 0.08) 30%,
+    transparent 55%,
+    oklch(0.16 0.004 60 / 0.1) 100%
+  );
+}
