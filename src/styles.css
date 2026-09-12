@@ -2701,8 +2701,9 @@ section:has(> .integration-grid-wave) {
 }
 section:has(> .integration-grid-wave) * { color: inherit; }
 .pricing-liquid-glass.is-highlight {
-  background-image: linear-gradient(165deg, oklch(1 0 0), oklch(0.968 0.002 60));
-  border: 1px solid oklch(0.16 0.004 60 / 0.16);
+  background-image: linear-gradient(165deg, oklch(0.22 0.005 60), oklch(0.14 0.004 60)) !important;
+  border: 1px solid oklch(0.16 0.004 60);
+  color: oklch(1 0 0);
 }
 .cta-glow-button {
   background-image: none;
