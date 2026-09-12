@@ -74,66 +74,66 @@
 :root {
   --radius: 1.15rem;
 
-  /* هوية سهل النهائية — أسود دافئ + كريمي + قرميدي + تيل + ذهبي نحاسي */
-  --cream: oklch(0.935 0.019 84); /* #F3ECDF */
-  --ink: oklch(0.935 0.019 84);
-  --ink-soft: oklch(0.78 0.016 82);
-  --jade: oklch(0.487 0.135 38); /* #A8492C قرميدي محروق */
+  /* هوية سهل — كانفاس أبيض + حبر أسود + لمسة قرميدي واحدة (تحريرية عالية التباين) */
+  --cream: oklch(1 0 0); /* أبيض نقي */
+  --ink: oklch(0.16 0.004 60); /* أسود حبري */
+  --ink-soft: oklch(0.46 0.006 60);
+  --jade: oklch(0.487 0.135 38); /* قرميدي محروق */
   --jade-deep: oklch(0.415 0.125 36);
-  --amber: oklch(0.66 0.116 74); /* #C68A2E ذهبي نحاسي */
-  --coral: oklch(0.6 0.17 22);
-  --sky: oklch(0.445 0.058 179); /* #2F6B63 تيل عميق */
+  --amber: oklch(0.62 0.11 74);
+  --coral: oklch(0.58 0.17 22);
+  --sky: oklch(0.445 0.058 179);
 
-  --background: oklch(0.148 0.012 54); /* #1A1613 */
-  --foreground: var(--cream);
-  --card: oklch(0.19 0.014 56);
-  --card-foreground: var(--cream);
-  --popover: oklch(0.19 0.014 56);
-  --popover-foreground: var(--cream);
-  --primary: var(--jade);
-  --primary-foreground: oklch(0.97 0.012 84);
-  --secondary: oklch(0.225 0.014 58);
-  --secondary-foreground: var(--cream);
-  --muted: oklch(0.225 0.014 58);
-  --muted-foreground: oklch(0.735 0.018 82);
-  --accent: oklch(0.26 0.03 60);
-  --accent-foreground: var(--amber);
+  --background: oklch(1 0 0);
+  --foreground: var(--ink);
+  --card: oklch(1 0 0);
+  --card-foreground: var(--ink);
+  --popover: oklch(1 0 0);
+  --popover-foreground: var(--ink);
+  --primary: var(--ink);
+  --primary-foreground: oklch(1 0 0);
+  --secondary: oklch(0.972 0.002 60);
+  --secondary-foreground: var(--ink);
+  --muted: oklch(0.968 0.002 60);
+  --muted-foreground: oklch(0.5 0.006 60);
+  --accent: oklch(0.958 0.004 60);
+  --accent-foreground: var(--ink);
   --destructive: var(--coral);
-  --destructive-foreground: oklch(0.97 0.012 84);
-  --border: oklch(0.935 0.019 84 / 0.14);
-  --input: oklch(0.935 0.019 84 / 0.18);
-  --ring: var(--amber);
-  --chart-1: var(--jade);
-  --chart-2: var(--amber);
+  --destructive-foreground: oklch(1 0 0);
+  --border: oklch(0.16 0.004 60 / 0.12);
+  --input: oklch(0.16 0.004 60 / 0.16);
+  --ring: var(--ink);
+  --chart-1: var(--ink);
+  --chart-2: var(--jade);
   --chart-3: var(--sky);
-  --chart-4: var(--jade-deep);
-  --chart-5: oklch(0.55 0.07 179);
-  --sidebar: oklch(0.175 0.013 56);
-  --sidebar-foreground: var(--cream);
-  --sidebar-primary: var(--jade);
-  --sidebar-primary-foreground: oklch(0.97 0.012 84);
-  --sidebar-accent: oklch(0.235 0.016 58);
-  --sidebar-accent-foreground: var(--amber);
-  --sidebar-border: oklch(0.935 0.019 84 / 0.14);
-  --sidebar-ring: var(--amber);
+  --chart-4: var(--amber);
+  --chart-5: oklch(0.62 0.006 60);
+  --sidebar: oklch(0.99 0.001 60);
+  --sidebar-foreground: var(--ink);
+  --sidebar-primary: var(--ink);
+  --sidebar-primary-foreground: oklch(1 0 0);
+  --sidebar-accent: oklch(0.962 0.002 60);
+  --sidebar-accent-foreground: var(--ink);
+  --sidebar-border: oklch(0.16 0.004 60 / 0.1);
+  --sidebar-ring: var(--ink);
 
   --gradient-aurora: linear-gradient(
     115deg,
-    oklch(0.415 0.125 36) 0%,
-    oklch(0.487 0.135 38) 55%,
-    oklch(0.66 0.116 74) 100%
+    oklch(0.24 0.006 60) 0%,
+    oklch(0.16 0.004 60) 55%,
+    oklch(0.32 0.02 40) 100%
   );
-  --gradient-ink: linear-gradient(160deg, oklch(0.2 0.016 56), oklch(0.145 0.012 54));
-  --shadow-lift: 0 34px 80px -36px oklch(0.08 0.01 54 / 0.85);
-  --shadow-card: 0 1px 2px oklch(0.08 0.01 54 / 0.5), 0 22px 46px -26px oklch(0.08 0.01 54 / 0.7);
+  --gradient-ink: linear-gradient(160deg, oklch(0.995 0.001 60), oklch(0.965 0.002 60));
+  --shadow-lift: 0 34px 80px -40px oklch(0.16 0.004 60 / 0.18);
+  --shadow-card: 0 1px 2px oklch(0.16 0.004 60 / 0.06), 0 18px 40px -28px oklch(0.16 0.004 60 / 0.16);
 
-  /* زجاج سهل */
-  --glass-tint: oklch(0.935 0.019 84 / 0.05);
-  --glass-tint-strong: oklch(0.935 0.019 84 / 0.09);
-  --glass-stroke: oklch(0.66 0.116 74 / 0.4);
-  --glass-edge: oklch(0.66 0.116 74 / 0.35);
-  --glass-blur: 28px;
-  --glass-shadow: inset 0 1px 1px oklch(1 0 0 / 0.08), 0 30px 70px -40px oklch(0.05 0.01 54 / 0.9);
+  /* زجاج سهل — أبيض شفاف بحدود رمادية رقيقة */
+  --glass-tint: oklch(1 0 0 / 0.68);
+  --glass-tint-strong: oklch(1 0 0 / 0.85);
+  --glass-stroke: oklch(0.16 0.004 60 / 0.12);
+  --glass-edge: oklch(0.16 0.004 60 / 0.08);
+  --glass-blur: 24px;
+  --glass-shadow: inset 0 1px 0 oklch(1 0 0 / 0.9), 0 26px 60px -40px oklch(0.16 0.004 60 / 0.28);
 }
 
 
@@ -2578,9 +2578,7 @@ select.glass-input { appearance: none; }
 
 /* قسم العرض يتماشى مع القماش الأبيض بدل الخلفية الداكنة */
 .product-showcase {
-  background:
-    radial-gradient(60% 50% at 50% 0%, oklch(0.55 0.19 255 / 0.1), transparent 70%),
-    linear-gradient(180deg, oklch(0.985 0.008 250), var(--background));
+  background: linear-gradient(180deg, oklch(0.978 0.001 60), var(--background));
   color: var(--foreground);
 }
 .product-showcase .section-kicker { color: var(--jade-deep); }
@@ -2694,15 +2692,20 @@ select.glass-input { appearance: none; }
   .ledger-win { grid-area: win; }
 }
 
-/* ليل الديوان: الأشرطة الداكنة تصبح أزرق ليلي متدرج بدل الأسود */
+/* كانفاس أبيض واحد لكل الأقسام */
 section:has(> .integration-grid-wave) {
-  background-image: linear-gradient(160deg, oklch(0.26 0.07 262), oklch(0.19 0.05 258) 55%, oklch(0.23 0.08 250));
+  background-image: linear-gradient(180deg, oklch(1 0 0), oklch(0.975 0.002 60));
+  color: var(--foreground);
 }
+section:has(> .integration-grid-wave) * { color: inherit; }
 .pricing-liquid-glass.is-highlight {
-  background-image: linear-gradient(165deg, oklch(0.3 0.09 258), oklch(0.21 0.06 260));
+  background-image: linear-gradient(165deg, oklch(0.22 0.005 60), oklch(0.14 0.004 60)) !important;
+  border: 1px solid oklch(0.16 0.004 60);
+  color: oklch(1 0 0);
 }
 .cta-glow-button {
-  background-image: var(--gradient-aurora);
+  background-image: none;
+  background-color: oklch(0.16 0.004 60);
   color: oklch(1 0 0) !important;
 }
 
@@ -2757,14 +2760,14 @@ section:has(> .integration-grid-wave) {
   top: -10%;
   width: 46vw;
   height: 46vw;
-  background: oklch(0.487 0.135 38 / 0.5);
+  background: oklch(0.16 0.004 60 / 0.05);
 }
 .sahl-live-glowB {
   inset-inline-start: -12%;
   bottom: -18%;
   width: 44vw;
   height: 44vw;
-  background: oklch(0.445 0.058 179 / 0.42);
+  background: oklch(0.16 0.004 60 / 0.04);
 }
 
 .sahl-live-head {
@@ -2777,12 +2780,12 @@ section:has(> .integration-grid-wave) {
   align-items: center;
   gap: 0.5rem;
   border-radius: 999px;
-  background: oklch(0.935 0.019 84 / 0.07);
-  box-shadow: inset 0 0 0 1px oklch(0.66 0.116 74 / 0.35);
+  background: oklch(0.16 0.004 60 / 0.04);
+  box-shadow: inset 0 0 0 1px oklch(0.16 0.004 60 / 0.14);
   padding: 0.35rem 0.85rem;
   font-size: 0.78rem;
   font-weight: 600;
-  color: var(--amber);
+  color: var(--foreground);
 }
 .sahl-badge i {
   width: 0.45rem;
@@ -3054,4 +3057,47 @@ section:has(> .integration-grid-wave) {
   .sahl-rail-item span { display: none; }
   .sahl-approvals { display: none; }
   .sahl-chat { min-height: 21rem; }
+}
+
+/* ═════ الكانفاس الأبيض: توحيد كل الأسطح على أبيض + حبر أسود ═════ */
+:root {
+  --ink-line: oklch(0.16 0.004 60 / 0.1);
+  --ink-line-2: oklch(0.16 0.004 60 / 0.16);
+  --ink-fill: oklch(0.16 0.004 60 / 0.035);
+  --ink-fill-2: oklch(0.16 0.004 60 / 0.07);
+}
+.sahl-live { background: oklch(1 0 0); }
+.sahl-window { box-shadow: 0 1px 0 var(--ink-line), 0 30px 70px -50px oklch(0.16 0.004 60 / 0.3); border: 1px solid var(--ink-line-2) !important; background: oklch(1 0 0) !important; overflow: hidden; }
+.sahl-window-bar { border-bottom: 1px solid var(--ink-line); background: oklch(0.985 0.001 60); }
+.sahl-window-bar span { background: var(--ink-line-2); }
+.sahl-window-body { background: var(--ink-line); }
+.sahl-rail, .sahl-approvals { background: oklch(0.978 0.001 60); }
+.sahl-chat { background: oklch(1 0 0); }
+.sahl-rail-item b { background: var(--ink-line-2); }
+.sahl-rail-item.is-on { background: var(--ink-fill-2); }
+.sahl-rail-item.is-on b { background: oklch(0.55 0.14 150); box-shadow: 0 0 0.5rem oklch(0.55 0.14 150 / 0.6); }
+.sahl-bubble.is-user { background: oklch(0.16 0.004 60); color: oklch(1 0 0); box-shadow: none; }
+.sahl-bubble.is-agent { background: oklch(0.972 0.001 60); box-shadow: inset 0 0 0 1px var(--ink-line); }
+.sahl-caret { background: var(--foreground); }
+.sahl-approvals-title { color: var(--foreground); }
+.sahl-approval-card { background: oklch(1 0 0); box-shadow: inset 0 0 0 1px var(--ink-line-2), 0 12px 26px -22px oklch(0.16 0.004 60 / 0.4); }
+.sahl-approval-thumb { background: linear-gradient(140deg, oklch(0.94 0.001 60), oklch(0.88 0.002 60)); }
+.sahl-approval-card span { background: var(--ink-fill-2); color: var(--foreground); }
+.sahl-approval-card.is-done { box-shadow: inset 0 0 0 1px oklch(0.55 0.14 150 / 0.5); }
+.sahl-approval-card.is-done span { background: oklch(0.55 0.14 150 / 0.12); color: oklch(0.42 0.12 150); }
+.sahl-live-cta:hover { box-shadow: 0 18px 40px -18px oklch(0.16 0.004 60 / 0.45); }
+
+/* أقسام بلا صبغة لونية */
+.ledger-sec, .features-section, .employees-stage,
+section:has(> .integration-grid-wave) {
+  background: linear-gradient(180deg, oklch(1 0 0), oklch(0.978 0.001 60)) !important;
+}
+.liquid-glass-sahl::before {
+  background: linear-gradient(
+    180deg,
+    oklch(0.16 0.004 60 / 0.18) 0%,
+    oklch(0.16 0.004 60 / 0.08) 30%,
+    transparent 55%,
+    oklch(0.16 0.004 60 / 0.1) 100%
+  );
 }
