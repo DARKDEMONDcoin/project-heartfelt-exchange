@@ -4,7 +4,6 @@ import {
   ArrowLeft,
   Check,
   CheckCircle2,
-  ChevronLeft,
   Clock3,
   Loader2,
   MessageSquareText,
@@ -199,10 +198,10 @@ export function EditorialHomepage() {
       <section className="mono-use-cases">
         <div className="mono-shell"><header className="mono-section-head"><span>٠٧ — حسب مشروعك</span><h2>فريق واحد.<br />سياق مختلف لكل نشاط.</h2></header>
           <div className="mono-use-grid">
-            <Link to="/use-cases/ecommerce"><span>٠١</span><small>المتاجر الإلكترونية</small><h3>محتوى، حملات، دعم ومتابعة مبيعات.</h3><ArrowLeft /></Link>
-            <Link to="/use-cases/restaurants"><span>٠٢</span><small>المطاعم والكافيهات</small><h3>حضور محلي مستمر وردود لا تتأخر.</h3><ArrowLeft /></Link>
-            <Link to="/use-cases/clinics"><span>٠٣</span><small>العيادات</small><h3>تنظيم المواعيد ومحتوى يبني الثقة.</h3><ArrowLeft /></Link>
-            <Link to="/use-cases/realestate"><span>٠٤</span><small>العقار والمقاولات</small><h3>فرص مؤهلة وعروض جاهزة للمتابعة.</h3><ArrowLeft /></Link>
+            <Link to="/use-cases/$id" params={{ id: "ecommerce" }}><span>٠١</span><small>المتاجر الإلكترونية</small><h3>محتوى، حملات، دعم ومتابعة مبيعات.</h3><ArrowLeft /></Link>
+            <Link to="/use-cases/$id" params={{ id: "restaurants" }}><span>٠٢</span><small>المطاعم والكافيهات</small><h3>حضور محلي مستمر وردود لا تتأخر.</h3><ArrowLeft /></Link>
+            <Link to="/use-cases/$id" params={{ id: "clinics" }}><span>٠٣</span><small>العيادات</small><h3>تنظيم المواعيد ومحتوى يبني الثقة.</h3><ArrowLeft /></Link>
+            <Link to="/use-cases/$id" params={{ id: "realestate" }}><span>٠٤</span><small>العقار والمقاولات</small><h3>فرص مؤهلة وعروض جاهزة للمتابعة.</h3><ArrowLeft /></Link>
           </div>
         </div>
       </section>
@@ -210,7 +209,7 @@ export function EditorialHomepage() {
       <section className="mono-pricing" id="pricing">
         <div className="mono-shell"><header className="mono-section-head is-wide"><span>٠٨ — الأسعار</span><h2>ابدأ بحجمك اليوم.<br />وكبّر الفريق عندما تحتاج.</h2></header>
           <div className="mono-plan-grid">
-            {plans.map((plan) => <article key={plan.id} className={plan.highlight ? "is-highlight" : ""}><span>{plan.tag}</span><h3>{plan.name}</h3><div>{plan.monthly ? <><strong>{plan.monthly.toLocaleString("ar-SA")}</strong><small>ر.س / شهرياً</small></> : <strong className="is-text">حسب الطلب</strong>}</div><p>{plan.desc}</p><ul>{plan.perks.slice(0, 4).map((perk) => <li key={perk}><Check />{perk}</li>)}</ul><Link to={plan.monthly ? "/auth" : "/contact"} search={plan.monthly ? { mode: "signup" as const } : undefined}>{plan.cta}<ArrowLeft /></Link></article>)}
+            {plans.map((plan) => <article key={plan.id} className={plan.highlight ? "is-highlight" : ""}><span>{plan.tag}</span><h3>{plan.name}</h3><div>{plan.monthly ? <><strong>{plan.monthly.toLocaleString("ar-SA")}</strong><small>ر.س / شهرياً</small></> : <strong className="is-text">حسب الطلب</strong>}</div><p>{plan.desc}</p><ul>{plan.perks.slice(0, 4).map((perk) => <li key={perk}><Check />{perk}</li>)}</ul>{plan.monthly ? <Link to="/auth" search={{ mode: "signup" as const }}>{plan.cta}<ArrowLeft /></Link> : <Link to="/contact">{plan.cta}<ArrowLeft /></Link>}</article>)}
           </div>
         </div>
       </section>
