@@ -6,7 +6,6 @@ import {
   CheckCircle2,
   ChevronLeft,
   Clock3,
-  CornerDownLeft,
   Link2,
   Loader2,
   MessageSquareText,
@@ -175,7 +174,7 @@ function WorkflowHandoff() {
 
   return (
     <div className="mono-handoff">
-      <div className="mono-handoff-line" aria-hidden="true"><i style={{ transform: `scaleX(${active / (steps.length - 1)})` }} /></div>
+      <div className={`mono-handoff-line progress-${active}`} aria-hidden="true"><i /></div>
       {steps.map((step, index) => {
         const member = team.find((item) => item.id === step.id);
         if (!member) return null;
