@@ -28,13 +28,18 @@ import brainAsset from "@/assets/product/brain.webp.asset.json";
 import dashboardAsset from "@/assets/product/dashboard.webp.asset.json";
 import integrationsAsset from "@/assets/product/integrations.webp.asset.json";
 import reportsAsset from "@/assets/product/reports.webp.asset.json";
-import tourAsset from "@/assets/product/product-tour-clean.webm.asset.json";
+import approvalsVideo from "@/assets/product/approvals-section.webm.asset.json";
+import brainVideo from "@/assets/product/brain-section.webm.asset.json";
+import dashboardVideo from "@/assets/product/dashboard-section.webm.asset.json";
+import integrationsVideo from "@/assets/product/integrations-section.webm.asset.json";
+import reportsVideo from "@/assets/product/reports-section.webm.asset.json";
+import sirajVideo from "@/assets/product/siraj-section.webm.asset.json";
 
 const productScenes = [
-  { label: "لوحة العمل", title: "كل ما يجري الآن، أمامك.", detail: "المهام المنجزة، ما ينتظر موافقتك، وحالة تشغيل فريقك في شاشة واحدة.", href: "/app", image: dashboardAsset.url },
-  { label: "الموافقات", title: "راجع العمل قبل نشره.", detail: "مخرجات سِراج الفعلية مرتبة للمراجعة والاعتماد، مع المنصة وموعد النشر.", href: "/app/approvals", image: approvalsAsset.url },
-  { label: "عقل العلامة", title: "معرفة مشروعك لا تضيع.", detail: "مواقعك وملاحظاتك ودليل صوت علامتك تبقى مرجعاً مشتركاً للفريق كله.", href: "/app/brain", image: brainAsset.url },
-  { label: "التقارير", title: "النتيجة قابلة للقياس.", detail: "فحص سيو وتقارير بحث وتحليلات في مساحة حقيقية قابلة للطباعة.", href: "/app/reports", image: reportsAsset.url },
+  { label: "لوحة العمل", title: "كل ما يجري الآن، أمامك.", detail: "المهام المنجزة، ما ينتظر موافقتك، وحالة تشغيل فريقك في شاشة واحدة.", href: "/app", image: dashboardAsset.url, video: dashboardVideo.url },
+  { label: "الموافقات", title: "راجع العمل قبل نشره.", detail: "مخرجات سِراج الفعلية مرتبة للمراجعة والاعتماد، مع المنصة وموعد النشر.", href: "/app/approvals", image: approvalsAsset.url, video: approvalsVideo.url },
+  { label: "عقل العلامة", title: "معرفة مشروعك لا تضيع.", detail: "مواقعك وملاحظاتك ودليل صوت علامتك تبقى مرجعاً مشتركاً للفريق كله.", href: "/app/brain", image: brainAsset.url, video: brainVideo.url },
+  { label: "التقارير", title: "النتيجة قابلة للقياس.", detail: "فحص سيو وتقارير بحث وتحليلات في مساحة حقيقية قابلة للطباعة.", href: "/app/reports", image: reportsAsset.url, video: reportsVideo.url },
 ] as const;
 
 type DemoPhase = "idle" | "thinking" | "draft" | "approved";
@@ -121,7 +126,7 @@ export function EditorialHomepage() {
           <div className="mono-hero-product">
             <Link to="/app" className="mono-real-media is-hero" aria-label="افتح مساحة عمل سهل التجريبية">
               <video autoPlay muted loop playsInline poster={dashboardAsset.url} preload="metadata">
-                <source src={tourAsset.url} type="video/webm" />
+                <source src={dashboardVideo.url} type="video/webm" />
               </video>
               <span><i /> تسجيل حقيقي من مساحة سهل <ArrowLeft /></span>
             </Link>
@@ -159,8 +164,8 @@ export function EditorialHomepage() {
         <div className="mono-shell mono-day-layout">
           <div className="mono-day-copy"><span>٠٢ — داخل المنتج</span><h2>هذه سهل.<br />كما ستستخدمها فعلاً.</h2><p>جولة مسجّلة من مساحة العمل الحقيقية: التقويم، الموافقات، عقل العلامة، ثم التقارير.</p><Link to="/app">افتح مساحة التجربة <ArrowLeft /></Link></div>
           <Link to="/app" className="mono-real-media is-tour" aria-label="شاهد مساحة عمل سهل">
-            <video autoPlay muted loop playsInline poster={dashboardAsset.url} preload="metadata"><source src={tourAsset.url} type="video/webm" /></video>
-            <span><i /> جولة حقيقية · ١٨ ثانية</span>
+             <video autoPlay muted loop playsInline poster={dashboardAsset.url} preload="metadata"><source src={dashboardVideo.url} type="video/webm" /></video>
+             <span><i /> لوحة العمل · تسجيل حقيقي</span>
           </Link>
         </div>
       </section>
@@ -168,6 +173,7 @@ export function EditorialHomepage() {
       <section className="mono-siraj-section">
         <div className="mono-shell">
           <header className="mono-section-head"><span>٠٣ — جرّب المنتج</span><h2>اكتب الطلب.<br />وشاهد سِراج ينفّذه.</h2><p>جرّب الطلب هنا، أو افتح محادثة سِراج الكاملة داخل مساحة العمل.</p><Link className="mono-inline-link" to="/app/chat/$id" params={{ id: "sonny" }}>افتح محادثة سِراج الحقيقية <ArrowLeft /></Link></header>
+          <Link to="/app/chat/$id" params={{ id: "sonny" }} className="mono-real-media is-wide mono-section-video" aria-label="شاهد سراج داخل مساحة العمل"><video autoPlay muted loop playsInline poster={dashboardAsset.url} preload="none"><source src={sirajVideo.url} type="video/webm" /></video><span><i /> سِراج ينفّذ الطلب داخل المنتج</span></Link>
           <SirajStudio />
         </div>
       </section>
@@ -175,14 +181,14 @@ export function EditorialHomepage() {
       <section className="mono-flow-section">
         <div className="mono-shell">
           <header className="mono-section-head is-wide"><span>٠٤ — المراجعة البشرية</span><h2>الموظفون ينجزون.<br />وأنت صاحب القرار.</h2><p>لقطة مباشرة من طابور الموافقات الحقيقي، وفيه محتوى سِراج الجاهز للنشر.</p></header>
-          <Link to="/app/approvals" className="mono-real-media is-wide" aria-label="افتح طابور الموافقات"><img src={approvalsAsset.url} alt="طابور الموافقات الحقيقي في سهل" loading="lazy" /><span>افتح طابور الموافقات <ArrowLeft /></span></Link>
+          <Link to="/app/approvals" className="mono-real-media is-wide" aria-label="افتح طابور الموافقات"><video autoPlay muted loop playsInline poster={approvalsAsset.url} preload="none"><source src={approvalsVideo.url} type="video/webm" /></video><span><i /> مراجعة المخرجات الفعلية</span></Link>
         </div>
       </section>
 
       <section className="mono-network-section">
         <div className="mono-shell mono-network-layout">
           <header className="mono-section-head"><span>٠٥ — التكاملات</span><h2>حساباتك،<br />داخل مساحة العمل.</h2><p>هذه صفحة الربط الفعلية كما هي. كل موظف يرى الأدوات التي يحتاجها، دون ادعاء أن حساباً غير مربوط متصل.</p><Link to="/app/integrations">افتح صفحة التكاملات <ArrowLeft /></Link></header>
-          <Link to="/app/integrations" className="mono-real-media is-dark" aria-label="افتح تكاملات سهل"><img src={integrationsAsset.url} alt="صفحة التكاملات الحقيقية في سهل" loading="lazy" /><span><i /> لقطة حقيقية من مساحة التجربة</span></Link>
+           <Link to="/app/integrations" className="mono-real-media is-dark" aria-label="افتح تكاملات سهل"><video autoPlay muted loop playsInline poster={integrationsAsset.url} preload="none"><source src={integrationsVideo.url} type="video/webm" /></video><span><i /> استعراض حسابات الربط الفعلية</span></Link>
         </div>
       </section>
 
@@ -190,7 +196,7 @@ export function EditorialHomepage() {
         <div className="mono-shell">
           <header className="mono-section-head"><span>٠٦ — المنتج كما هو</span><h2>لا صور دعائية.<br />هذه الشاشات الفعلية.</h2><p>اختر أي مشهد لفتحه داخل مساحة سهل التجريبية.</p></header>
           <div className="mono-scenes-grid">
-            {productScenes.map((scene) => <Link key={scene.label} to={scene.href} className="mono-scene-card"><div><span>{scene.label}</span><h3>{scene.title}</h3><p>{scene.detail}</p><b>جرّبها الآن <ArrowLeft /></b></div><figure><img src={scene.image} alt={`${scene.label} داخل سهل`} loading="lazy" /></figure></Link>)}
+            {productScenes.map((scene) => <Link key={scene.label} to={scene.href} className="mono-scene-card"><div><span>{scene.label}</span><h3>{scene.title}</h3><p>{scene.detail}</p><b>جرّبها الآن <ArrowLeft /></b></div><figure><video autoPlay muted loop playsInline poster={scene.image} preload="none"><source src={scene.video} type="video/webm" /></video><figcaption><i /> تسجيل فعلي لهذا الجزء</figcaption></figure></Link>)}
           </div>
         </div>
       </section>
