@@ -1,12 +1,10 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import {
   ArrowLeft,
   Check,
   CheckCircle2,
-  ChevronLeft,
   Clock3,
-  Link2,
   Loader2,
   MessageSquareText,
   Send,
@@ -25,80 +23,21 @@ import {
 } from "@/components/ui/accordion";
 import { plans } from "@/data/pricing";
 import { team } from "@/data/team";
+import approvalsAsset from "@/assets/product/approvals.webp.asset.json";
+import brainAsset from "@/assets/product/brain.webp.asset.json";
+import dashboardAsset from "@/assets/product/dashboard.webp.asset.json";
+import integrationsAsset from "@/assets/product/integrations.webp.asset.json";
+import reportsAsset from "@/assets/product/reports.webp.asset.json";
+import tourAsset from "@/assets/product/product-tour-clean.webm.asset.json";
 
-const workstream = [
-  { time: "٠٧:٠٠", id: "eva", task: "ملخص الصباح", detail: "٤ رسائل تحتاج قرارك، واجتماعان اليوم. رتّبت أمَل الباقي." },
-  { time: "٠٩:٣٠", id: "sam", task: "فرص المبيعات", detail: "جهّز سالم قائمة مطابقة ورسائل تواصل مخصصة لكل عميل." },
-  { time: "١٢:٠٠", id: "nour", task: "حزمة محتوى", detail: "سلّمت نور مقالاً محسّناً للبحث وحزمة نشر جاهزة." },
-  { time: "١٥:٢٠", id: "dana", task: "أصول الحملة", detail: "حوّلت دانة الفكرة إلى مقاسات متسقة مع هوية المشروع." },
-  { time: "١٨:٤٥", id: "sonny", task: "المنشور مجدول", detail: "راجع سِراج المحتوى وحدد التوقيت الأنسب للنشر." },
-  { time: "٢٣:٠٠", id: "adam", task: "تقرير اليوم", detail: "جمع آدم النتائج وحدد الخطوة الأهم لليوم التالي." },
+const productScenes = [
+  { label: "لوحة العمل", title: "كل ما يجري الآن، أمامك.", detail: "المهام المنجزة، ما ينتظر موافقتك، وحالة تشغيل فريقك في شاشة واحدة.", href: "/app", image: dashboardAsset.url },
+  { label: "الموافقات", title: "راجع العمل قبل نشره.", detail: "مخرجات سِراج الفعلية مرتبة للمراجعة والاعتماد، مع المنصة وموعد النشر.", href: "/app/approvals", image: approvalsAsset.url },
+  { label: "عقل العلامة", title: "معرفة مشروعك لا تضيع.", detail: "مواقعك وملاحظاتك ودليل صوت علامتك تبقى مرجعاً مشتركاً للفريق كله.", href: "/app/brain", image: brainAsset.url },
+  { label: "التقارير", title: "النتيجة قابلة للقياس.", detail: "فحص سيو وتقارير بحث وتحليلات في مساحة حقيقية قابلة للطباعة.", href: "/app/reports", image: reportsAsset.url },
 ] as const;
 
-const integrations = ["إنستقرام", "لينكدإن", "واتساب", "جيميل", "شوبيفاي", "ووردبريس", "Analytics", "Notion"];
-
 type DemoPhase = "idle" | "thinking" | "draft" | "approved";
-
-function EmployeeRail({ selected, onSelect }: { selected: number; onSelect: (index: number) => void }) {
-  return (
-    <div className="mono-employee-rail" aria-label="اختر موظفاً رقمياً">
-      {team.map((member, index) => (
-        <Button
-          key={member.id}
-          type="button"
-          variant="ghost"
-          className={selected === index ? "is-active" : ""}
-          onClick={() => onSelect(index)}
-          aria-pressed={selected === index}
-        >
-          <Portrait memberId={member.id} name={member.name} eager={index < 2} />
-          <span><strong>{member.name}</strong><small>{member.role}</small></span>
-          <i aria-hidden="true" />
-        </Button>
-      ))}
-    </div>
-  );
-}
-
-function LiveWorkspace({ compact = false }: { compact?: boolean }) {
-  const [selected, setSelected] = useState(0);
-  const [phase, setPhase] = useState<DemoPhase>("draft");
-  const member = team[selected];
-
-  if (!member) return null;
-
-  return (
-    <div className={`mono-workspace${compact ? " is-compact" : ""}`} aria-label="معاينة مساحة عمل سهل">
-      <header className="mono-window-bar">
-        <div className="mono-window-controls" aria-hidden="true"><i /><i /><i /></div>
-        <strong>مساحة عمل سهل</strong>
-        <span><i /> مباشر</span>
-      </header>
-      <div className="mono-workspace-grid">
-        <EmployeeRail selected={selected} onSelect={(index) => { setSelected(index); setPhase("draft"); }} />
-        <div className="mono-workspace-main">
-          <header>
-            <div><small>الموظف النشط</small><h3>{member.name}</h3></div>
-            <span>{member.metrics[0]?.v}<small>{member.metrics[0]?.k}</small></span>
-          </header>
-          <div className="mono-conversation">
-            <p className="is-owner">جهّز أهم مهمة اليوم بنفس نبرة علامتنا.</p>
-            <div className="is-employee">
-              <Portrait memberId={member.id} name={member.name} eager />
-              <p><strong>{member.tagline}</strong><span>{member.summary}</span></p>
-            </div>
-          </div>
-          <div className={`mono-deliverable phase-${phase}`}>
-            <div><Sparkles aria-hidden="true" /><span><small>{phase === "approved" ? "تم التنفيذ" : "جاهز للمراجعة"}</small><strong>{member.tasks[0]}</strong></span></div>
-            <Button type="button" onClick={() => setPhase("approved")} disabled={phase === "approved"}>
-              {phase === "approved" ? <><Check aria-hidden="true" /> تمت الموافقة</> : <>موافقة وتنفيذ <ChevronLeft aria-hidden="true" /></>}
-            </Button>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
 
 function SirajStudio() {
   const [prompt, setPrompt] = useState("اكتب منشوراً لإطلاق منتجنا الجديد بنبرة واثقة وبسيطة");
@@ -163,47 +102,7 @@ function SirajStudio() {
   );
 }
 
-function WorkflowHandoff() {
-  const steps = [
-    { id: "nour", label: "بحث وكتابة", result: "موجز المحتوى جاهز" },
-    { id: "dana", label: "تصميم الأصول", result: "٤ مقاسات جاهزة" },
-    { id: "sonny", label: "جدولة ونشر", result: "بانتظار الموافقة" },
-    { id: "adam", label: "قياس النتائج", result: "يبدأ بعد النشر" },
-  ];
-  const [active, setActive] = useState(2);
-
-  return (
-    <div className="mono-handoff">
-      <div className={`mono-handoff-line progress-${active}`} aria-hidden="true"><i /></div>
-      {steps.map((step, index) => {
-        const member = team.find((item) => item.id === step.id);
-        if (!member) return null;
-        return (
-          <Button key={step.id} type="button" variant="ghost" className={index <= active ? "is-complete" : ""} onClick={() => setActive(index)}>
-            <span className="mono-step-index">٠{index + 1}</span>
-            <Portrait memberId={member.id} name={member.name} />
-            <span><strong>{member.name}</strong><small>{step.label}</small><em>{index < active ? "مكتمل" : index === active ? step.result : "التالي"}</em></span>
-          </Button>
-        );
-      })}
-    </div>
-  );
-}
-
 export function EditorialHomepage() {
-  const [activeMoment, setActiveMoment] = useState(0);
-  const [activeIntegration, setActiveIntegration] = useState(0);
-
-  useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const dayTimer = window.setInterval(() => setActiveMoment((value) => (value + 1) % workstream.length), 3000);
-    const appTimer = window.setInterval(() => setActiveIntegration((value) => (value + 1) % integrations.length), 1800);
-    return () => { window.clearInterval(dayTimer); window.clearInterval(appTimer); };
-  }, []);
-
-  const activeWork = workstream[activeMoment] ?? workstream[0];
-  const activeWorker = useMemo(() => team.find((member) => member.id === activeWork?.id) ?? team[0], [activeWork]);
-
   return (
     <div className="mono-home">
       <section className="mono-hero" aria-labelledby="home-title">
@@ -219,7 +118,14 @@ export function EditorialHomepage() {
             </div>
             <span className="mono-trial"><CheckCircle2 /> ١٤ يوماً مجاناً · بدون بطاقة بنكية</span>
           </div>
-          <div className="mono-hero-product"><LiveWorkspace compact /></div>
+          <div className="mono-hero-product">
+            <Link to="/app" className="mono-real-media is-hero" aria-label="افتح مساحة عمل سهل التجريبية">
+              <video autoPlay muted loop playsInline poster={dashboardAsset.url} preload="metadata">
+                <source src={tourAsset.url} type="video/webm" />
+              </video>
+              <span><i /> تسجيل حقيقي من مساحة سهل <ArrowLeft /></span>
+            </Link>
+          </div>
         </div>
         <div className="mono-scroll-cue" aria-hidden="true"><span>مرّر لتشاهد الفريق يعمل</span><i /></div>
       </section>
@@ -249,66 +155,66 @@ export function EditorialHomepage() {
         </div>
       </section>
 
-      <section className="mono-day">
+      <section className="mono-day mono-product-tour">
         <div className="mono-shell mono-day-layout">
-          <div className="mono-day-copy"><span>٠٢ — يوم داخل سهل</span><h2>العمل يتحرك،<br />حتى عندما لا تتابعه.</h2><p>من أول ملخص صباحي إلى آخر تقرير في الليل، كل مهمة لها صاحب وحالة ونتيجة واضحة.</p></div>
-          <div className="mono-day-stage">
-            <div className="mono-day-focus" key={activeWork?.time}>
-              {activeWorker ? <Portrait memberId={activeWorker.id} name={activeWorker.name} /> : null}
-              <div><time>{activeWork?.time}</time><small>{activeWorker?.name} · {activeWorker?.role}</small><h3>{activeWork?.task}</h3><p>{activeWork?.detail}</p><span><i /> يعمل الآن</span></div>
-            </div>
-            <div className="mono-day-timeline">
-              {workstream.map((item, index) => <Button key={item.time} type="button" variant="ghost" className={activeMoment === index ? "is-active" : ""} onClick={() => setActiveMoment(index)}><time>{item.time}</time><span>{team.find((member) => member.id === item.id)?.name}</span></Button>)}
-            </div>
-          </div>
+          <div className="mono-day-copy"><span>٠٢ — داخل المنتج</span><h2>هذه سهل.<br />كما ستستخدمها فعلاً.</h2><p>جولة مسجّلة من مساحة العمل الحقيقية: التقويم، الموافقات، عقل العلامة، ثم التقارير.</p><Link to="/app">افتح مساحة التجربة <ArrowLeft /></Link></div>
+          <Link to="/app" className="mono-real-media is-tour" aria-label="شاهد مساحة عمل سهل">
+            <video autoPlay muted loop playsInline poster={dashboardAsset.url} preload="metadata"><source src={tourAsset.url} type="video/webm" /></video>
+            <span><i /> جولة حقيقية · ١٨ ثانية</span>
+          </Link>
         </div>
       </section>
 
       <section className="mono-siraj-section">
         <div className="mono-shell">
-          <header className="mono-section-head"><span>٠٣ — جرّب المنتج</span><h2>اكتب الطلب.<br />وشاهد سِراج ينفّذه.</h2><p>هذه ليست صورة واجهة. غيّر الطلب، أرسله، راجع المسودة، ثم وافق على جدولتها.</p></header>
+          <header className="mono-section-head"><span>٠٣ — جرّب المنتج</span><h2>اكتب الطلب.<br />وشاهد سِراج ينفّذه.</h2><p>جرّب الطلب هنا، أو افتح محادثة سِراج الكاملة داخل مساحة العمل.</p><Link className="mono-inline-link" to="/app/chat/$id" params={{ id: "sonny" }}>افتح محادثة سِراج الحقيقية <ArrowLeft /></Link></header>
           <SirajStudio />
         </div>
       </section>
 
       <section className="mono-flow-section">
         <div className="mono-shell">
-          <header className="mono-section-head is-wide"><span>٠٤ — التسليم الذكي</span><h2>مهمة واحدة.<br />أربعة تخصصات. لا متابعة يدوية.</h2></header>
-          <WorkflowHandoff />
+          <header className="mono-section-head is-wide"><span>٠٤ — المراجعة البشرية</span><h2>الموظفون ينجزون.<br />وأنت صاحب القرار.</h2><p>لقطة مباشرة من طابور الموافقات الحقيقي، وفيه محتوى سِراج الجاهز للنشر.</p></header>
+          <Link to="/app/approvals" className="mono-real-media is-wide" aria-label="افتح طابور الموافقات"><img src={approvalsAsset.url} alt="طابور الموافقات الحقيقي في سهل" loading="lazy" /><span>افتح طابور الموافقات <ArrowLeft /></span></Link>
         </div>
       </section>
 
       <section className="mono-network-section">
         <div className="mono-shell mono-network-layout">
-          <header className="mono-section-head"><span>٠٥ — التكاملات</span><h2>السياق ينتقل.<br />الفوضى لا تنتقل.</h2><p>اربط الأدوات التي تعمل بها، ودع الموظف المناسب يقرأ المهمة وينفذها ويعيد النتيجة إلى سهل.</p><Link to="/integrations">استكشف التكاملات <ArrowLeft /></Link></header>
-          <div className="mono-network" aria-label="شبكة تكاملات سهل">
-            <div className="mono-network-core"><Sparkles /><strong>سهل</strong><small>ذاكرة مشروعك</small></div>
-            {integrations.map((app, index) => <Button key={app} type="button" variant="outline" className={`app-${index + 1}${activeIntegration === index ? " is-active" : ""}`} onClick={() => setActiveIntegration(index)}><Link2 />{app}</Button>)}
-            <span className="mono-data-pulse" aria-hidden="true" />
+          <header className="mono-section-head"><span>٠٥ — التكاملات</span><h2>حساباتك،<br />داخل مساحة العمل.</h2><p>هذه صفحة الربط الفعلية كما هي. كل موظف يرى الأدوات التي يحتاجها، دون ادعاء أن حساباً غير مربوط متصل.</p><Link to="/app/integrations">افتح صفحة التكاملات <ArrowLeft /></Link></header>
+          <Link to="/app/integrations" className="mono-real-media is-dark" aria-label="افتح تكاملات سهل"><img src={integrationsAsset.url} alt="صفحة التكاملات الحقيقية في سهل" loading="lazy" /><span><i /> لقطة حقيقية من مساحة التجربة</span></Link>
+        </div>
+      </section>
+
+      <section className="mono-product-scenes">
+        <div className="mono-shell">
+          <header className="mono-section-head"><span>٠٦ — المنتج كما هو</span><h2>لا صور دعائية.<br />هذه الشاشات الفعلية.</h2><p>اختر أي مشهد لفتحه داخل مساحة سهل التجريبية.</p></header>
+          <div className="mono-scenes-grid">
+            {productScenes.map((scene) => <Link key={scene.label} to={scene.href} className="mono-scene-card"><div><span>{scene.label}</span><h3>{scene.title}</h3><p>{scene.detail}</p><b>جرّبها الآن <ArrowLeft /></b></div><figure><img src={scene.image} alt={`${scene.label} داخل سهل`} loading="lazy" /></figure></Link>)}
           </div>
         </div>
       </section>
 
       <section className="mono-use-cases">
-        <div className="mono-shell"><header className="mono-section-head"><span>٠٦ — حسب مشروعك</span><h2>فريق واحد.<br />سياق مختلف لكل نشاط.</h2></header>
+        <div className="mono-shell"><header className="mono-section-head"><span>٠٧ — حسب مشروعك</span><h2>فريق واحد.<br />سياق مختلف لكل نشاط.</h2></header>
           <div className="mono-use-grid">
-            <Link to="/use-cases/ecommerce"><span>٠١</span><small>المتاجر الإلكترونية</small><h3>محتوى، حملات، دعم ومتابعة مبيعات.</h3><ArrowLeft /></Link>
-            <Link to="/use-cases/restaurants"><span>٠٢</span><small>المطاعم والكافيهات</small><h3>حضور محلي مستمر وردود لا تتأخر.</h3><ArrowLeft /></Link>
-            <Link to="/use-cases/clinics"><span>٠٣</span><small>العيادات</small><h3>تنظيم المواعيد ومحتوى يبني الثقة.</h3><ArrowLeft /></Link>
-            <Link to="/use-cases/realestate"><span>٠٤</span><small>العقار والمقاولات</small><h3>فرص مؤهلة وعروض جاهزة للمتابعة.</h3><ArrowLeft /></Link>
+            <Link to="/use-cases/$id" params={{ id: "ecommerce" }}><span>٠١</span><small>المتاجر الإلكترونية</small><h3>محتوى، حملات، دعم ومتابعة مبيعات.</h3><ArrowLeft /></Link>
+            <Link to="/use-cases/$id" params={{ id: "restaurants" }}><span>٠٢</span><small>المطاعم والكافيهات</small><h3>حضور محلي مستمر وردود لا تتأخر.</h3><ArrowLeft /></Link>
+            <Link to="/use-cases/$id" params={{ id: "clinics" }}><span>٠٣</span><small>العيادات</small><h3>تنظيم المواعيد ومحتوى يبني الثقة.</h3><ArrowLeft /></Link>
+            <Link to="/use-cases/$id" params={{ id: "realestate" }}><span>٠٤</span><small>العقار والمقاولات</small><h3>فرص مؤهلة وعروض جاهزة للمتابعة.</h3><ArrowLeft /></Link>
           </div>
         </div>
       </section>
 
       <section className="mono-pricing" id="pricing">
-        <div className="mono-shell"><header className="mono-section-head is-wide"><span>٠٧ — الأسعار</span><h2>ابدأ بحجمك اليوم.<br />وكبّر الفريق عندما تحتاج.</h2></header>
+        <div className="mono-shell"><header className="mono-section-head is-wide"><span>٠٨ — الأسعار</span><h2>ابدأ بحجمك اليوم.<br />وكبّر الفريق عندما تحتاج.</h2></header>
           <div className="mono-plan-grid">
-            {plans.map((plan) => <article key={plan.id} className={plan.highlight ? "is-highlight" : ""}><span>{plan.tag}</span><h3>{plan.name}</h3><div>{plan.monthly ? <><strong>{plan.monthly.toLocaleString("ar-SA")}</strong><small>ر.س / شهرياً</small></> : <strong className="is-text">حسب الطلب</strong>}</div><p>{plan.desc}</p><ul>{plan.perks.slice(0, 4).map((perk) => <li key={perk}><Check />{perk}</li>)}</ul><Link to={plan.monthly ? "/auth" : "/contact"} search={plan.monthly ? { mode: "signup" as const } : undefined}>{plan.cta}<ArrowLeft /></Link></article>)}
+            {plans.map((plan) => <article key={plan.id} className={plan.highlight ? "is-highlight" : ""}><span>{plan.tag}</span><h3>{plan.name}</h3><div>{plan.monthly ? <><strong>{plan.monthly.toLocaleString("ar-SA")}</strong><small>ر.س / شهرياً</small></> : <strong className="is-text">حسب الطلب</strong>}</div><p>{plan.desc}</p><ul>{plan.perks.slice(0, 4).map((perk) => <li key={perk}><Check />{perk}</li>)}</ul>{plan.monthly ? <Link to="/auth" search={{ mode: "signup" as const }}>{plan.cta}<ArrowLeft /></Link> : <Link to="/contact">{plan.cta}<ArrowLeft /></Link>}</article>)}
           </div>
         </div>
       </section>
 
-      <section className="mono-faq" id="faq"><div className="mono-shell mono-faq-layout"><header className="mono-section-head"><span>٠٨ — قبل أن تبدأ</span><h2>إجابات واضحة.</h2><p>كل ما تحتاج معرفته قبل توظيف فريقك الرقمي.</p></header><Accordion type="single" collapsible>{faqs.map((item, index) => <AccordionItem key={item.q} value={`faq-${index}`}><AccordionTrigger>{item.q}</AccordionTrigger><AccordionContent>{item.a}</AccordionContent></AccordionItem>)}</Accordion></div></section>
+      <section className="mono-faq" id="faq"><div className="mono-shell mono-faq-layout"><header className="mono-section-head"><span>٠٩ — قبل أن تبدأ</span><h2>إجابات واضحة.</h2><p>كل ما تحتاج معرفته قبل توظيف فريقك الرقمي.</p></header><Accordion type="single" collapsible>{faqs.map((item, index) => <AccordionItem key={item.q} value={`faq-${index}`}><AccordionTrigger>{item.q}</AccordionTrigger><AccordionContent>{item.a}</AccordionContent></AccordionItem>)}</Accordion></div></section>
 
       <section className="mono-final"><div className="mono-grid-field" aria-hidden="true" /><div className="mono-shell"><span>الفريق جاهز</span><h2>حوّل قائمة المهام<br />إلى نتائج مكتملة.</h2><Link to="/auth" search={{ mode: "signup" as const }}>ابدأ ١٤ يوماً مجاناً <ArrowLeft /></Link><p><Clock3 /> الإعداد الأول يستغرق دقائق</p></div></section>
       <SiteFooter />
