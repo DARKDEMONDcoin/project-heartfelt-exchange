@@ -28,7 +28,7 @@ import brainAsset from "@/assets/product/brain.webp.asset.json";
 import dashboardAsset from "@/assets/product/dashboard.webp.asset.json";
 import integrationsAsset from "@/assets/product/integrations.webp.asset.json";
 import reportsAsset from "@/assets/product/reports.webp.asset.json";
-import tourAsset from "@/assets/product/product-tour.webm.asset.json";
+import tourAsset from "@/assets/product/product-tour-clean.webm.asset.json";
 
 const productScenes = [
   { label: "لوحة العمل", title: "كل ما يجري الآن، أمامك.", detail: "المهام المنجزة، ما ينتظر موافقتك، وحالة تشغيل فريقك في شاشة واحدة.", href: "/app", image: dashboardAsset.url },
