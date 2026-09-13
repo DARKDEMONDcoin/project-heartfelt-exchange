@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import {
   ArrowLeft,
@@ -31,15 +31,6 @@ import integrationsAsset from "@/assets/product/integrations.webp.asset.json";
 import reportsAsset from "@/assets/product/reports.webp.asset.json";
 import tourAsset from "@/assets/product/product-tour.webm.asset.json";
 
-const workstream = [
-  { time: "٠٧:٠٠", id: "eva", task: "ملخص الصباح", detail: "٤ رسائل تحتاج قرارك، واجتماعان اليوم. رتّبت أمَل الباقي." },
-  { time: "٠٩:٣٠", id: "sam", task: "فرص المبيعات", detail: "جهّز سالم قائمة مطابقة ورسائل تواصل مخصصة لكل عميل." },
-  { time: "١٢:٠٠", id: "nour", task: "حزمة محتوى", detail: "سلّمت نور مقالاً محسّناً للبحث وحزمة نشر جاهزة." },
-  { time: "١٥:٢٠", id: "dana", task: "أصول الحملة", detail: "حوّلت دانة الفكرة إلى مقاسات متسقة مع هوية المشروع." },
-  { time: "١٨:٤٥", id: "sonny", task: "المنشور مجدول", detail: "راجع سِراج المحتوى وحدد التوقيت الأنسب للنشر." },
-  { time: "٢٣:٠٠", id: "adam", task: "تقرير اليوم", detail: "جمع آدم النتائج وحدد الخطوة الأهم لليوم التالي." },
-] as const;
-
 const productScenes = [
   { label: "لوحة العمل", title: "كل ما يجري الآن، أمامك.", detail: "المهام المنجزة، ما ينتظر موافقتك، وحالة تشغيل فريقك في شاشة واحدة.", href: "/app", image: dashboardAsset.url },
   { label: "الموافقات", title: "راجع العمل قبل نشره.", detail: "مخرجات سِراج الفعلية مرتبة للمراجعة والاعتماد، مع المنصة وموعد النشر.", href: "/app/approvals", image: approvalsAsset.url },
@@ -48,67 +39,6 @@ const productScenes = [
 ] as const;
 
 type DemoPhase = "idle" | "thinking" | "draft" | "approved";
-
-function EmployeeRail({ selected, onSelect }: { selected: number; onSelect: (index: number) => void }) {
-  return (
-    <div className="mono-employee-rail" aria-label="اختر موظفاً رقمياً">
-      {team.map((member, index) => (
-        <Button
-          key={member.id}
-          type="button"
-          variant="ghost"
-          className={selected === index ? "is-active" : ""}
-          onClick={() => onSelect(index)}
-          aria-pressed={selected === index}
-        >
-          <Portrait memberId={member.id} name={member.name} eager={index < 2} />
-          <span><strong>{member.name}</strong><small>{member.role}</small></span>
-          <i aria-hidden="true" />
-        </Button>
-      ))}
-    </div>
-  );
-}
-
-function LiveWorkspace({ compact = false }: { compact?: boolean }) {
-  const [selected, setSelected] = useState(0);
-  const [phase, setPhase] = useState<DemoPhase>("draft");
-  const member = team[selected];
-
-  if (!member) return null;
-
-  return (
-    <div className={`mono-workspace${compact ? " is-compact" : ""}`} aria-label="معاينة مساحة عمل سهل">
-      <header className="mono-window-bar">
-        <div className="mono-window-controls" aria-hidden="true"><i /><i /><i /></div>
-        <strong>مساحة عمل سهل</strong>
-        <span><i /> مباشر</span>
-      </header>
-      <div className="mono-workspace-grid">
-        <EmployeeRail selected={selected} onSelect={(index) => { setSelected(index); setPhase("draft"); }} />
-        <div className="mono-workspace-main">
-          <header>
-            <div><small>الموظف النشط</small><h3>{member.name}</h3></div>
-            <span>{member.metrics[0]?.v}<small>{member.metrics[0]?.k}</small></span>
-          </header>
-          <div className="mono-conversation">
-            <p className="is-owner">جهّز أهم مهمة اليوم بنفس نبرة علامتنا.</p>
-            <div className="is-employee">
-              <Portrait memberId={member.id} name={member.name} eager />
-              <p><strong>{member.tagline}</strong><span>{member.summary}</span></p>
-            </div>
-          </div>
-          <div className={`mono-deliverable phase-${phase}`}>
-            <div><Sparkles aria-hidden="true" /><span><small>{phase === "approved" ? "تم التنفيذ" : "جاهز للمراجعة"}</small><strong>{member.tasks[0]}</strong></span></div>
-            <Button type="button" onClick={() => setPhase("approved")} disabled={phase === "approved"}>
-              {phase === "approved" ? <><Check aria-hidden="true" /> تمت الموافقة</> : <>موافقة وتنفيذ <ChevronLeft aria-hidden="true" /></>}
-            </Button>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
 
 function SirajStudio() {
   const [prompt, setPrompt] = useState("اكتب منشوراً لإطلاق منتجنا الجديد بنبرة واثقة وبسيطة");
@@ -173,45 +103,7 @@ function SirajStudio() {
   );
 }
 
-function WorkflowHandoff() {
-  const steps = [
-    { id: "nour", label: "بحث وكتابة", result: "موجز المحتوى جاهز" },
-    { id: "dana", label: "تصميم الأصول", result: "٤ مقاسات جاهزة" },
-    { id: "sonny", label: "جدولة ونشر", result: "بانتظار الموافقة" },
-    { id: "adam", label: "قياس النتائج", result: "يبدأ بعد النشر" },
-  ];
-  const [active, setActive] = useState(2);
-
-  return (
-    <div className="mono-handoff">
-      <div className={`mono-handoff-line progress-${active}`} aria-hidden="true"><i /></div>
-      {steps.map((step, index) => {
-        const member = team.find((item) => item.id === step.id);
-        if (!member) return null;
-        return (
-          <Button key={step.id} type="button" variant="ghost" className={index <= active ? "is-complete" : ""} onClick={() => setActive(index)}>
-            <span className="mono-step-index">٠{index + 1}</span>
-            <Portrait memberId={member.id} name={member.name} />
-            <span><strong>{member.name}</strong><small>{step.label}</small><em>{index < active ? "مكتمل" : index === active ? step.result : "التالي"}</em></span>
-          </Button>
-        );
-      })}
-    </div>
-  );
-}
-
 export function EditorialHomepage() {
-  const [activeMoment, setActiveMoment] = useState(0);
-
-  useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const dayTimer = window.setInterval(() => setActiveMoment((value) => (value + 1) % workstream.length), 3000);
-    return () => window.clearInterval(dayTimer);
-  }, []);
-
-  const activeWork = workstream[activeMoment] ?? workstream[0];
-  const activeWorker = useMemo(() => team.find((member) => member.id === activeWork?.id) ?? team[0], [activeWork]);
-
   return (
     <div className="mono-home">
       <section className="mono-hero" aria-labelledby="home-title">
