@@ -45,6 +45,9 @@
   --color-jade: var(--jade);
   --color-jade-deep: var(--jade-deep);
   --color-amber: var(--amber);
+  --color-gold: var(--gold);
+  --color-gold-deep: var(--gold-deep);
+  --color-gold-soft: var(--gold-soft);
   --color-coral: var(--coral);
   --color-sky: var(--sky);
   --color-cream: var(--cream);
@@ -74,13 +77,16 @@
 :root {
   --radius: 1.15rem;
 
-  /* هوية سهل — كانفاس أبيض + حبر أسود + لمسة قرميدي واحدة (تحريرية عالية التباين) */
+  /* هوية سهل — كانفاس أبيض + حبر أسود + ذهب شامبين معدني */
   --cream: oklch(1 0 0); /* أبيض نقي */
   --ink: oklch(0.16 0.004 60); /* أسود حبري */
   --ink-soft: oklch(0.46 0.006 60);
-  --jade: oklch(0.487 0.135 38); /* قرميدي محروق */
-  --jade-deep: oklch(0.415 0.125 36);
-  --amber: oklch(0.62 0.11 74);
+  --gold: oklch(0.72 0.125 82);
+  --gold-deep: oklch(0.53 0.105 76);
+  --gold-soft: oklch(0.955 0.035 86);
+  --jade: var(--gold);
+  --jade-deep: var(--gold-deep);
+  --amber: oklch(0.79 0.13 78);
   --coral: oklch(0.58 0.17 22);
   --sky: oklch(0.445 0.058 179);
 
@@ -90,19 +96,19 @@
   --card-foreground: var(--ink);
   --popover: oklch(1 0 0);
   --popover-foreground: var(--ink);
-  --primary: var(--ink);
-  --primary-foreground: oklch(1 0 0);
+  --primary: var(--gold-deep);
+  --primary-foreground: oklch(0.985 0.005 84);
   --secondary: oklch(0.972 0.002 60);
   --secondary-foreground: var(--ink);
   --muted: oklch(0.968 0.002 60);
   --muted-foreground: oklch(0.5 0.006 60);
-  --accent: oklch(0.958 0.004 60);
+  --accent: var(--gold-soft);
   --accent-foreground: var(--ink);
   --destructive: var(--coral);
   --destructive-foreground: oklch(1 0 0);
   --border: oklch(0.16 0.004 60 / 0.12);
   --input: oklch(0.16 0.004 60 / 0.16);
-  --ring: var(--ink);
+  --ring: var(--gold-deep);
   --chart-1: var(--ink);
   --chart-2: var(--jade);
   --chart-3: var(--sky);
@@ -110,19 +116,14 @@
   --chart-5: oklch(0.62 0.006 60);
   --sidebar: oklch(0.99 0.001 60);
   --sidebar-foreground: var(--ink);
-  --sidebar-primary: var(--ink);
+  --sidebar-primary: var(--gold-deep);
   --sidebar-primary-foreground: oklch(1 0 0);
-  --sidebar-accent: oklch(0.962 0.002 60);
+  --sidebar-accent: var(--gold-soft);
   --sidebar-accent-foreground: var(--ink);
   --sidebar-border: oklch(0.16 0.004 60 / 0.1);
-  --sidebar-ring: var(--ink);
+  --sidebar-ring: var(--gold-deep);
 
-  --gradient-aurora: linear-gradient(
-    115deg,
-    oklch(0.24 0.006 60) 0%,
-    oklch(0.16 0.004 60) 55%,
-    oklch(0.32 0.02 40) 100%
-  );
+  --gradient-aurora: linear-gradient(115deg, var(--gold-deep) 0%, var(--gold) 48%, oklch(0.82 0.105 93) 100%);
   --gradient-ink: linear-gradient(160deg, oklch(0.995 0.001 60), oklch(0.965 0.002 60));
   --shadow-lift: 0 34px 80px -40px oklch(0.16 0.004 60 / 0.18);
   --shadow-card: 0 1px 2px oklch(0.16 0.004 60 / 0.06), 0 18px 40px -28px oklch(0.16 0.004 60 / 0.16);
@@ -130,10 +131,10 @@
   /* زجاج سهل — أبيض شفاف بحدود رمادية رقيقة */
   --glass-tint: oklch(1 0 0 / 0.68);
   --glass-tint-strong: oklch(1 0 0 / 0.85);
-  --glass-stroke: oklch(0.16 0.004 60 / 0.12);
+  --glass-stroke: oklch(0.53 0.105 76 / 0.2);
   --glass-edge: oklch(0.16 0.004 60 / 0.08);
   --glass-blur: 24px;
-  --glass-shadow: inset 0 1px 0 oklch(1 0 0 / 0.9), 0 26px 60px -40px oklch(0.16 0.004 60 / 0.28);
+  --glass-shadow: inset 0 1px 0 oklch(1 0 0 / 0.9), 0 26px 60px -40px oklch(0.53 0.105 76 / 0.25);
 }
 
 
