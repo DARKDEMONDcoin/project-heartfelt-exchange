@@ -632,25 +632,8 @@ function ChatPage() {
                 </span>
                 <p className="mt-4 font-display text-xl font-black">أهلاً، أنا {member.name}</p>
                 <p className="mt-1 text-sm text-ink-soft">{member.tagline}</p>
-                <p className="mt-5 text-[0.7rem] font-bold tracking-wide text-muted-foreground">
-                  ابدأ بواحدة من هذه
-                </p>
-                <div className="mt-2.5 flex flex-wrap justify-center gap-2">
-                  {(STARTERS[id] ?? []).map((s) => (
-                    <button
-                      key={s}
-                      type="button"
-                      onClick={() => submit(s)}
-                      disabled={!workspace || busy}
-                      className="group inline-flex items-center gap-1.5 rounded-full border border-border bg-background px-4 py-2 text-sm font-semibold transition-all hover:-translate-y-0.5 hover:border-primary/50 hover:shadow-card disabled:opacity-50"
-                    >
-                      {s}
-                      <ArrowUpLeft className="size-3.5 text-primary opacity-0 transition-all group-hover:opacity-100" />
-                    </button>
-                  ))}
-                </div>
-                <p className="mt-5 text-xs text-muted-foreground">
-                  أو اضغط «كل القدرات» بالأسفل لتنفيذ مهمة كاملة بنموذج جاهز.
+                <p className="mx-auto mt-5 max-w-md text-xs leading-6 text-muted-foreground">
+                  اختر من قدراتي في الشريط أعلاه، أو اكتب ما تحتاجه وسأتولى اختيار الأدوات المناسبة.
                 </p>
               </div>
             ) : null}
@@ -978,17 +961,6 @@ function ChatPage() {
                   .filter((i) => i.status === "connected")
                   .map((i) => i.provider)}
               />
-
-              <h2 className="mt-7 font-display font-black">ما يجيده</h2>
-
-              <ul className="mt-3 space-y-2">
-                {member.tasks.slice(0, 4).map((t) => (
-                  <li key={t} className="flex gap-2 text-sm text-ink-soft">
-                    <span className="mt-2 size-1.5 shrink-0 rounded-full bg-jade" />
-                    {t}
-                  </li>
-                ))}
-              </ul>
 
               <Link
                 to="/app/brain"
