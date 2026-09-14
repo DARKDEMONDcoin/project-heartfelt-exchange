@@ -8,7 +8,6 @@ import { AppShell } from "@/components/app/AppShell";
 import { AppIcon, appLabel } from "@/components/site/AppIcon";
 import { ConnectNow } from "@/components/app/ConnectNow";
 import { getMember } from "@/data/team";
-import { integrationStatusLabel } from "@/data/app";
 import { useBrainItems, useConversations, useCreateConversation, useDeleteConversation, useIntegrations, useMessages, useRenameConversation, useWorkspace } from "@/lib/data";
 import { SiteBadgeBar } from "@/components/app/SiteBadge";
 import { askEmployee, runSkill } from "@/lib/ai.functions";
@@ -28,7 +27,6 @@ import { MediaStudio, type Attachment, type ImageMode, type Aspect } from "@/com
 
 import { featuredSkillsFor, skillsFor, type Skill } from "@/data/skills";
 import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
 import { Message, MessageContent } from "@/components/ai-elements/message";
 import {
   PromptInput,
@@ -893,7 +891,7 @@ function ChatPage() {
                   </PromptInputButton>
                 </PromptInputTools>
                 <PromptInputSubmit
-                  status={busy ? "submitted" : undefined}
+                  {...(busy ? { status: "submitted" as const } : {})}
                   disabled={busy || !workspace || !draft.trim()}
                   aria-label="إرسال"
                   className="size-10 rounded-2xl"
@@ -973,39 +971,6 @@ function ChatPage() {
 
           {infoOpen ? (
             <div>
-              <p className="mt-1 text-sm text-muted-foreground">
-                حساب واحد لكل منصة داخل مساحة العمل.
-              </p>
-              <ul className="mt-4 space-y-2">
-                {owned.map((i) => (
-                  <li
-                    key={i.id}
-                    className="flex items-center gap-3 rounded-2xl border border-border/70 p-3"
-                  >
-                    <AppIcon name={i.provider} className="size-5 shrink-0" />
-                    <span className="min-w-0 flex-1">
-                      <span className="block truncate text-sm font-bold">
-                        {appLabel(i.provider)}
-                      </span>
-                      <span className="block truncate text-xs text-muted-foreground">
-                        {i.account ?? "لم يُربط بعد"}
-                      </span>
-                    </span>
-                    <span
-                      className={cn(
-                        "shrink-0 rounded-full px-2.5 py-1 text-[0.7rem] font-bold",
-                        i.status === "connected" && "bg-jade/12 text-jade-deep",
-                        i.status === "error" && "bg-coral/15 text-coral",
-                        i.status === "disconnected" && "bg-secondary text-muted-foreground",
-                      )}
-                    >
-                      {integrationStatusLabel[i.status as keyof typeof integrationStatusLabel] ??
-                        i.status}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-
               <ActionPanel
                 employeeId={id}
                 workspaceId={workspace?.id}

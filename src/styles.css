@@ -3626,13 +3626,61 @@ section:has(> .integration-grid-wave) {
   animation: sahl-gold-smoke-c 29s ease-in-out infinite alternate;
 }
 @keyframes sahl-gold-smoke-a {
-  to { transform: translate3d(17%, 11%, 0) rotate(8deg) scale(1.12); }
+  0% { opacity: .08; transform: translate3d(-8%, -5%, 0) rotate(-5deg) scale(.82); }
+  35% { opacity: .46; transform: translate3d(8%, 5%, 0) rotate(4deg) scale(1.08); }
+  70% { opacity: .18; transform: translate3d(21%, 13%, 0) rotate(10deg) scale(1.2); }
+  100% { opacity: .38; transform: translate3d(12%, 2%, 0) rotate(2deg) scale(.96); }
 }
 @keyframes sahl-gold-smoke-b {
-  to { transform: translate3d(-15%, 14%, 0) rotate(-10deg) scale(.92); }
+  0% { opacity: .06; transform: translate3d(12%, -7%, 0) rotate(5deg) scale(.88); }
+  40% { opacity: .28; transform: translate3d(-5%, 8%, 0) rotate(-4deg) scale(1.12); }
+  75% { opacity: .1; transform: translate3d(-20%, 16%, 0) rotate(-12deg) scale(.94); }
+  100% { opacity: .3; transform: translate3d(-9%, 3%, 0) rotate(3deg) scale(1.06); }
 }
 @keyframes sahl-gold-smoke-c {
-  to { transform: translate3d(-9%, -16%, 0) rotate(5deg) scale(1.08); }
+  0% { opacity: .05; transform: translate3d(8%, 14%, 0) rotate(-3deg) scale(.9); }
+  34% { opacity: .32; transform: translate3d(-5%, -4%, 0) rotate(5deg) scale(1.13); }
+  72% { opacity: .12; transform: translate3d(-16%, -18%, 0) rotate(9deg) scale(1.22); }
+  100% { opacity: .27; transform: translate3d(2%, -7%, 0) rotate(-2deg) scale(.98); }
+}
+
+/* مساحة الموظف: خدماته في سياق المحادثة، لا في التنقل العام. */
+.employee-command-deck {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid color-mix(in oklab, var(--primary) 17%, var(--border));
+  border-radius: 1.5rem;
+  padding: .85rem;
+  background:
+    linear-gradient(125deg, color-mix(in oklab, var(--gold-soft) 52%, transparent), transparent 48%),
+    color-mix(in oklab, var(--card) 88%, transparent);
+  box-shadow: 0 18px 45px -42px var(--gold-deep);
+  backdrop-filter: blur(18px);
+}
+.employee-command-deck::before {
+  content: "";
+  position: absolute;
+  inset: -6rem auto auto -5rem;
+  width: 13rem;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: color-mix(in oklab, var(--gold) 16%, transparent);
+  filter: blur(36px);
+  animation: employee-deck-glow 9s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+.employee-command-deck > * { position: relative; z-index: 1; }
+.employee-command-scroll {
+  cursor: grab;
+  scroll-snap-type: inline proximity;
+  overscroll-behavior-inline: contain;
+  touch-action: pan-x;
+  scroll-behavior: smooth;
+}
+.employee-command-scroll:active { cursor: grabbing; }
+.employee-command-scroll > * { scroll-snap-align: start; }
+@keyframes employee-deck-glow {
+  to { opacity: .25; transform: translate3d(6rem, 2rem, 0) scale(1.2); }
 }
 
 /* الصفحة الرئيسية: أبيض وحبر كقاعدة، والذهب هو الإشارة البصرية الأساسية. */
