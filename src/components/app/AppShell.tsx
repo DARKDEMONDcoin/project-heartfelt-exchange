@@ -43,10 +43,10 @@ function SidebarBody({ onNavigate }: { onNavigate?: () => void }) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
 
   return (
-    <div className="flex h-full flex-col gap-5 p-4 sm:p-5">
+    <div className="flex h-full flex-col gap-4 p-3">
       <Link
         to="/"
-        className="flex items-center gap-2 font-display text-xl font-black tracking-tight sm:text-2xl"
+        className="flex h-11 items-center gap-2 border-b border-border px-1 pb-3 font-display text-xl font-black"
       >
         <LogoMark className="size-8 sm:size-10" size={40} />
         سهل<span className="text-jade">.</span>
@@ -56,8 +56,10 @@ function SidebarBody({ onNavigate }: { onNavigate?: () => void }) {
 
       <div className="min-h-0 flex-1">
         <div className="mb-2 flex items-center justify-between px-2">
-          <p className="text-xs font-bold text-muted-foreground">فريقك</p>
-          <span className="text-[0.68rem] font-semibold text-primary">متاح الآن</span>
+          <p className="text-[0.68rem] font-bold text-muted-foreground">الموظفون</p>
+          <span className="rounded-full bg-primary/10 px-2 py-0.5 text-[0.62rem] font-bold text-primary">
+            6 متاحون
+          </span>
         </div>
         <div className="space-y-1.5 overflow-y-auto">
           {team.map((m) => (
@@ -67,11 +69,11 @@ function SidebarBody({ onNavigate }: { onNavigate?: () => void }) {
               params={{ id: m.id }}
               onClick={onNavigate}
               className={cn(
-                "group flex items-center gap-3 rounded-2xl border border-transparent px-2.5 py-2.5 text-sm transition-all hover:border-border hover:bg-background",
-                pathname === `/app/chat/${m.id}` && "border-primary/20 bg-primary/8 shadow-sm",
+                "group flex items-center gap-3 rounded-lg border border-transparent px-2.5 py-2 text-sm transition-all hover:bg-secondary/70",
+                pathname === `/app/chat/${m.id}` && "border-primary/20 bg-primary/10 shadow-sm",
               )}
             >
-              <span className="relative block size-10 shrink-0 overflow-hidden rounded-xl shadow-sm">
+              <span className="relative block size-10 shrink-0 overflow-hidden rounded-lg shadow-sm">
                 <Portrait memberId={m.id} name={m.name} className="size-full" />
                 <span className="absolute bottom-0 end-0 size-2.5 rounded-full border-2 border-card bg-primary" />
               </span>
@@ -230,7 +232,7 @@ export function AppShell({
         <i />
         <i />
       </div>
-      <aside className="sticky top-0 hidden h-screen w-72 shrink-0 self-start overflow-y-auto border-e border-border bg-card lg:block">
+      <aside className="sticky top-0 hidden h-screen w-64 shrink-0 self-start overflow-y-auto border-e border-border bg-card lg:block">
         <SidebarBody />
       </aside>
 
@@ -248,8 +250,8 @@ export function AppShell({
       ) : null}
 
       <div className="relative z-10 flex min-w-0 flex-1 flex-col">
-        <header className="sticky top-0 z-30 border-b border-border bg-background/85 backdrop-blur-xl">
-          <div className="flex items-center gap-2.5 px-3.5 py-3 sm:gap-3 sm:px-5 sm:py-4">
+        <header className="sticky top-0 z-30 border-b border-border bg-background/92 backdrop-blur-xl">
+          <div className="flex h-16 items-center gap-2.5 px-3.5 sm:gap-3 sm:px-5">
             <button
               className="grid size-10 shrink-0 place-items-center rounded-xl border border-border lg:hidden"
               onClick={() => setMobileOpen(true)}
@@ -258,9 +260,7 @@ export function AppShell({
               {mobileOpen ? <X className="size-5" /> : <Menu className="size-5" />}
             </button>
             <div className="min-w-0 flex-1">
-              <h1 className="truncate font-display text-base font-black sm:text-xl md:text-2xl">
-                {title}
-              </h1>
+              <h1 className="truncate font-display text-base font-black sm:text-lg">{title}</h1>
               {lead ? (
                 <p className="truncate text-xs text-muted-foreground sm:text-sm">{lead}</p>
               ) : null}
