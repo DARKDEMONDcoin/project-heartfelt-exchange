@@ -46,18 +46,16 @@ export function ActionPanel({ employeeId, workspaceId, connected }: Props) {
   if (!actions || actions.length === 0) return null;
 
   return (
-    <section className="mt-7">
-      <h2 className="font-display font-black">إجراءات ينفّذها فعلياً</h2>
-      <p className="mt-1 text-sm text-muted-foreground">
-        لا يُنفَّذ أي إجراء إلا باعتمادك في هذه اللحظة.
-      </p>
+    <section className="mt-5">
+      <h2 className="text-sm font-black">تنفيذ مباشر</h2>
+      <p className="mt-1 text-xs text-muted-foreground">يبدأ التنفيذ فقط بعد اعتمادك.</p>
 
       <ul className="mt-3 space-y-2">
         {actions.map((a) => {
           const ready = connected.includes(a.provider);
           const open = openId === a.id;
           return (
-            <li key={a.id} className="rounded-2xl border border-border/70">
+            <li key={a.id} className="rounded-lg border border-border/70">
               <button
                 type="button"
                 onClick={() => {
@@ -65,7 +63,7 @@ export function ActionPanel({ employeeId, workspaceId, connected }: Props) {
                   setValues({});
                   setOpenId(open ? null : a.id);
                 }}
-                className="flex w-full items-center gap-3 p-3 text-start"
+                className="flex w-full items-center gap-2.5 p-2.5 text-start"
               >
                 <AppIcon name={a.provider} className="size-5 shrink-0" />
                 <span className="min-w-0 flex-1">
@@ -74,7 +72,9 @@ export function ActionPanel({ employeeId, workspaceId, connected }: Props) {
                     {ready ? appLabel(a.provider) : `${appLabel(a.provider)} — غير مربوط`}
                   </span>
                 </span>
-                <Zap className={cn("size-4 shrink-0", ready ? "text-jade" : "text-muted-foreground")} />
+                <Zap
+                  className={cn("size-4 shrink-0", ready ? "text-jade" : "text-muted-foreground")}
+                />
               </button>
 
               {open ? (
@@ -94,9 +94,7 @@ export function ActionPanel({ employeeId, workspaceId, connected }: Props) {
                         dir="auto"
                         required={f.required}
                         value={values[f.name] ?? ""}
-                        onChange={(ev) =>
-                          setValues((v) => ({ ...v, [f.name]: ev.target.value }))
-                        }
+                        onChange={(ev) => setValues((v) => ({ ...v, [f.name]: ev.target.value }))}
                         className="mt-1 w-full rounded-xl border border-border bg-background px-3 py-2 text-sm outline-none focus:border-primary"
                       />
                     </label>

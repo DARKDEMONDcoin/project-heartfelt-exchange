@@ -12,7 +12,6 @@ import {
   PenLine,
   Plus,
   Trash2,
-  ChevronDown,
   History,
   X,
   ArrowUpLeft,
@@ -409,7 +408,6 @@ function ChatPage() {
     setVoiceHintHidden(true);
   };
 
-  const [infoOpen, setInfoOpen] = useState(false);
   const endRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const ask = useServerFn(askEmployee);
@@ -538,7 +536,6 @@ function ChatPage() {
           <button
             type="button"
             onClick={() => {
-              setInfoOpen(false);
               setShowSettings((v) => !v);
             }}
             className={cn(
@@ -564,26 +561,25 @@ function ChatPage() {
             <SiteBadgeBar
               website={(workspace as { website?: string | null } | undefined)?.website ?? null}
             />
-            <section className="employee-command-deck" aria-label={`قدرات وتكاملات ${member.name}`}>
-              <div className="flex items-center justify-between gap-3 px-1">
+            <section className="employee-workbench" aria-label={`قدرات ${member.name}`}>
+              <div className="employee-workbench-head">
                 <div className="flex min-w-0 items-center gap-3">
-                  <span className="relative block size-9 shrink-0 overflow-hidden rounded-lg">
+                  <span className="relative block size-11 shrink-0 overflow-hidden rounded-lg">
                     <Portrait memberId={member.id} name={member.name} className="size-full" />
                   </span>
                   <span className="min-w-0">
-                    <span className="block truncate text-xs font-black">
-                      مركز عمل {member.name}
-                    </span>
-                    <span className="block truncate text-[0.68rem] text-muted-foreground">
+                    <span className="block truncate text-sm font-black">{member.name}</span>
+                    <span className="block truncate text-xs text-muted-foreground">
                       {member.role}
                     </span>
                   </span>
                 </div>
                 <span className="inline-flex items-center gap-1.5 text-[0.68rem] font-bold text-primary">
-                  <span className="size-1.5 rounded-full bg-primary" /> جاهز للعمل
+                  <span className="size-1.5 rounded-full bg-primary" /> متصل الآن
                 </span>
               </div>
-              <div className="mt-2">
+              <div className="employee-workbench-section">
+                <p className="employee-workbench-label">ابدأ مهمة</p>
                 <SkillPalette
                   skills={employeeSkills}
                   quick={quickSkills}
@@ -595,35 +591,6 @@ function ChatPage() {
                   }}
                 />
               </div>
-              {owned.length ? (
-                <div
-                  className="employee-command-scroll no-scrollbar mt-2 flex gap-1.5 overflow-x-auto pb-1"
-                  onWheel={(event) => {
-                    if (Math.abs(event.deltaY) > Math.abs(event.deltaX))
-                      event.currentTarget.scrollLeft += event.deltaY;
-                  }}
-                >
-                  {owned.map((integration) => (
-                    <span
-                      key={integration.id}
-                      className="inline-flex shrink-0 items-center gap-2 rounded-full border border-border/70 bg-background/70 py-1.5 pe-3 ps-2 text-[0.7rem] font-bold"
-                    >
-                      <AppIcon name={integration.provider} className="size-4" />
-                      {appLabel(integration.provider)}
-                      <span
-                        className={cn(
-                          "size-1.5 rounded-full",
-                          integration.status === "connected"
-                            ? "bg-primary"
-                            : integration.status === "error"
-                              ? "bg-coral"
-                              : "bg-muted-foreground/40",
-                        )}
-                      />
-                    </span>
-                  ))}
-                </div>
-              ) : null}
             </section>
             {brainItems &&
             !hasVoiceGuide &&
@@ -665,16 +632,31 @@ function ChatPage() {
 
             {(messages ?? []).length === 0 && !pending ? (
               <div className="chat-empty-state animate-pop-in">
-                <span className="relative block size-14 shrink-0 overflow-hidden rounded-xl shadow-card">
-                  <Portrait memberId={member.id} name={member.name} className="size-full" eager />
-                </span>
-                <span className="min-w-0">
-                  <p className="font-display text-base font-black">جاهز يا مدير</p>
-                  <p className="mt-0.5 text-sm text-ink-soft">{member.tagline}</p>
-                  <p className="mt-2 text-xs leading-5 text-muted-foreground">
-                    اختر أمراً سريعاً أو اكتب المطلوب مباشرة.
+                <div>
+                  <p className="text-xs font-bold text-primary">جاهز للبدء</p>
+                  <p className="mt-1 font-display text-lg font-black">ماذا تريد أن ننجز اليوم؟</p>
+                  <p className="mt-1 max-w-md text-xs leading-5 text-muted-foreground">
+                    {member.tagline}
                   </p>
-                </span>
+                </div>
+                {owned.length ? (
+                  <div className="chat-apps-grid" aria-label="التطبيقات المتاحة">
+                    {owned.slice(0, 6).map((integration) => (
+                      <span key={integration.id} className="chat-app-item">
+                        <AppIcon name={integration.provider} className="size-5" />
+                        <span className="truncate">{appLabel(integration.provider)}</span>
+                        <span
+                          className={cn(
+                            "ms-auto size-1.5 shrink-0 rounded-full",
+                            integration.status === "connected"
+                              ? "bg-primary"
+                              : "bg-muted-foreground/40",
+                          )}
+                        />
+                      </span>
+                    ))}
+                  </div>
+                ) : null}
               </div>
             ) : null}
 
@@ -947,6 +929,30 @@ function ChatPage() {
             showSettings ? "block" : "hidden lg:block",
           )}
         >
+          {owned.length ? (
+            <section className="mb-5 border-b border-border pb-5">
+              <p className="text-[0.68rem] font-bold text-muted-foreground">الأدوات المتصلة</p>
+              <div className="mt-3 grid grid-cols-2 gap-2">
+                {owned.map((integration) => (
+                  <span
+                    key={integration.id}
+                    className="flex min-w-0 items-center gap-2 rounded-lg border border-border/70 p-2 text-xs font-bold"
+                  >
+                    <AppIcon name={integration.provider} className="size-5 shrink-0" />
+                    <span className="truncate">{appLabel(integration.provider)}</span>
+                    <span
+                      className={cn(
+                        "ms-auto size-1.5 shrink-0 rounded-full",
+                        integration.status === "connected"
+                          ? "bg-primary"
+                          : "bg-muted-foreground/40",
+                      )}
+                    />
+                  </span>
+                ))}
+              </div>
+            </section>
+          ) : null}
           <div className="mb-5 border-b border-border pb-4">
             <div className="flex items-center justify-between gap-3">
               <h2 className="font-display font-black">المحادثات</h2>
@@ -1008,36 +1014,19 @@ function ChatPage() {
               ))}
             </div>
           </div>
-          <button
-            type="button"
-            onClick={() => setInfoOpen((v) => !v)}
-            aria-expanded={infoOpen}
-            className="flex w-full items-center justify-between gap-3 rounded-2xl px-1 py-1 text-start"
+          <ActionPanel
+            employeeId={id}
+            workspaceId={workspace?.id}
+            connected={(integrations ?? [])
+              .filter((i) => i.status === "connected")
+              .map((i) => i.provider)}
+          />
+          <Link
+            to="/app/brain"
+            className="mt-5 block rounded-lg bg-secondary/60 p-3 text-xs font-semibold transition-colors hover:bg-secondary"
           >
-            <span className="font-display font-black">تفاصيل {member.name}</span>
-            <ChevronDown
-              className={cn("size-4 shrink-0 transition-transform", infoOpen && "rotate-180")}
-            />
-          </button>
-
-          {infoOpen ? (
-            <div>
-              <ActionPanel
-                employeeId={id}
-                workspaceId={workspace?.id}
-                connected={(integrations ?? [])
-                  .filter((i) => i.status === "connected")
-                  .map((i) => i.provider)}
-              />
-
-              <Link
-                to="/app/brain"
-                className="mt-7 block rounded-2xl bg-secondary/60 p-4 text-sm font-semibold transition-colors hover:bg-secondary"
-              >
-                يقرأ من عقل العلامة — أضف مستندات ليصبح أدق ↖
-              </Link>
-            </div>
-          ) : null}
+            عقل العلامة ومصادر المعرفة ↖
+          </Link>
         </aside>
       </div>
     </AppShell>
