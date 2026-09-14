@@ -2,13 +2,12 @@ import { useEffect, useRef, useState } from "react";
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
-import { Send, Loader2, Check, Copy, Share2, RefreshCw, Download, PenLine, Plus, Trash2, ChevronDown, History, X, ArrowUpLeft, Fingerprint } from "lucide-react";
+import { Loader2, Check, Copy, Share2, RefreshCw, Download, PenLine, Plus, Trash2, ChevronDown, History, X, ArrowUpLeft, Fingerprint, SlidersHorizontal } from "lucide-react";
 
 import { AppShell } from "@/components/app/AppShell";
 import { AppIcon, appLabel } from "@/components/site/AppIcon";
 import { ConnectNow } from "@/components/app/ConnectNow";
 import { getMember } from "@/data/team";
-import { integrationStatusLabel } from "@/data/app";
 import { useBrainItems, useConversations, useCreateConversation, useDeleteConversation, useIntegrations, useMessages, useRenameConversation, useWorkspace } from "@/lib/data";
 import { SiteBadgeBar } from "@/components/app/SiteBadge";
 import { askEmployee, runSkill } from "@/lib/ai.functions";
@@ -28,40 +27,15 @@ import { MediaStudio, type Attachment, type ImageMode, type Aspect } from "@/com
 
 import { featuredSkillsFor, skillsFor, type Skill } from "@/data/skills";
 import { cn } from "@/lib/utils";
-
-/** اقتراحات بداية سريعة لكل موظف — تُرسل كرسالة مباشرة. */
-const STARTERS: Record<string, string[]> = {
-  nour: [
-    "اقترح 10 عناوين مقالات لمتجري",
-    "اكتب وصف ميتا لصفحة خدماتي",
-    "ما أهم 5 كلمات مفتاحية في مجالي؟",
-  ],
-  sonny: [
-    "اكتب 3 أفكار منشورات لهذا الأسبوع",
-    "منشور إطلاق منتج جديد بلهجة مصرية",
-    "اقترح هاشتاقات لمقهى في الرياض",
-  ],
-  eva: [
-    "رد على عميل يشتكي من تأخر الشحن",
-    "صِغ رسالة ترحيب للعملاء الجدد",
-    "رتّب لي أولويات بريد اليوم",
-  ],
-  sam: [
-    "اكتب رسالة متابعة لعميل لم يرد",
-    "حلّل هذا العرض واقترح تحسينه",
-    "ما أفضل وقت للمتابعة مع العملاء؟",
-  ],
-  dana: [
-    "صمّم فكرة بوست لعرض الجمعة البيضاء",
-    "اقترح لوحة ألوان لعلامتي",
-    "فكرة غلاف لحساب إنستجرام",
-  ],
-  adam: [
-    "لخّص أداء الأسبوع الماضي",
-    "ما المقياس الأهم لمتجري الآن؟",
-    "جهّز تقريراً شهرياً مختصراً",
-  ],
-};
+import { Message, MessageContent } from "@/components/ai-elements/message";
+import {
+  PromptInput,
+  PromptInputButton,
+  PromptInputFooter,
+  PromptInputSubmit,
+  PromptInputTextarea,
+  PromptInputTools,
+} from "@/components/ai-elements/prompt-input";
 
 /** يقسّم الرسائل حسب اليوم لعرض فواصل تاريخ أنيقة. */
 function dayLabel(iso: string) {
@@ -379,6 +353,7 @@ function ChatPage() {
   }, [workspace, conversations, createConversation]);
 
   const [showSettings, setShowSettings] = useState(false);
+  const [toolsOpen, setToolsOpen] = useState(false);
   /** تلميح صوت العلامة اختياري تماماً — يُخفى نهائياً بضغطة واحدة. */
   const [voiceHintHidden, setVoiceHintHidden] = useState(true);
   useEffect(() => {
@@ -537,6 +512,48 @@ function ChatPage() {
           />
           <div className="relative mx-auto w-full max-w-3xl flex-1 space-y-4 px-4 py-5 sm:px-5 sm:py-6">
             <SiteBadgeBar website={(workspace as { website?: string | null } | undefined)?.website ?? null} />
+             <section className="employee-command-deck" aria-label={`قدرات وتكاملات ${member.name}`}>
+               <div className="flex items-center justify-between gap-3 px-1">
+                 <div>
+                   <p className="text-xs font-black">مساحة {member.name}</p>
+                   <p className="text-[0.68rem] text-muted-foreground">اختر مهمة أو اكتب طلبك مباشرة</p>
+                 </div>
+                 <span className="inline-flex items-center gap-1.5 text-[0.68rem] font-bold text-primary">
+                   <span className="size-1.5 rounded-full bg-primary" /> جاهز للعمل
+                 </span>
+               </div>
+               <div className="mt-2.5">
+                 <SkillPalette
+                   skills={employeeSkills}
+                   quick={quickSkills}
+                   disabled={!workspace}
+                   pending={busy}
+                   onRun={(skill, values) => {
+                     setError(null);
+                     skillRun.mutate({ skill, values });
+                   }}
+                 />
+               </div>
+               {owned.length ? (
+                 <div
+                   className="employee-command-scroll no-scrollbar mt-2 flex gap-1.5 overflow-x-auto pb-1"
+                   onWheel={(event) => {
+                     if (Math.abs(event.deltaY) > Math.abs(event.deltaX)) event.currentTarget.scrollLeft += event.deltaY;
+                   }}
+                 >
+                   {owned.map((integration) => (
+                     <span
+                       key={integration.id}
+                       className="inline-flex shrink-0 items-center gap-2 rounded-full border border-border/70 bg-background/70 py-1.5 pe-3 ps-2 text-[0.7rem] font-bold"
+                     >
+                       <AppIcon name={integration.provider} className="size-4" />
+                       {appLabel(integration.provider)}
+                       <span className={cn("size-1.5 rounded-full", integration.status === "connected" ? "bg-primary" : integration.status === "error" ? "bg-coral" : "bg-muted-foreground/40")} />
+                     </span>
+                   ))}
+                 </div>
+               ) : null}
+             </section>
             {brainItems && !hasVoiceGuide && !voiceHintHidden && ["sonny", "nour", "eva", "dana"].includes(id) ? (
               <div className="group flex items-center gap-3 rounded-2xl border border-dashed border-border bg-secondary/40 px-4 py-3 text-sm">
                 <span
@@ -581,25 +598,8 @@ function ChatPage() {
                 </span>
                 <p className="mt-4 font-display text-xl font-black">أهلاً، أنا {member.name}</p>
                 <p className="mt-1 text-sm text-ink-soft">{member.tagline}</p>
-                <p className="mt-5 text-[0.7rem] font-bold tracking-wide text-muted-foreground">
-                  ابدأ بواحدة من هذه
-                </p>
-                <div className="mt-2.5 flex flex-wrap justify-center gap-2">
-                  {(STARTERS[id] ?? []).map((s) => (
-                    <button
-                      key={s}
-                      type="button"
-                      onClick={() => submit(s)}
-                      disabled={!workspace || busy}
-                      className="group inline-flex items-center gap-1.5 rounded-full border border-border bg-background px-4 py-2 text-sm font-semibold transition-all hover:-translate-y-0.5 hover:border-primary/50 hover:shadow-card disabled:opacity-50"
-                    >
-                      {s}
-                      <ArrowUpLeft className="size-3.5 text-primary opacity-0 transition-all group-hover:opacity-100" />
-                    </button>
-                  ))}
-                </div>
-                <p className="mt-5 text-xs text-muted-foreground">
-                  أو اضغط «كل القدرات» بالأسفل لتنفيذ مهمة كاملة بنموذج جاهز.
+                <p className="mx-auto mt-5 max-w-md text-xs leading-6 text-muted-foreground">
+                  اختر من قدراتي في الشريط أعلاه، أو اكتب ما تحتاجه وسأتولى اختيار الأدوات المناسبة.
                 </p>
               </div>
             ) : null}
@@ -618,18 +618,14 @@ function ChatPage() {
                       <span className="h-px flex-1 bg-border" />
                     </div>
                   ) : null}
-                  <div
-                    className={cn(
-                      "group flex gap-3 animate-bubble-in",
-                      isUser ? "justify-start" : "justify-end",
-                    )}
-                  >
+                  <Message from={isUser ? "user" : "assistant"} className={cn("animate-bubble-in", isUser ? "ms-0 me-auto" : "ms-auto me-0")}>
+                  <div className={cn("group flex gap-3", isUser ? "justify-start" : "justify-end")}>
                     {!isUser ? (
                       <span className="relative order-2 mt-1 block size-9 shrink-0 overflow-hidden rounded-xl shadow-sm">
                         <Portrait memberId={member.id} name={member.name} className="size-full" />
                       </span>
                     ) : null}
-                    <div
+                    <MessageContent
                       className={cn(
                         "min-w-0 max-w-[min(46rem,88%)] rounded-3xl px-5 py-3.5 leading-relaxed",
                         isUser
@@ -701,8 +697,9 @@ function ChatPage() {
                           </span>
                         ) : null}
                       </div>
-                    </div>
+                    </MessageContent>
                   </div>
+                  </Message>
                 </div>
               );
             })}
@@ -786,31 +783,20 @@ function ChatPage() {
           </div>
 
           <div className="pointer-events-none sticky bottom-0 z-20 p-3 sm:p-4">
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                submit(draft);
-              }}
+            <PromptInput
+              onSubmit={(message) => submit(message.text || draft)}
               className="chat-composer pointer-events-auto mx-auto max-w-3xl rounded-3xl border border-border/70 bg-card/70 p-2 shadow-lift backdrop-blur-2xl transition-all focus-within:border-primary focus-within:bg-card/90 focus-within:ring-4 focus-within:ring-primary/10"
             >
-
-              <textarea
+              <PromptInputTextarea
                 ref={inputRef}
                 value={draft}
-                rows={1}
                 onChange={(e) => setDraft(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" && !e.shiftKey) {
-                    e.preventDefault();
-                    submit(draft);
-                  }
-                }}
                 placeholder={`اكتب طلبك لـ${member.name}…`}
                 dir="auto"
-                className="max-h-40 min-h-11 w-full resize-none bg-transparent px-3 py-2.5 outline-none placeholder:text-muted-foreground/80"
+                className="max-h-40 min-h-12 bg-transparent px-3 py-3 placeholder:text-muted-foreground/80"
               />
-              <div className="flex items-start gap-2 px-1 pb-0.5">
-                <div className="flex min-w-0 flex-1 flex-wrap items-center gap-2">
+              {toolsOpen ? (
+                <div className="animate-fade-in border-t border-border/60 px-2 py-2">
                   <MediaStudio
                     workspaceId={workspace?.id}
                     attachments={attachments}
@@ -823,7 +809,7 @@ function ChatPage() {
                     onAspectChange={setAspect}
                     disabled={busy}
                   />
-                  <label className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-2.5 py-1.5 text-[11px] font-bold text-muted-foreground">
+                  <label className="mt-2 inline-flex items-center gap-1.5 rounded-full border border-border bg-card/60 px-2.5 py-1.5 text-[11px] font-bold text-muted-foreground">
                     الطول
                     <select
                       value={postLength}
@@ -838,35 +824,29 @@ function ChatPage() {
                       <option value="long">مطوّل</option>
                     </select>
                   </label>
-
-                  <SkillPalette
-                    skills={employeeSkills}
-                    quick={quickSkills}
-                    hideQuick={(messages ?? []).length > 0 || Boolean(pending)}
-                    disabled={!workspace}
-                    pending={busy}
-                    onRun={(skill, values) => {
-                      setError(null);
-                      skillRun.mutate({ skill, values });
-                    }}
-                  />
                 </div>
-                <button
-                  type="submit"
+              ) : null}
+              <PromptInputFooter>
+                <PromptInputTools>
+                  <PromptInputButton
+                    type="button"
+                    onClick={() => setToolsOpen((value) => !value)}
+                    aria-expanded={toolsOpen}
+                    aria-label="أدوات الطلب"
+                    tooltip="الوسائط وإعدادات الطلب"
+                    className={cn("size-10 rounded-2xl", toolsOpen && "bg-primary/10 text-primary")}
+                  >
+                    <SlidersHorizontal className="size-4.5" />
+                  </PromptInputButton>
+                </PromptInputTools>
+                <PromptInputSubmit
+                  {...(busy ? { status: "submitted" as const } : {})}
                   disabled={busy || !workspace || !draft.trim()}
-                  className="grid size-10 shrink-0 place-items-center rounded-2xl bg-foreground text-background transition-all hover:-translate-y-0.5 hover:shadow-lift disabled:opacity-40 disabled:hover:translate-y-0 disabled:hover:shadow-none"
                   aria-label="إرسال"
-                >
-                  {busy ? (
-                    <Loader2 className="size-4.5 animate-spin" />
-                  ) : (
-                    <Send className="size-4.5 -scale-x-100" />
-                  )}
-                </button>
-              </div>
-
-
-            </form>
+                  className="size-10 rounded-2xl"
+                />
+              </PromptInputFooter>
+            </PromptInput>
           </div>
         </div>
 
@@ -940,39 +920,6 @@ function ChatPage() {
 
           {infoOpen ? (
             <div>
-              <p className="mt-1 text-sm text-muted-foreground">
-                حساب واحد لكل منصة داخل مساحة العمل.
-              </p>
-              <ul className="mt-4 space-y-2">
-                {owned.map((i) => (
-                  <li
-                    key={i.id}
-                    className="flex items-center gap-3 rounded-2xl border border-border/70 p-3"
-                  >
-                    <AppIcon name={i.provider} className="size-5 shrink-0" />
-                    <span className="min-w-0 flex-1">
-                      <span className="block truncate text-sm font-bold">
-                        {appLabel(i.provider)}
-                      </span>
-                      <span className="block truncate text-xs text-muted-foreground">
-                        {i.account ?? "لم يُربط بعد"}
-                      </span>
-                    </span>
-                    <span
-                      className={cn(
-                        "shrink-0 rounded-full px-2.5 py-1 text-[0.7rem] font-bold",
-                        i.status === "connected" && "bg-jade/12 text-jade-deep",
-                        i.status === "error" && "bg-coral/15 text-coral",
-                        i.status === "disconnected" && "bg-secondary text-muted-foreground",
-                      )}
-                    >
-                      {integrationStatusLabel[i.status as keyof typeof integrationStatusLabel] ??
-                        i.status}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-
               <ActionPanel
                 employeeId={id}
                 workspaceId={workspace?.id}
@@ -980,17 +927,6 @@ function ChatPage() {
                   .filter((i) => i.status === "connected")
                   .map((i) => i.provider)}
               />
-
-              <h2 className="mt-7 font-display font-black">ما يجيده</h2>
-
-              <ul className="mt-3 space-y-2">
-                {member.tasks.slice(0, 4).map((t) => (
-                  <li key={t} className="flex gap-2 text-sm text-ink-soft">
-                    <span className="mt-2 size-1.5 shrink-0 rounded-full bg-jade" />
-                    {t}
-                  </li>
-                ))}
-              </ul>
 
               <Link
                 to="/app/brain"
