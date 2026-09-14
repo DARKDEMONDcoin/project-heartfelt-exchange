@@ -102,7 +102,7 @@ function SidebarBody({ onNavigate }: { onNavigate?: () => void }) {
         onClick={onNavigate}
         className={cn(
           "flex items-center gap-3 rounded-2xl px-3.5 py-2.5 text-sm font-bold transition-colors",
-          active ? "bg-foreground text-background" : "text-ink-soft hover:bg-secondary",
+          active ? "bg-primary text-primary-foreground shadow-sm" : "text-ink-soft hover:bg-accent",
         )}
       >
         <item.icon className="size-4.5 shrink-0" strokeWidth={2.2} />
@@ -111,7 +111,7 @@ function SidebarBody({ onNavigate }: { onNavigate?: () => void }) {
           <span
             className={cn(
               "rounded-full px-2 py-0.5 text-[0.7rem] font-black",
-              active ? "bg-background/20" : "bg-coral/15 text-coral",
+              active ? "bg-primary-foreground/20" : "bg-coral/15 text-coral",
             )}
           >
             {badge}
@@ -173,7 +173,7 @@ function SidebarBody({ onNavigate }: { onNavigate?: () => void }) {
 
       <Link
         to="/pricing"
-        className="mt-auto block rounded-xl bg-foreground py-2 text-center text-xs font-bold text-background"
+        className="mt-auto block rounded-xl bg-primary py-2 text-center text-xs font-bold text-primary-foreground shadow-sm transition-transform hover:-translate-y-0.5"
       >
         زد ساعات فريقك
       </Link>
@@ -325,7 +325,8 @@ export function AppShell({
   const { data: profile } = useProfile();
 
   return (
-    <div className="flex min-h-screen bg-background">
+    <div className="app-shell flex min-h-screen bg-background">
+      <div className="sahl-smoke sahl-smoke-app" aria-hidden="true"><i /><i /><i /></div>
       <aside className="sticky top-0 hidden h-screen w-72 shrink-0 self-start overflow-y-auto border-e border-border bg-card lg:block">
         <SidebarBody />
       </aside>
@@ -343,7 +344,7 @@ export function AppShell({
         </div>
       ) : null}
 
-      <div className="flex min-w-0 flex-1 flex-col">
+      <div className="relative z-10 flex min-w-0 flex-1 flex-col">
         <header className="sticky top-0 z-30 border-b border-border bg-background/85 backdrop-blur-xl">
           <div className="flex items-center gap-2.5 px-3.5 py-3 sm:gap-3 sm:px-5 sm:py-4">
             <button

@@ -111,6 +111,7 @@ export function EditorialHomepage() {
   return (
     <div className="mono-home">
       <section className="mono-hero" aria-labelledby="home-title">
+        <div className="sahl-smoke sahl-smoke-hero" aria-hidden="true"><i /><i /><i /></div>
         <div className="mono-grid-field" aria-hidden="true" />
         <div className="mono-shell mono-hero-grid">
           <div className="mono-hero-copy">
@@ -222,7 +223,7 @@ export function EditorialHomepage() {
 
       <section className="mono-faq" id="faq"><div className="mono-shell mono-faq-layout"><header className="mono-section-head"><span>٠٩ — قبل أن تبدأ</span><h2>إجابات واضحة.</h2><p>كل ما تحتاج معرفته قبل توظيف فريقك الرقمي.</p></header><Accordion type="single" collapsible>{faqs.map((item, index) => <AccordionItem key={item.q} value={`faq-${index}`}><AccordionTrigger>{item.q}</AccordionTrigger><AccordionContent>{item.a}</AccordionContent></AccordionItem>)}</Accordion></div></section>
 
-      <section className="mono-final"><div className="mono-grid-field" aria-hidden="true" /><div className="mono-shell"><span>الفريق جاهز</span><h2>حوّل قائمة المهام<br />إلى نتائج مكتملة.</h2><Link to="/auth" search={{ mode: "signup" as const }}>ابدأ ١٤ يوماً مجاناً <ArrowLeft /></Link><p><Clock3 /> الإعداد الأول يستغرق دقائق</p></div></section>
+      <section className="mono-final"><div className="sahl-smoke sahl-smoke-final" aria-hidden="true"><i /><i /><i /></div><div className="mono-grid-field" aria-hidden="true" /><div className="mono-shell"><span>الفريق جاهز</span><h2>حوّل قائمة المهام<br />إلى نتائج مكتملة.</h2><Link to="/auth" search={{ mode: "signup" as const }}>ابدأ ١٤ يوماً مجاناً <ArrowLeft /></Link><p><Clock3 /> الإعداد الأول يستغرق دقائق</p></div></section>
       <SiteFooter />
     </div>
   );

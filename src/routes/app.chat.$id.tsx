@@ -530,7 +530,7 @@ function ChatPage() {
 
     >
       <div className={cn("grid", showSettings && "lg:grid-cols-[minmax(0,1fr)_20rem]")}>
-        <div className="relative flex min-h-[calc(100dvh-5.3rem)] min-w-0 flex-col">
+        <div className="chat-stage relative flex min-h-[calc(100dvh-5.3rem)] min-w-0 flex-col">
           <div
             aria-hidden
             className="pointer-events-none absolute inset-x-0 top-0 h-56 bg-[radial-gradient(60%_100%_at_50%_0%,color-mix(in_oklab,var(--primary)_9%,transparent),transparent)]"
@@ -791,7 +791,7 @@ function ChatPage() {
                 e.preventDefault();
                 submit(draft);
               }}
-              className="pointer-events-auto mx-auto max-w-3xl rounded-3xl border border-border/70 bg-card/70 p-2 shadow-lift backdrop-blur-2xl transition-all focus-within:border-primary focus-within:bg-card/90 focus-within:ring-4 focus-within:ring-primary/10"
+              className="chat-composer pointer-events-auto mx-auto max-w-3xl rounded-3xl border border-border/70 bg-card/70 p-2 shadow-lift backdrop-blur-2xl transition-all focus-within:border-primary focus-within:bg-card/90 focus-within:ring-4 focus-within:ring-primary/10"
             >
 
               <textarea

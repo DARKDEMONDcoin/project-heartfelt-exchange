@@ -18,14 +18,15 @@ export function PageHero({
 }) {
   return (
     <section className="relative overflow-hidden pt-32 pb-16 md:pt-40 md:pb-20">
+      <div className="sahl-smoke sahl-smoke-page" aria-hidden="true"><i /><i /><i /></div>
       <div
         aria-hidden
-        className="absolute inset-0"
+        className="absolute inset-0 opacity-90"
         style={{ backgroundImage: "var(--gradient-ink)" }}
       />
       <div
         aria-hidden
-        className="absolute -top-1/2 -left-1/4 h-[140%] w-[80%] opacity-45 blur-3xl"
+        className="absolute -top-1/2 -left-1/4 h-[140%] w-[80%] opacity-25 blur-3xl"
         style={{
           backgroundImage: "var(--gradient-aurora)",
           backgroundSize: "200% 200%",
