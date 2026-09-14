@@ -921,6 +921,20 @@ function ChatPage() {
             showSettings ? "block" : "hidden lg:block",
           )}
         >
+          {owned.length ? (
+            <section className="mb-5 border-b border-border pb-5">
+              <p className="text-[0.68rem] font-bold text-muted-foreground">الأدوات المتصلة</p>
+              <div className="mt-3 grid grid-cols-2 gap-2">
+                {owned.map((integration) => (
+                  <span key={integration.id} className="flex min-w-0 items-center gap-2 rounded-lg border border-border/70 p-2 text-xs font-bold">
+                    <AppIcon name={integration.provider} className="size-5 shrink-0" />
+                    <span className="truncate">{appLabel(integration.provider)}</span>
+                    <span className={cn("ms-auto size-1.5 shrink-0 rounded-full", integration.status === "connected" ? "bg-primary" : "bg-muted-foreground/40")} />
+                  </span>
+                ))}
+              </div>
+            </section>
+          ) : null}
           <div className="mb-5 border-b border-border pb-4">
             <div className="flex items-center justify-between gap-3">
               <h2 className="font-display font-black">المحادثات</h2>
@@ -982,36 +996,14 @@ function ChatPage() {
               ))}
             </div>
           </div>
-          <button
-            type="button"
-            onClick={() => setInfoOpen((v) => !v)}
-            aria-expanded={infoOpen}
-            className="flex w-full items-center justify-between gap-3 rounded-2xl px-1 py-1 text-start"
-          >
-            <span className="font-display font-black">تفاصيل {member.name}</span>
-            <ChevronDown
-              className={cn("size-4 shrink-0 transition-transform", infoOpen && "rotate-180")}
-            />
-          </button>
-
-          {infoOpen ? (
-            <div>
-              <ActionPanel
-                employeeId={id}
-                workspaceId={workspace?.id}
-                connected={(integrations ?? [])
-                  .filter((i) => i.status === "connected")
-                  .map((i) => i.provider)}
-              />
-
-              <Link
-                to="/app/brain"
-                className="mt-7 block rounded-2xl bg-secondary/60 p-4 text-sm font-semibold transition-colors hover:bg-secondary"
-              >
-                يقرأ من عقل العلامة — أضف مستندات ليصبح أدق ↖
-              </Link>
-            </div>
-          ) : null}
+          <ActionPanel
+            employeeId={id}
+            workspaceId={workspace?.id}
+            connected={(integrations ?? []).filter((i) => i.status === "connected").map((i) => i.provider)}
+          />
+          <Link to="/app/brain" className="mt-5 block rounded-lg bg-secondary/60 p-3 text-xs font-semibold transition-colors hover:bg-secondary">
+            عقل العلامة ومصادر المعرفة ↖
+          </Link>
         </aside>
       </div>
     </AppShell>
