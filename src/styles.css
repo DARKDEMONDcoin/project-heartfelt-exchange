@@ -124,9 +124,9 @@
   --sidebar-ring: var(--gold-deep);
 
   --gradient-aurora: linear-gradient(115deg, var(--gold-deep) 0%, var(--gold) 48%, oklch(0.82 0.105 93) 100%);
-  --gradient-ink: linear-gradient(160deg, oklch(0.995 0.001 60), oklch(0.965 0.002 60));
-  --shadow-lift: 0 34px 80px -40px oklch(0.16 0.004 60 / 0.18);
-  --shadow-card: 0 1px 2px oklch(0.16 0.004 60 / 0.06), 0 18px 40px -28px oklch(0.16 0.004 60 / 0.16);
+  --gradient-ink: linear-gradient(150deg, oklch(0.13 0.012 70), oklch(0.22 0.045 70) 62%, oklch(0.34 0.085 76));
+  --shadow-lift: 0 34px 80px -40px oklch(0.53 0.105 76 / 0.3);
+  --shadow-card: 0 1px 2px oklch(0.16 0.004 60 / 0.06), 0 18px 40px -28px oklch(0.53 0.105 76 / 0.24);
 
   /* زجاج سهل — أبيض شفاف بحدود رمادية رقيقة */
   --glass-tint: oklch(1 0 0 / 0.68);
