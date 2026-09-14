@@ -554,29 +554,32 @@ function ChatPage() {
         </>
       }
     >
-      <div className={cn("grid", showSettings && "lg:grid-cols-[minmax(0,1fr)_20rem]")}>
-        <div className="chat-stage relative flex min-h-[calc(100dvh-5.3rem)] min-w-0 flex-col">
+      <div className="chat-command-layout">
+        <div className="chat-stage relative flex min-h-[calc(100dvh-4rem)] min-w-0 flex-col">
           <div
             aria-hidden
             className="pointer-events-none absolute inset-x-0 top-0 h-56 bg-[radial-gradient(60%_100%_at_50%_0%,color-mix(in_oklab,var(--primary)_9%,transparent),transparent)]"
           />
-          <div className="relative mx-auto w-full max-w-3xl flex-1 space-y-4 px-4 py-5 sm:px-5 sm:py-6">
+          <div className="relative mx-auto flex w-full max-w-5xl flex-1 flex-col space-y-4 px-4 py-4 sm:px-6">
             <SiteBadgeBar
               website={(workspace as { website?: string | null } | undefined)?.website ?? null}
             />
             <section className="employee-command-deck" aria-label={`قدرات وتكاملات ${member.name}`}>
               <div className="flex items-center justify-between gap-3 px-1">
-                <div>
-                  <p className="text-xs font-black">مساحة {member.name}</p>
-                  <p className="text-[0.68rem] text-muted-foreground">
-                    اختر مهمة أو اكتب طلبك مباشرة
-                  </p>
+                <div className="flex min-w-0 items-center gap-3">
+                  <span className="relative block size-9 shrink-0 overflow-hidden rounded-lg">
+                    <Portrait memberId={member.id} name={member.name} className="size-full" />
+                  </span>
+                  <span className="min-w-0">
+                    <span className="block truncate text-xs font-black">مركز عمل {member.name}</span>
+                    <span className="block truncate text-[0.68rem] text-muted-foreground">{member.role}</span>
+                  </span>
                 </div>
                 <span className="inline-flex items-center gap-1.5 text-[0.68rem] font-bold text-primary">
                   <span className="size-1.5 rounded-full bg-primary" /> جاهز للعمل
                 </span>
               </div>
-              <div className="mt-2.5">
+              <div className="mt-2">
                 <SkillPalette
                   skills={employeeSkills}
                   quick={quickSkills}
@@ -657,18 +660,15 @@ function ChatPage() {
             ) : null}
 
             {(messages ?? []).length === 0 && !pending ? (
-              <div className="animate-pop-in rounded-3xl border border-border bg-card p-8 text-center shadow-card">
-                <span className="relative mx-auto block size-20 rounded-3xl">
-                  <span className="absolute inset-0 rounded-3xl animate-pulse-ring" />
-                  <span className="relative block size-full overflow-hidden rounded-3xl shadow-card">
-                    <Portrait memberId={member.id} name={member.name} className="size-full" eager />
-                  </span>
+              <div className="chat-empty-state animate-pop-in">
+                <span className="relative block size-14 shrink-0 overflow-hidden rounded-xl shadow-card">
+                  <Portrait memberId={member.id} name={member.name} className="size-full" eager />
                 </span>
-                <p className="mt-4 font-display text-xl font-black">أهلاً، أنا {member.name}</p>
-                <p className="mt-1 text-sm text-ink-soft">{member.tagline}</p>
-                <p className="mx-auto mt-5 max-w-md text-xs leading-6 text-muted-foreground">
-                  اختر من قدراتي في الشريط أعلاه، أو اكتب ما تحتاجه وسأتولى اختيار الأدوات المناسبة.
-                </p>
+                <span className="min-w-0">
+                  <p className="font-display text-base font-black">جاهز يا مدير</p>
+                  <p className="mt-0.5 text-sm text-ink-soft">{member.tagline}</p>
+                  <p className="mt-2 text-xs leading-5 text-muted-foreground">اختر أمراً سريعاً أو اكتب المطلوب مباشرة.</p>
+                </span>
               </div>
             ) : null}
 
@@ -700,10 +700,10 @@ function ChatPage() {
                       ) : null}
                       <MessageContent
                         className={cn(
-                          "min-w-0 max-w-[min(46rem,88%)] rounded-3xl px-5 py-3.5 leading-relaxed",
+                          "min-w-0 max-w-[min(46rem,82%)] px-4 py-3 text-sm leading-7",
                           isUser
-                            ? "bubble-user rounded-ss-lg text-background whitespace-pre-wrap shadow-card"
-                            : "order-1 rounded-se-lg border border-border bg-card shadow-sm",
+                            ? "bubble-user rounded-xl rounded-ss-sm text-primary-foreground whitespace-pre-wrap shadow-card"
+                            : "order-1 bg-transparent",
                         )}
                       >
                         {isUser ? <p dir="auto">{m.body}</p> : <Markdown body={body} />}
@@ -867,10 +867,10 @@ function ChatPage() {
             <div ref={endRef} />
           </div>
 
-          <div className="pointer-events-none sticky bottom-0 z-20 p-3 sm:p-4">
+          <div className="pointer-events-none sticky bottom-0 z-20 mt-auto border-t border-border bg-background/92 p-3 backdrop-blur-xl sm:p-4">
             <PromptInput
               onSubmit={(message) => submit(message.text || draft)}
-              className="chat-composer pointer-events-auto mx-auto max-w-3xl rounded-3xl border border-border/70 bg-card/70 p-2 shadow-lift backdrop-blur-2xl transition-all focus-within:border-primary focus-within:bg-card/90 focus-within:ring-4 focus-within:ring-primary/10"
+              className="chat-composer pointer-events-auto mx-auto max-w-4xl rounded-xl border border-border bg-secondary/35 p-2 shadow-sm transition-all focus-within:border-primary focus-within:bg-card focus-within:ring-4 focus-within:ring-primary/10"
             >
               <PromptInputTextarea
                 ref={inputRef}
@@ -878,7 +878,7 @@ function ChatPage() {
                 onChange={(e) => setDraft(e.target.value)}
                 placeholder={`اكتب طلبك لـ${member.name}…`}
                 dir="auto"
-                className="max-h-40 min-h-12 bg-transparent px-3 py-3 placeholder:text-muted-foreground/80"
+                className="max-h-40 min-h-12 bg-transparent px-3 py-2.5 placeholder:text-muted-foreground/80"
               />
               {toolsOpen ? (
                 <div className="animate-fade-in border-t border-border/60 px-2 py-2">
@@ -919,7 +919,7 @@ function ChatPage() {
                     aria-expanded={toolsOpen}
                     aria-label="أدوات الطلب"
                     title="الوسائط وإعدادات الطلب"
-                    className={cn("size-10 rounded-2xl", toolsOpen && "bg-primary/10 text-primary")}
+                    className={cn("size-9 rounded-lg", toolsOpen && "bg-primary/10 text-primary")}
                   >
                     <SlidersHorizontal className="size-4.5" />
                   </PromptInputButton>
@@ -928,7 +928,7 @@ function ChatPage() {
                   {...(busy ? { status: "submitted" as const } : {})}
                   disabled={busy || !workspace || !draft.trim()}
                   aria-label="إرسال"
-                  className="size-10 rounded-2xl"
+                  className="size-9 rounded-lg"
                 />
               </PromptInputFooter>
             </PromptInput>
@@ -937,11 +937,11 @@ function ChatPage() {
 
         <aside
           className={cn(
-            "border-s border-border bg-card p-5 lg:sticky lg:top-[5.3rem] lg:h-[calc(100dvh-5.3rem)] lg:overflow-y-auto",
-            showSettings ? "block" : "hidden",
+            "chat-thread-panel border-s border-border bg-card p-4 lg:sticky lg:top-16 lg:block lg:h-[calc(100dvh-4rem)] lg:overflow-y-auto",
+            showSettings ? "block" : "hidden lg:block",
           )}
         >
-          <div className="mb-6 border-b border-border pb-5">
+          <div className="mb-5 border-b border-border pb-4">
             <div className="flex items-center justify-between gap-3">
               <h2 className="font-display font-black">المحادثات</h2>
               <button
@@ -963,12 +963,12 @@ function ChatPage() {
                 )}
               </button>
             </div>
-            <div className="mt-3 max-h-56 space-y-1 overflow-y-auto">
+            <div className="mt-3 max-h-[45dvh] space-y-1 overflow-y-auto">
               {(conversations ?? []).map((conversation) => (
                 <div
                   key={conversation.id}
                   className={cn(
-                    "group flex items-center gap-1 rounded-xl border px-2 py-1.5",
+                    "group flex items-center gap-1 rounded-lg border px-2 py-2",
                     conversation.id === conversationId
                       ? "border-primary/40 bg-primary/10"
                       : "border-transparent hover:bg-secondary/70",
