@@ -12,7 +12,6 @@ import {
   PenLine,
   Plus,
   Trash2,
-  ChevronDown,
   History,
   X,
   ArrowUpLeft,
@@ -409,7 +408,6 @@ function ChatPage() {
     setVoiceHintHidden(true);
   };
 
-  const [infoOpen, setInfoOpen] = useState(false);
   const endRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const ask = useServerFn(askEmployee);
@@ -538,7 +536,6 @@ function ChatPage() {
           <button
             type="button"
             onClick={() => {
-              setInfoOpen(false);
               setShowSettings((v) => !v);
             }}
             className={cn(
