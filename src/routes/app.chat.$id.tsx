@@ -918,7 +918,7 @@ function ChatPage() {
                     onClick={() => setToolsOpen((value) => !value)}
                     aria-expanded={toolsOpen}
                     aria-label="أدوات الطلب"
-                    tooltip="الوسائط وإعدادات الطلب"
+                    title="الوسائط وإعدادات الطلب"
                     className={cn("size-10 rounded-2xl", toolsOpen && "bg-primary/10 text-primary")}
                   >
                     <SlidersHorizontal className="size-4.5" />
