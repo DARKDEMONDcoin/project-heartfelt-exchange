@@ -3738,6 +3738,10 @@ section:has(> .integration-grid-wave) {
 }
 .mono-final { isolation: isolate; background: linear-gradient(180deg, oklch(1 0 0), var(--gold-soft)); }
 .sahl-smoke-final i { opacity: .2; }
+.sahl-smoke-page i,
+.sahl-smoke-auth i { opacity: .34; mix-blend-mode: screen; }
+.sahl-smoke-page + div,
+.sahl-smoke-auth + div { z-index: 0; }
 
 /* مساحة العمل: الدخان خلف المحتوى فقط، والذهبي للحالة النشطة والتركيز. */
 .app-shell {
@@ -3823,7 +3827,7 @@ section:has(> .integration-grid-wave) {
 
 @media (max-width: 700px) {
   .sahl-smoke i { width: 34rem; filter: blur(64px); opacity: .2; }
-  .sahl-smoke-hero { inset-bottom: 35%; }
+  .sahl-smoke-hero { bottom: 35%; }
   .sahl-smoke-app { height: 20rem; opacity: .34; }
   .chat-stage::before, .chat-stage::after { filter: blur(68px); opacity: .72; }
 }
