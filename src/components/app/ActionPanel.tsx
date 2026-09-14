@@ -72,7 +72,9 @@ export function ActionPanel({ employeeId, workspaceId, connected }: Props) {
                     {ready ? appLabel(a.provider) : `${appLabel(a.provider)} — غير مربوط`}
                   </span>
                 </span>
-                <Zap className={cn("size-4 shrink-0", ready ? "text-jade" : "text-muted-foreground")} />
+                <Zap
+                  className={cn("size-4 shrink-0", ready ? "text-jade" : "text-muted-foreground")}
+                />
               </button>
 
               {open ? (
@@ -92,9 +94,7 @@ export function ActionPanel({ employeeId, workspaceId, connected }: Props) {
                         dir="auto"
                         required={f.required}
                         value={values[f.name] ?? ""}
-                        onChange={(ev) =>
-                          setValues((v) => ({ ...v, [f.name]: ev.target.value }))
-                        }
+                        onChange={(ev) => setValues((v) => ({ ...v, [f.name]: ev.target.value }))}
                         className="mt-1 w-full rounded-xl border border-border bg-background px-3 py-2 text-sm outline-none focus:border-primary"
                       />
                     </label>

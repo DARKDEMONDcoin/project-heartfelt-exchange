@@ -572,7 +572,9 @@ function ChatPage() {
                   </span>
                   <span className="min-w-0">
                     <span className="block truncate text-sm font-black">{member.name}</span>
-                    <span className="block truncate text-xs text-muted-foreground">{member.role}</span>
+                    <span className="block truncate text-xs text-muted-foreground">
+                      {member.role}
+                    </span>
                   </span>
                 </div>
                 <span className="inline-flex items-center gap-1.5 text-[0.68rem] font-bold text-primary">
@@ -636,7 +638,9 @@ function ChatPage() {
                 <div>
                   <p className="text-xs font-bold text-primary">جاهز للبدء</p>
                   <p className="mt-1 font-display text-lg font-black">ماذا تريد أن ننجز اليوم؟</p>
-                  <p className="mt-1 max-w-md text-xs leading-5 text-muted-foreground">{member.tagline}</p>
+                  <p className="mt-1 max-w-md text-xs leading-5 text-muted-foreground">
+                    {member.tagline}
+                  </p>
                 </div>
                 {owned.length ? (
                   <div className="chat-apps-grid" aria-label="التطبيقات المتاحة">
@@ -644,7 +648,14 @@ function ChatPage() {
                       <span key={integration.id} className="chat-app-item">
                         <AppIcon name={integration.provider} className="size-5" />
                         <span className="truncate">{appLabel(integration.provider)}</span>
-                        <span className={cn("ms-auto size-1.5 shrink-0 rounded-full", integration.status === "connected" ? "bg-primary" : "bg-muted-foreground/40")} />
+                        <span
+                          className={cn(
+                            "ms-auto size-1.5 shrink-0 rounded-full",
+                            integration.status === "connected"
+                              ? "bg-primary"
+                              : "bg-muted-foreground/40",
+                          )}
+                        />
                       </span>
                     ))}
                   </div>
@@ -926,10 +937,20 @@ function ChatPage() {
               <p className="text-[0.68rem] font-bold text-muted-foreground">الأدوات المتصلة</p>
               <div className="mt-3 grid grid-cols-2 gap-2">
                 {owned.map((integration) => (
-                  <span key={integration.id} className="flex min-w-0 items-center gap-2 rounded-lg border border-border/70 p-2 text-xs font-bold">
+                  <span
+                    key={integration.id}
+                    className="flex min-w-0 items-center gap-2 rounded-lg border border-border/70 p-2 text-xs font-bold"
+                  >
                     <AppIcon name={integration.provider} className="size-5 shrink-0" />
                     <span className="truncate">{appLabel(integration.provider)}</span>
-                    <span className={cn("ms-auto size-1.5 shrink-0 rounded-full", integration.status === "connected" ? "bg-primary" : "bg-muted-foreground/40")} />
+                    <span
+                      className={cn(
+                        "ms-auto size-1.5 shrink-0 rounded-full",
+                        integration.status === "connected"
+                          ? "bg-primary"
+                          : "bg-muted-foreground/40",
+                      )}
+                    />
                   </span>
                 ))}
               </div>
@@ -999,9 +1020,14 @@ function ChatPage() {
           <ActionPanel
             employeeId={id}
             workspaceId={workspace?.id}
-            connected={(integrations ?? []).filter((i) => i.status === "connected").map((i) => i.provider)}
+            connected={(integrations ?? [])
+              .filter((i) => i.status === "connected")
+              .map((i) => i.provider)}
           />
-          <Link to="/app/brain" className="mt-5 block rounded-lg bg-secondary/60 p-3 text-xs font-semibold transition-colors hover:bg-secondary">
+          <Link
+            to="/app/brain"
+            className="mt-5 block rounded-lg bg-secondary/60 p-3 text-xs font-semibold transition-colors hover:bg-secondary"
+          >
             عقل العلامة ومصادر المعرفة ↖
           </Link>
         </aside>
