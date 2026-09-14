@@ -325,7 +325,8 @@ export function AppShell({
   const { data: profile } = useProfile();
 
   return (
-    <div className="flex min-h-screen bg-background">
+    <div className="app-shell flex min-h-screen bg-background">
+      <div className="sahl-smoke sahl-smoke-app" aria-hidden="true"><i /><i /><i /></div>
       <aside className="sticky top-0 hidden h-screen w-72 shrink-0 self-start overflow-y-auto border-e border-border bg-card lg:block">
         <SidebarBody />
       </aside>
@@ -343,7 +344,7 @@ export function AppShell({
         </div>
       ) : null}
 
-      <div className="flex min-w-0 flex-1 flex-col">
+      <div className="relative z-10 flex min-w-0 flex-1 flex-col">
         <header className="sticky top-0 z-30 border-b border-border bg-background/85 backdrop-blur-xl">
           <div className="flex items-center gap-2.5 px-3.5 py-3 sm:gap-3 sm:px-5 sm:py-4">
             <button
