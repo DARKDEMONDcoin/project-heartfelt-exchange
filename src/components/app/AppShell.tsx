@@ -3,21 +3,6 @@ import { useEffect, useState, type ReactNode } from "react";
 import { Link, useRouterState } from "@tanstack/react-router";
 import { Portrait } from "@/components/site/Portrait";
 import {
-  LayoutDashboard,
-  MessagesSquare,
-  CheckCheck,
-  ListChecks,
-  CalendarClock,
-  CalendarDays,
-  LineChart,
-  FileBarChart,
-  BrainCircuit,
-  Plug,
-  Settings,
-  Send,
-  Plane,
-  Radar,
-  ChevronDown,
   Bell,
   Menu,
   X,
@@ -31,33 +16,10 @@ import { useRegion } from "@/hooks/use-region";
 import { supabase } from "@/integrations/supabase/client";
 import { GUEST_EMAIL } from "@/lib/guest.functions";
 
-import { useProfile, useTasks, useWorkspace } from "@/lib/data";
+import { useProfile, useWorkspace } from "@/lib/data";
 import { UserAvatar } from "@/components/app/UserAvatar";
 import { SiteFavicon } from "@/components/app/SiteBadge";
 import { cn } from "@/lib/utils";
-
-
-/** الأساسي دائماً ظاهر؛ الباقي خلف «المزيد» حتى تبقى الواجهة هادئة. */
-const primaryNav = [
-  { to: "/app", label: "النظرة العامة", icon: LayoutDashboard },
-  { to: "/app/chat", label: "المحادثات", icon: MessagesSquare },
-  { to: "/app/approvals", label: "الموافقات", icon: CheckCheck },
-  { to: "/app/calendar", label: "تقويم المحتوى", icon: CalendarDays },
-  { to: "/app/queue", label: "طابور النشر", icon: Send },
-] as const;
-
-const secondaryNav = [
-  { to: "/app/autopilot", label: "الطيار الآلي", icon: Plane },
-  { to: "/app/automations", label: "الجدولة التلقائية", icon: CalendarClock },
-  { to: "/app/tasks", label: "المهام", icon: ListChecks },
-  { to: "/app/discovery", label: "كشف العلامة", icon: Radar },
-  { to: "/app/rankings", label: "تتبّع الترتيب", icon: LineChart },
-  { to: "/app/reports", label: "التقارير", icon: FileBarChart },
-  { to: "/app/brain", label: "عقل العلامة", icon: BrainCircuit },
-  { to: "/app/integrations", label: "التكاملات", icon: Plug },
-  { to: "/app/settings", label: "الإعدادات", icon: Settings },
-] as const;
-
 
 
 function WorkspaceCard() {
@@ -86,43 +48,9 @@ function WorkspaceCard() {
 
 function SidebarBody({ onNavigate }: { onNavigate?: () => void }) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
-  const { data: workspace } = useWorkspace();
-  const { data: tasks } = useTasks(workspace?.id);
-  const pendingCount = (tasks ?? []).filter((t) => t.status === "review").length;
-  const inSecondary = secondaryNav.some((i) => pathname.startsWith(i.to));
-  const [moreOpen, setMoreOpen] = useState(inSecondary);
-
-  const renderItem = (item: { to: string; label: string; icon: typeof Bell }) => {
-    const active = item.to === "/app" ? pathname === "/app" : pathname.startsWith(item.to);
-    const badge = item.to === "/app/approvals" ? pendingCount : 0;
-    return (
-      <Link
-        key={item.to}
-        to={item.to}
-        onClick={onNavigate}
-        className={cn(
-          "flex items-center gap-3 rounded-2xl px-3.5 py-2.5 text-sm font-bold transition-colors",
-          active ? "bg-primary text-primary-foreground shadow-sm" : "text-ink-soft hover:bg-accent",
-        )}
-      >
-        <item.icon className="size-4.5 shrink-0" strokeWidth={2.2} />
-        <span className="flex-1">{item.label}</span>
-        {badge ? (
-          <span
-            className={cn(
-              "rounded-full px-2 py-0.5 text-[0.7rem] font-black",
-              active ? "bg-primary-foreground/20" : "bg-coral/15 text-coral",
-            )}
-          >
-            {badge}
-          </span>
-        ) : null}
-      </Link>
-    );
-  };
 
   return (
-    <div className="flex h-full flex-col gap-4 p-4 sm:gap-5 sm:p-5">
+    <div className="flex h-full flex-col gap-5 p-4 sm:p-5">
       <Link to="/" className="flex items-center gap-2 font-display text-xl font-black tracking-tight sm:text-2xl">
         <LogoMark className="size-8 sm:size-10" size={40} />
         سهل<span className="text-jade">.</span>
@@ -130,8 +58,12 @@ function SidebarBody({ onNavigate }: { onNavigate?: () => void }) {
 
       <WorkspaceCard />
 
-      <div className="space-y-1.5">
-        <p className="px-2 text-xs font-bold text-muted-foreground">فريقك</p>
+      <div className="min-h-0 flex-1">
+        <div className="mb-2 flex items-center justify-between px-2">
+          <p className="text-xs font-bold text-muted-foreground">فريقك</p>
+          <span className="text-[0.68rem] font-semibold text-primary">متاح الآن</span>
+        </div>
+        <div className="space-y-1.5 overflow-y-auto">
         {team.map((m) => (
           <Link
             key={m.id}
@@ -139,44 +71,22 @@ function SidebarBody({ onNavigate }: { onNavigate?: () => void }) {
             params={{ id: m.id }}
             onClick={onNavigate}
             className={cn(
-              "flex items-center gap-2.5 rounded-xl px-2.5 py-2 text-sm transition-colors hover:bg-secondary",
-              pathname === `/app/chat/${m.id}` && "bg-secondary",
+              "group flex items-center gap-3 rounded-2xl border border-transparent px-2.5 py-2.5 text-sm transition-all hover:border-border hover:bg-background",
+              pathname === `/app/chat/${m.id}` && "border-primary/20 bg-primary/8 shadow-sm",
             )}
           >
-            <span className="relative block size-7 shrink-0 overflow-hidden rounded-lg">
+            <span className="relative block size-10 shrink-0 overflow-hidden rounded-xl shadow-sm">
               <Portrait memberId={m.id} name={m.name} className="size-full" />
+              <span className="absolute bottom-0 end-0 size-2.5 rounded-full border-2 border-card bg-primary" />
             </span>
-            <span className="truncate font-semibold">{m.name}</span>
-            <span className="ms-auto size-2 shrink-0 rounded-full bg-jade" />
+            <span className="min-w-0 flex-1">
+              <span className="block truncate font-bold">{m.name}</span>
+              <span className="block truncate text-[0.7rem] text-muted-foreground">{m.role}</span>
+            </span>
           </Link>
         ))}
+        </div>
       </div>
-
-      <nav className="space-y-1">
-        {primaryNav.map(renderItem)}
-
-        <button
-          type="button"
-          onClick={() => setMoreOpen((v) => !v)}
-          aria-expanded={moreOpen}
-          className="flex w-full items-center gap-3 rounded-2xl px-3.5 py-2.5 text-sm font-bold text-ink-soft transition-colors hover:bg-secondary"
-        >
-          <ChevronDown
-            className={cn("size-4.5 shrink-0 transition-transform", moreOpen && "rotate-180")}
-            strokeWidth={2.2}
-          />
-          <span className="flex-1 text-start">{moreOpen ? "أقل" : "المزيد"}</span>
-        </button>
-
-        {moreOpen ? <div className="space-y-1">{secondaryNav.map(renderItem)}</div> : null}
-      </nav>
-
-      <Link
-        to="/pricing"
-        className="mt-auto block rounded-xl bg-primary py-2 text-center text-xs font-bold text-primary-foreground shadow-sm transition-transform hover:-translate-y-0.5"
-      >
-        زد ساعات فريقك
-      </Link>
     </div>
   );
 }
