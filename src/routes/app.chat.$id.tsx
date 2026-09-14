@@ -30,6 +30,7 @@ import {
   useDeleteConversation,
   useIntegrations,
   useMessages,
+  useProfile,
   useRenameConversation,
   useWorkspace,
 } from "@/lib/data";
@@ -45,6 +46,7 @@ import { detectHandoff } from "@/lib/handoff";
 import { HandoffCard } from "@/components/app/HandoffCard";
 import { PublishToWordPress } from "@/components/app/PublishToWordPress";
 import { ActionPanel } from "@/components/app/ActionPanel";
+import { UserAvatar } from "@/components/app/UserAvatar";
 import { Portrait } from "@/components/site/Portrait";
 import {
   MediaStudio,
@@ -341,11 +343,126 @@ function timeOf(iso: string) {
   return new Date(iso).toLocaleTimeString("ar", { hour: "2-digit", minute: "2-digit" });
 }
 
+const EMPLOYEE_COPY: Record<string, { prompts: string[]; greetings: string[] }> = {
+  sonny: {
+    prompts: [
+      "اكتب حملة إطلاق كاملة لمنتجي…",
+      "حضّر تقويم محتوى للشهر القادم…",
+      "حوّل هذه الفكرة إلى منشور جذّاب…",
+      "راجع أداء حساباتي واقترح الخطوة التالية…",
+    ],
+    greetings: [
+      "جاهز نحوّل فكرتك إلى حضور يستحق التوقف عنده.",
+      "خلّينا نبني محتوى يبدو منك، لا من آلة.",
+      "من أول الفكرة حتى النشر، أنا معك.",
+      "قل لي هدفك، وسأرتّب الطريق الأقصر إليه.",
+    ],
+  },
+  eva: {
+    prompts: [
+      "رتّبي أولويات يومي ورسائلي…",
+      "حضّري ردًا مهنيًا على هذا البريد…",
+      "نسّقي موعدًا يناسب الجميع…",
+      "لخّصي ما يحتاج قراري اليوم…",
+    ],
+    greetings: [
+      "سأحمي وقتك وأرتّب ما يستحق انتباهك أولًا.",
+      "اترك التفاصيل لي واحتفظ أنت بالقرارات المهمة.",
+      "يوم أهدأ يبدأ من قائمة مرتبة بوضوح.",
+      "أنا هنا لأجعل كل شيء في موعده ومكانه.",
+    ],
+  },
+  sam: {
+    prompts: [
+      "ابحث عن أفضل العملاء لهذا العرض…",
+      "اكتب رسالة تواصل شخصية لهذا العميل…",
+      "رتّب متابعة الفرص المفتوحة…",
+      "حلّل خط المبيعات وحدد الأولوية…",
+    ],
+    greetings: [
+      "لنبحث عن الفرص التي تستحق وقت فريقك فعلًا.",
+      "كل رسالة ستبدو شخصية وواضحة، لا آلية.",
+      "سأتابع بهدوء حتى تصبح الفرصة محادثة حقيقية.",
+      "ابدأ بالهدف، وسأبني لك طريق الوصول للعميل.",
+    ],
+  },
+  nour: {
+    prompts: [
+      "ابحث عن أفضل فرصة محتوى لموقعي…",
+      "اكتب مقالًا عربيًا يتصدر البحث…",
+      "راجع هذه الصفحة وحدد مشاكل السيو…",
+      "ابنِ خريطة محتوى للموضوع بالكامل…",
+    ],
+    greetings: [
+      "سنكتب للناس أولًا، ثم نجعل محركات البحث تفهمنا.",
+      "كل كلمة سنختارها لها سبب ونتيجة قابلة للقياس.",
+      "لنحوّل ما يبحث عنه جمهورك إلى محتوى يجدونه فعلًا.",
+      "أنا جاهزة لبناء حضور يبقى، لا زيارة عابرة.",
+    ],
+  },
+  dana: {
+    prompts: [
+      "صمّمي هوية بصرية لهذه الفكرة…",
+      "حوّلي هذا العرض إلى إعلان جذّاب…",
+      "أنشئي مجموعة تصاميم لكل المنصات…",
+      "راجعي هذا التصميم وطوّريه…",
+    ],
+    greetings: [
+      "لنحوّل فكرتك إلى شيء يُرى ويُتذكر.",
+      "الجمال هنا ليس زينة؛ بل وضوح وثقة.",
+      "سأحافظ على روح علامتك في كل مقاس وتفصيلة.",
+      "ابدأ بالإحساس الذي تريده، وسأمنحه شكلًا.",
+    ],
+  },
+  adam: {
+    prompts: [
+      "حلّل أداء القنوات هذا الشهر…",
+      "أين نهدر الميزانية الآن؟…",
+      "حوّل هذه الأرقام إلى قرارات واضحة…",
+      "قارن النتائج وحدد ما يجب مضاعفته…",
+    ],
+    greetings: [
+      "سأفصل الإشارة عن الضوضاء وأعطيك القرار الواضح.",
+      "الأرقام تحكي قصة؛ دوري أن أجعلها مفهومة.",
+      "لن ننظر إلى التقارير فقط، بل إلى الخطوة التالية.",
+      "دعنا نعرف ما يعمل فعلًا وما يجب أن يتوقف.",
+    ],
+  },
+};
+
+function useTypewriter(lines: string[], pause = 1700) {
+  const [line, setLine] = useState(0);
+  const [length, setLength] = useState(0);
+  const [deleting, setDeleting] = useState(false);
+
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setLength(lines[0]?.length ?? 0);
+      return;
+    }
+    const current = lines[line] ?? "";
+    const complete = length === current.length;
+    const empty = length === 0;
+    const delay = complete && !deleting ? pause : deleting ? 28 : 52;
+    const timer = window.setTimeout(() => {
+      if (complete && !deleting) setDeleting(true);
+      else if (empty && deleting) {
+        setDeleting(false);
+        setLine((value) => (value + 1) % lines.length);
+      } else setLength((value) => value + (deleting ? -1 : 1));
+    }, delay);
+    return () => window.clearTimeout(timer);
+  }, [deleting, length, line, lines, pause]);
+
+  return lines[line]?.slice(0, length) ?? "";
+}
+
 function ChatPage() {
   const { id } = Route.useParams();
   const member = getMember(id)!;
   const qc = useQueryClient();
   const { data: workspace } = useWorkspace();
+  const { data: profile } = useProfile();
   const { data: conversations } = useConversations(workspace?.id, id);
   const [conversationId, setConversationId] = useState<string | undefined>();
   const createConversation = useCreateConversation(workspace?.id, id);
@@ -414,6 +531,10 @@ function ChatPage() {
   const runSkillFn = useServerFn(runSkill);
   const employeeSkills = skillsFor(id);
   const quickSkills = featuredSkillsFor(id).slice(0, 6);
+  const employeeCopy = EMPLOYEE_COPY[id] ?? EMPLOYEE_COPY.sonny;
+  const rotatingPlaceholder = useTypewriter(employeeCopy.prompts);
+  const rotatingGreeting = useTypewriter(employeeCopy.greetings, 2400);
+  const userName = profile?.full_name?.trim().split(/\s+/)[0] || "صديقي";
   /** آخر رسالة فشل إرسالها — لزر «أعد المحاولة». */
   const [pendingText, setPendingText] = useState<string | null>(null);
 
@@ -533,21 +654,6 @@ function ChatPage() {
               <Plus className="size-4.5" />
             )}
           </button>
-          <button
-            type="button"
-            onClick={() => {
-              setShowSettings((v) => !v);
-            }}
-            className={cn(
-              "inline-flex items-center gap-1.5 rounded-xl border border-border px-3 py-2.5 text-sm font-bold transition-colors",
-              showSettings ? "bg-foreground text-background" : "hover:bg-secondary",
-            )}
-            aria-label="المحادثات"
-            title="المحادثات"
-          >
-            <History className="size-4.5" />
-            <span className="hidden sm:inline">المحادثات</span>
-          </button>
         </>
       }
     >
@@ -557,29 +663,23 @@ function ChatPage() {
             aria-hidden
             className="pointer-events-none absolute inset-x-0 top-0 h-56 bg-[radial-gradient(60%_100%_at_50%_0%,color-mix(in_oklab,var(--primary)_9%,transparent),transparent)]"
           />
-          <div className="relative mx-auto flex w-full max-w-5xl flex-1 flex-col space-y-4 px-4 py-4 sm:px-6">
+          <div className="relative mx-auto flex w-full max-w-6xl flex-1 flex-col px-3 sm:px-6">
             <SiteBadgeBar
               website={(workspace as { website?: string | null } | undefined)?.website ?? null}
             />
-            <section className="employee-workbench" aria-label={`قدرات ${member.name}`}>
-              <div className="employee-workbench-head">
-                <div className="flex min-w-0 items-center gap-3">
-                  <span className="relative block size-11 shrink-0 overflow-hidden rounded-lg">
-                    <Portrait memberId={member.id} name={member.name} className="size-full" />
+            <section className="employee-command-bar" aria-label={`مساحة عمل ${member.name}`}>
+              <div className="employee-command-identity">
+                <span className="relative block size-9 shrink-0 overflow-hidden rounded-lg">
+                  <Portrait memberId={member.id} name={member.name} className="size-full" />
+                </span>
+                <span className="min-w-0">
+                  <span className="block truncate text-xs font-black">{member.name}</span>
+                  <span className="inline-flex items-center gap-1 text-[0.62rem] font-bold text-primary">
+                    <span className="size-1.5 rounded-full bg-primary" /> متصل
                   </span>
-                  <span className="min-w-0">
-                    <span className="block truncate text-sm font-black">{member.name}</span>
-                    <span className="block truncate text-xs text-muted-foreground">
-                      {member.role}
-                    </span>
-                  </span>
-                </div>
-                <span className="inline-flex items-center gap-1.5 text-[0.68rem] font-bold text-primary">
-                  <span className="size-1.5 rounded-full bg-primary" /> متصل الآن
                 </span>
               </div>
-              <div className="employee-workbench-section">
-                <p className="employee-workbench-label">ابدأ مهمة</p>
+              <div className="employee-command-skills">
                 <SkillPalette
                   skills={employeeSkills}
                   quick={quickSkills}
@@ -591,6 +691,26 @@ function ChatPage() {
                   }}
                 />
               </div>
+              {owned.length ? (
+                <div className="employee-command-apps" aria-label="التطبيقات المتاحة">
+                  {owned.slice(0, 5).map((integration) => (
+                    <span key={integration.id} title={appLabel(integration.provider)}>
+                      <AppIcon name={integration.provider} className="size-5" />
+                    </span>
+                  ))}
+                </div>
+              ) : null}
+              <button
+                type="button"
+                onClick={() => setShowSettings((value) => !value)}
+                aria-expanded={showSettings}
+                aria-label="المحادثات والتنفيذ"
+                title="المحادثات والتنفيذ"
+                className={cn("employee-command-history", showSettings && "is-active")}
+              >
+                <History className="size-4" />
+                <span>المحادثات</span>
+              </button>
             </section>
             {brainItems &&
             !hasVoiceGuide &&
@@ -631,32 +751,19 @@ function ChatPage() {
             ) : null}
 
             {(messages ?? []).length === 0 && !pending ? (
-              <div className="chat-empty-state animate-pop-in">
-                <div>
-                  <p className="text-xs font-bold text-primary">جاهز للبدء</p>
-                  <p className="mt-1 font-display text-lg font-black">ماذا تريد أن ننجز اليوم؟</p>
-                  <p className="mt-1 max-w-md text-xs leading-5 text-muted-foreground">
-                    {member.tagline}
-                  </p>
+              <div className="chat-welcome animate-pop-in">
+                <div className="chat-welcome-portraits" aria-hidden="true">
+                  <span className="chat-welcome-avatar is-user"><UserAvatar /></span>
+                  <span className="chat-welcome-avatar is-employee">
+                    <Portrait memberId={member.id} name={member.name} className="size-full" />
+                  </span>
                 </div>
-                {owned.length ? (
-                  <div className="chat-apps-grid" aria-label="التطبيقات المتاحة">
-                    {owned.slice(0, 6).map((integration) => (
-                      <span key={integration.id} className="chat-app-item">
-                        <AppIcon name={integration.provider} className="size-5" />
-                        <span className="truncate">{appLabel(integration.provider)}</span>
-                        <span
-                          className={cn(
-                            "ms-auto size-1.5 shrink-0 rounded-full",
-                            integration.status === "connected"
-                              ? "bg-primary"
-                              : "bg-muted-foreground/40",
-                          )}
-                        />
-                      </span>
-                    ))}
-                  </div>
-                ) : null}
+                <p className="chat-welcome-eyebrow">أنا {member.name}، {member.role}</p>
+                <h2>أهلًا {userName}</h2>
+                <p className="chat-welcome-rotating" aria-live="polite">
+                  {rotatingGreeting}<span className="typewriter-caret" aria-hidden="true" />
+                </p>
+                <p className="chat-welcome-tagline">{member.tagline}</p>
               </div>
             ) : null}
 
@@ -855,16 +962,16 @@ function ChatPage() {
             <div ref={endRef} />
           </div>
 
-          <div className="pointer-events-none sticky bottom-0 z-20 mt-auto border-t border-border bg-background/92 p-3 backdrop-blur-xl sm:p-4">
+          <div className="chat-composer-dock pointer-events-none sticky bottom-0 z-20 mt-auto p-3 sm:p-5">
             <PromptInput
               onSubmit={(message) => submit(message.text || draft)}
-              className="chat-composer pointer-events-auto mx-auto max-w-4xl rounded-xl border border-border bg-secondary/35 p-2 shadow-sm transition-all focus-within:border-primary focus-within:bg-card focus-within:ring-4 focus-within:ring-primary/10"
+              className="chat-composer pointer-events-auto mx-auto max-w-4xl rounded-2xl border border-border/70 p-2 transition-all focus-within:border-primary/55 focus-within:ring-4 focus-within:ring-primary/10"
             >
               <PromptInputTextarea
                 ref={inputRef}
                 value={draft}
                 onChange={(e) => setDraft(e.target.value)}
-                placeholder={`اكتب طلبك لـ${member.name}…`}
+                placeholder={rotatingPlaceholder || `اكتب طلبك لـ${member.name}…`}
                 dir="auto"
                 className="max-h-40 min-h-12 bg-transparent px-3 py-2.5 placeholder:text-muted-foreground/80"
               />
@@ -923,10 +1030,18 @@ function ChatPage() {
           </div>
         </div>
 
+        {showSettings ? (
+          <button
+            type="button"
+            aria-label="إغلاق لوحة المحادثات"
+            onClick={() => setShowSettings(false)}
+            className="chat-thread-backdrop"
+          />
+        ) : null}
         <aside
           className={cn(
-            "chat-thread-panel border-s border-border bg-card p-4 lg:sticky lg:top-16 lg:block lg:h-[calc(100dvh-4rem)] lg:overflow-y-auto",
-            showSettings ? "block" : "hidden lg:block",
+            "chat-thread-panel border-s border-border bg-card/95 p-4 backdrop-blur-xl",
+            showSettings ? "is-open" : "",
           )}
         >
           {owned.length ? (
