@@ -2,13 +2,7 @@ import { LogoMark } from "@/components/site/LogoMark";
 import { useEffect, useState, type ReactNode } from "react";
 import { Link, useRouterState } from "@tanstack/react-router";
 import { Portrait } from "@/components/site/Portrait";
-import {
-  Bell,
-  Menu,
-  X,
-  User,
-  LogOut,
-} from "lucide-react";
+import { Bell, Menu, X, User, LogOut } from "lucide-react";
 
 import { team } from "@/data/team";
 import { COUNTRIES } from "@/data/team-portraits";
@@ -20,7 +14,6 @@ import { useProfile, useWorkspace } from "@/lib/data";
 import { UserAvatar } from "@/components/app/UserAvatar";
 import { SiteFavicon } from "@/components/app/SiteBadge";
 import { cn } from "@/lib/utils";
-
 
 function WorkspaceCard() {
   const { data: workspace } = useWorkspace();
@@ -51,7 +44,10 @@ function SidebarBody({ onNavigate }: { onNavigate?: () => void }) {
 
   return (
     <div className="flex h-full flex-col gap-5 p-4 sm:p-5">
-      <Link to="/" className="flex items-center gap-2 font-display text-xl font-black tracking-tight sm:text-2xl">
+      <Link
+        to="/"
+        className="flex items-center gap-2 font-display text-xl font-black tracking-tight sm:text-2xl"
+      >
         <LogoMark className="size-8 sm:size-10" size={40} />
         سهل<span className="text-jade">.</span>
       </Link>
@@ -64,33 +60,32 @@ function SidebarBody({ onNavigate }: { onNavigate?: () => void }) {
           <span className="text-[0.68rem] font-semibold text-primary">متاح الآن</span>
         </div>
         <div className="space-y-1.5 overflow-y-auto">
-        {team.map((m) => (
-          <Link
-            key={m.id}
-            to="/app/chat/$id"
-            params={{ id: m.id }}
-            onClick={onNavigate}
-            className={cn(
-              "group flex items-center gap-3 rounded-2xl border border-transparent px-2.5 py-2.5 text-sm transition-all hover:border-border hover:bg-background",
-              pathname === `/app/chat/${m.id}` && "border-primary/20 bg-primary/8 shadow-sm",
-            )}
-          >
-            <span className="relative block size-10 shrink-0 overflow-hidden rounded-xl shadow-sm">
-              <Portrait memberId={m.id} name={m.name} className="size-full" />
-              <span className="absolute bottom-0 end-0 size-2.5 rounded-full border-2 border-card bg-primary" />
-            </span>
-            <span className="min-w-0 flex-1">
-              <span className="block truncate font-bold">{m.name}</span>
-              <span className="block truncate text-[0.7rem] text-muted-foreground">{m.role}</span>
-            </span>
-          </Link>
-        ))}
+          {team.map((m) => (
+            <Link
+              key={m.id}
+              to="/app/chat/$id"
+              params={{ id: m.id }}
+              onClick={onNavigate}
+              className={cn(
+                "group flex items-center gap-3 rounded-2xl border border-transparent px-2.5 py-2.5 text-sm transition-all hover:border-border hover:bg-background",
+                pathname === `/app/chat/${m.id}` && "border-primary/20 bg-primary/8 shadow-sm",
+              )}
+            >
+              <span className="relative block size-10 shrink-0 overflow-hidden rounded-xl shadow-sm">
+                <Portrait memberId={m.id} name={m.name} className="size-full" />
+                <span className="absolute bottom-0 end-0 size-2.5 rounded-full border-2 border-card bg-primary" />
+              </span>
+              <span className="min-w-0 flex-1">
+                <span className="block truncate font-bold">{m.name}</span>
+                <span className="block truncate text-[0.7rem] text-muted-foreground">{m.role}</span>
+              </span>
+            </Link>
+          ))}
         </div>
       </div>
     </div>
   );
 }
-
 
 /** شريط يوضّح أن الجلسة الحالية تجريبية ويقود لإنشاء حساب حقيقي. */
 function GuestBar() {
@@ -109,9 +104,7 @@ function GuestBar() {
   if (!isGuest) return null;
   return (
     <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border bg-amber/15 px-5 py-3">
-      <p className="text-sm font-bold">
-        أنت في وضع التجربة — العمل هنا مشترك ولن يُحفظ باسمك.
-      </p>
+      <p className="text-sm font-bold">أنت في وضع التجربة — العمل هنا مشترك ولن يُحفظ باسمك.</p>
       <Link
         to="/auth"
         search={{ mode: "signup" }}
@@ -163,10 +156,8 @@ function UserMenu({ name }: { name: string | null }) {
                 <UserAvatar />
               </span>
               <span className="min-w-0">
-              <p className="truncate text-sm font-bold">{name ?? "حسابك"}</p>
-              {email ? (
-                <p className="truncate text-xs text-muted-foreground">{email}</p>
-              ) : null}
+                <p className="truncate text-sm font-bold">{name ?? "حسابك"}</p>
+                {email ? <p className="truncate text-xs text-muted-foreground">{email}</p> : null}
               </span>
             </div>
             <Link
@@ -216,9 +207,7 @@ function UserMenu({ name }: { name: string | null }) {
   );
 }
 
-
 export function AppShell({
-
   title,
   lead,
   actions,
@@ -236,7 +225,11 @@ export function AppShell({
 
   return (
     <div className="app-shell flex min-h-screen bg-background">
-      <div className="sahl-smoke sahl-smoke-app" aria-hidden="true"><i /><i /><i /></div>
+      <div className="sahl-smoke sahl-smoke-app" aria-hidden="true">
+        <i />
+        <i />
+        <i />
+      </div>
       <aside className="sticky top-0 hidden h-screen w-72 shrink-0 self-start overflow-y-auto border-e border-border bg-card lg:block">
         <SidebarBody />
       </aside>
@@ -265,8 +258,12 @@ export function AppShell({
               {mobileOpen ? <X className="size-5" /> : <Menu className="size-5" />}
             </button>
             <div className="min-w-0 flex-1">
-              <h1 className="truncate font-display text-base font-black sm:text-xl md:text-2xl">{title}</h1>
-              {lead ? <p className="truncate text-xs text-muted-foreground sm:text-sm">{lead}</p> : null}
+              <h1 className="truncate font-display text-base font-black sm:text-xl md:text-2xl">
+                {title}
+              </h1>
+              {lead ? (
+                <p className="truncate text-xs text-muted-foreground sm:text-sm">{lead}</p>
+              ) : null}
             </div>
             <div className="flex shrink-0 items-center gap-1.5 sm:gap-2">
               {actions}
@@ -279,12 +276,12 @@ export function AppShell({
               </Link>
               <UserMenu name={profile?.full_name ?? null} />
             </div>
-
           </div>
         </header>
         <GuestBar />
-        <main className={padded ? "mx-auto w-full max-w-[100rem] px-3.5 py-5 sm:px-5 sm:py-7" : ""}>{children}</main>
-
+        <main className={padded ? "mx-auto w-full max-w-[100rem] px-3.5 py-5 sm:px-5 sm:py-7" : ""}>
+          {children}
+        </main>
       </div>
     </div>
   );

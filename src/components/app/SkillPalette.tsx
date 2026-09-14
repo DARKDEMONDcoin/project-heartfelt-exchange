@@ -131,7 +131,8 @@ export function SkillPalette({ skills, disabled, pending, onRun, quick, hideQuic
           <div
             className="employee-command-scroll no-scrollbar flex min-w-0 flex-1 gap-1.5 overflow-x-auto py-1 [mask-image:linear-gradient(to_left,transparent,black_1.5rem,black_calc(100%-1.5rem),transparent)]"
             onWheel={(event) => {
-              if (Math.abs(event.deltaY) > Math.abs(event.deltaX)) event.currentTarget.scrollLeft += event.deltaY;
+              if (Math.abs(event.deltaY) > Math.abs(event.deltaX))
+                event.currentTarget.scrollLeft += event.deltaY;
             }}
           >
             {quick.map((s) => {

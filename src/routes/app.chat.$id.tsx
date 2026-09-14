@@ -2,13 +2,38 @@ import { useEffect, useRef, useState } from "react";
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
-import { Loader2, Check, Copy, Share2, RefreshCw, Download, PenLine, Plus, Trash2, ChevronDown, History, X, ArrowUpLeft, Fingerprint, SlidersHorizontal } from "lucide-react";
+import {
+  Loader2,
+  Check,
+  Copy,
+  Share2,
+  RefreshCw,
+  Download,
+  PenLine,
+  Plus,
+  Trash2,
+  ChevronDown,
+  History,
+  X,
+  ArrowUpLeft,
+  Fingerprint,
+  SlidersHorizontal,
+} from "lucide-react";
 
 import { AppShell } from "@/components/app/AppShell";
 import { AppIcon, appLabel } from "@/components/site/AppIcon";
 import { ConnectNow } from "@/components/app/ConnectNow";
 import { getMember } from "@/data/team";
-import { useBrainItems, useConversations, useCreateConversation, useDeleteConversation, useIntegrations, useMessages, useRenameConversation, useWorkspace } from "@/lib/data";
+import {
+  useBrainItems,
+  useConversations,
+  useCreateConversation,
+  useDeleteConversation,
+  useIntegrations,
+  useMessages,
+  useRenameConversation,
+  useWorkspace,
+} from "@/lib/data";
 import { SiteBadgeBar } from "@/components/app/SiteBadge";
 import { askEmployee, runSkill } from "@/lib/ai.functions";
 import { SkillPalette } from "@/components/app/SkillPalette";
@@ -22,8 +47,12 @@ import { HandoffCard } from "@/components/app/HandoffCard";
 import { PublishToWordPress } from "@/components/app/PublishToWordPress";
 import { ActionPanel } from "@/components/app/ActionPanel";
 import { Portrait } from "@/components/site/Portrait";
-import { MediaStudio, type Attachment, type ImageMode, type Aspect } from "@/components/app/MediaStudio";
-
+import {
+  MediaStudio,
+  type Attachment,
+  type ImageMode,
+  type Aspect,
+} from "@/components/app/MediaStudio";
 
 import { featuredSkillsFor, skillsFor, type Skill } from "@/data/skills";
 import { cn } from "@/lib/utils";
@@ -122,7 +151,13 @@ function MessageActions({
         <PenLine className="size-3" /> عدّل
       </button>
       {onRegenerate ? (
-        <button type="button" onClick={onRegenerate} disabled={disabled} className={btn} aria-label="إعادة التوليد">
+        <button
+          type="button"
+          onClick={onRegenerate}
+          disabled={disabled}
+          className={btn}
+          aria-label="إعادة التوليد"
+        >
           <RefreshCw className="size-3" /> أعد التوليد
         </button>
       ) : null}
@@ -288,7 +323,10 @@ function prettyBody(body: string): string {
       if (!item || typeof item !== "object") return [];
       const chunk: string[] = [];
       if (typeof item.reply === "string" && item.reply.trim()) chunk.push(item.reply.trim());
-      for (const d of [item.deliverable, ...(Array.isArray(item.deliverables) ? item.deliverables : [])])
+      for (const d of [
+        item.deliverable,
+        ...(Array.isArray(item.deliverables) ? item.deliverables : []),
+      ])
         if (d?.body) chunk.push(`### ${d.title ?? "المخرج"}\n\n${d.body}`);
       return chunk;
     });
@@ -326,7 +364,10 @@ function ChatPage() {
   const [pending, setPending] = useState<string | null>(null);
   const [savedTask, setSavedTask] = useState(false);
   /** طلب ربط سياقي: يظهر فقط عندما تحتاج المهمة الحالية حساباً غير مربوط. */
-  const [needsConnection, setNeedsConnection] = useState<{ provider: string; reason: string } | null>(null);
+  const [needsConnection, setNeedsConnection] = useState<{
+    provider: string;
+    reason: string;
+  } | null>(null);
 
   const [error, setError] = useState<string | null>(null);
 
@@ -338,8 +379,6 @@ function ChatPage() {
   /** طول المنشور: اختياري تماماً — الافتراضي «تلقائي» يترك القرار للموظف. */
   const [postLength, setPostLength] = useState<"auto" | "short" | "medium" | "long">("auto");
 
-
-
   useEffect(() => {
     if (!conversationId && conversations?.[0]) setConversationId(conversations[0].id);
     if (conversationId && conversations && !conversations.some((c) => c.id === conversationId)) {
@@ -348,7 +387,13 @@ function ChatPage() {
   }, [conversationId, conversations]);
 
   useEffect(() => {
-    if (!workspace || conversations === undefined || conversations.length > 0 || createConversation.isPending) return;
+    if (
+      !workspace ||
+      conversations === undefined ||
+      conversations.length > 0 ||
+      createConversation.isPending
+    )
+      return;
     createConversation.mutate(undefined, { onSuccess: (row) => setConversationId(row.id) });
   }, [workspace, conversations, createConversation]);
 
@@ -392,7 +437,6 @@ function ChatPage() {
           imagePrompt: imagePrompt.trim() || undefined,
           imageAspect: aspect,
           postLength,
-
         },
       }),
 
@@ -473,36 +517,42 @@ function ChatPage() {
       padded={false}
       actions={
         <>
-        <button
-          type="button"
-          onClick={() => createConversation.mutate(undefined, { onSuccess: (row) => setConversationId(row.id) })}
-          disabled={!workspace || createConversation.isPending}
-          className="grid size-10 place-items-center rounded-xl border border-border transition-colors hover:bg-secondary disabled:opacity-50"
-          aria-label="محادثة جديدة"
-          title="محادثة جديدة"
-        >
-          {createConversation.isPending ? <Loader2 className="size-4.5 animate-spin" /> : <Plus className="size-4.5" />}
-        </button>
-        <button
-          type="button"
-          onClick={() => {
-            setInfoOpen(false);
-            setShowSettings((v) => !v);
-          }}
-          className={cn(
-            "inline-flex items-center gap-1.5 rounded-xl border border-border px-3 py-2.5 text-sm font-bold transition-colors",
-            showSettings ? "bg-foreground text-background" : "hover:bg-secondary",
-          )}
-          aria-label="المحادثات"
-          title="المحادثات"
-        >
-          <History className="size-4.5" />
-          <span className="hidden sm:inline">المحادثات</span>
-        </button>
-
+          <button
+            type="button"
+            onClick={() =>
+              createConversation.mutate(undefined, {
+                onSuccess: (row) => setConversationId(row.id),
+              })
+            }
+            disabled={!workspace || createConversation.isPending}
+            className="grid size-10 place-items-center rounded-xl border border-border transition-colors hover:bg-secondary disabled:opacity-50"
+            aria-label="محادثة جديدة"
+            title="محادثة جديدة"
+          >
+            {createConversation.isPending ? (
+              <Loader2 className="size-4.5 animate-spin" />
+            ) : (
+              <Plus className="size-4.5" />
+            )}
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              setInfoOpen(false);
+              setShowSettings((v) => !v);
+            }}
+            className={cn(
+              "inline-flex items-center gap-1.5 rounded-xl border border-border px-3 py-2.5 text-sm font-bold transition-colors",
+              showSettings ? "bg-foreground text-background" : "hover:bg-secondary",
+            )}
+            aria-label="المحادثات"
+            title="المحادثات"
+          >
+            <History className="size-4.5" />
+            <span className="hidden sm:inline">المحادثات</span>
+          </button>
         </>
       }
-
     >
       <div className={cn("grid", showSettings && "lg:grid-cols-[minmax(0,1fr)_20rem]")}>
         <div className="chat-stage relative flex min-h-[calc(100dvh-5.3rem)] min-w-0 flex-col">
@@ -511,50 +561,67 @@ function ChatPage() {
             className="pointer-events-none absolute inset-x-0 top-0 h-56 bg-[radial-gradient(60%_100%_at_50%_0%,color-mix(in_oklab,var(--primary)_9%,transparent),transparent)]"
           />
           <div className="relative mx-auto w-full max-w-3xl flex-1 space-y-4 px-4 py-5 sm:px-5 sm:py-6">
-            <SiteBadgeBar website={(workspace as { website?: string | null } | undefined)?.website ?? null} />
-             <section className="employee-command-deck" aria-label={`قدرات وتكاملات ${member.name}`}>
-               <div className="flex items-center justify-between gap-3 px-1">
-                 <div>
-                   <p className="text-xs font-black">مساحة {member.name}</p>
-                   <p className="text-[0.68rem] text-muted-foreground">اختر مهمة أو اكتب طلبك مباشرة</p>
-                 </div>
-                 <span className="inline-flex items-center gap-1.5 text-[0.68rem] font-bold text-primary">
-                   <span className="size-1.5 rounded-full bg-primary" /> جاهز للعمل
-                 </span>
-               </div>
-               <div className="mt-2.5">
-                 <SkillPalette
-                   skills={employeeSkills}
-                   quick={quickSkills}
-                   disabled={!workspace}
-                   pending={busy}
-                   onRun={(skill, values) => {
-                     setError(null);
-                     skillRun.mutate({ skill, values });
-                   }}
-                 />
-               </div>
-               {owned.length ? (
-                 <div
-                   className="employee-command-scroll no-scrollbar mt-2 flex gap-1.5 overflow-x-auto pb-1"
-                   onWheel={(event) => {
-                     if (Math.abs(event.deltaY) > Math.abs(event.deltaX)) event.currentTarget.scrollLeft += event.deltaY;
-                   }}
-                 >
-                   {owned.map((integration) => (
-                     <span
-                       key={integration.id}
-                       className="inline-flex shrink-0 items-center gap-2 rounded-full border border-border/70 bg-background/70 py-1.5 pe-3 ps-2 text-[0.7rem] font-bold"
-                     >
-                       <AppIcon name={integration.provider} className="size-4" />
-                       {appLabel(integration.provider)}
-                       <span className={cn("size-1.5 rounded-full", integration.status === "connected" ? "bg-primary" : integration.status === "error" ? "bg-coral" : "bg-muted-foreground/40")} />
-                     </span>
-                   ))}
-                 </div>
-               ) : null}
-             </section>
-            {brainItems && !hasVoiceGuide && !voiceHintHidden && ["sonny", "nour", "eva", "dana"].includes(id) ? (
+            <SiteBadgeBar
+              website={(workspace as { website?: string | null } | undefined)?.website ?? null}
+            />
+            <section className="employee-command-deck" aria-label={`قدرات وتكاملات ${member.name}`}>
+              <div className="flex items-center justify-between gap-3 px-1">
+                <div>
+                  <p className="text-xs font-black">مساحة {member.name}</p>
+                  <p className="text-[0.68rem] text-muted-foreground">
+                    اختر مهمة أو اكتب طلبك مباشرة
+                  </p>
+                </div>
+                <span className="inline-flex items-center gap-1.5 text-[0.68rem] font-bold text-primary">
+                  <span className="size-1.5 rounded-full bg-primary" /> جاهز للعمل
+                </span>
+              </div>
+              <div className="mt-2.5">
+                <SkillPalette
+                  skills={employeeSkills}
+                  quick={quickSkills}
+                  disabled={!workspace}
+                  pending={busy}
+                  onRun={(skill, values) => {
+                    setError(null);
+                    skillRun.mutate({ skill, values });
+                  }}
+                />
+              </div>
+              {owned.length ? (
+                <div
+                  className="employee-command-scroll no-scrollbar mt-2 flex gap-1.5 overflow-x-auto pb-1"
+                  onWheel={(event) => {
+                    if (Math.abs(event.deltaY) > Math.abs(event.deltaX))
+                      event.currentTarget.scrollLeft += event.deltaY;
+                  }}
+                >
+                  {owned.map((integration) => (
+                    <span
+                      key={integration.id}
+                      className="inline-flex shrink-0 items-center gap-2 rounded-full border border-border/70 bg-background/70 py-1.5 pe-3 ps-2 text-[0.7rem] font-bold"
+                    >
+                      <AppIcon name={integration.provider} className="size-4" />
+                      {appLabel(integration.provider)}
+                      <span
+                        className={cn(
+                          "size-1.5 rounded-full",
+                          integration.status === "connected"
+                            ? "bg-primary"
+                            : integration.status === "error"
+                              ? "bg-coral"
+                              : "bg-muted-foreground/40",
+                        )}
+                      />
+                    </span>
+                  ))}
+                </div>
+              ) : null}
+            </section>
+            {brainItems &&
+            !hasVoiceGuide &&
+            !voiceHintHidden &&
+            ["sonny", "nour", "eva", "dana"].includes(id) ? (
               <div className="group flex items-center gap-3 rounded-2xl border border-dashed border-border bg-secondary/40 px-4 py-3 text-sm">
                 <span
                   className="grid size-9 shrink-0 place-items-center rounded-xl text-primary-foreground"
@@ -567,7 +634,8 @@ function ChatPage() {
                     اختياري: خلّي {member.name} يكتب بصوت علامتك
                   </span>
                   <span className="block text-xs text-muted-foreground">
-                    يعمل بكفاءة كاملة بدونها — وإن أردت دقة أعلى الصق رابط موقعك مرة واحدة في عقل العلامة.
+                    يعمل بكفاءة كاملة بدونها — وإن أردت دقة أعلى الصق رابط موقعك مرة واحدة في عقل
+                    العلامة.
                   </span>
                 </span>
                 <Link
@@ -618,87 +686,101 @@ function ChatPage() {
                       <span className="h-px flex-1 bg-border" />
                     </div>
                   ) : null}
-                  <Message from={isUser ? "user" : "assistant"} className={cn("animate-bubble-in", isUser ? "ms-0 me-auto" : "ms-auto me-0")}>
-                  <div className={cn("group flex gap-3", isUser ? "justify-start" : "justify-end")}>
-                    {!isUser ? (
-                      <span className="relative order-2 mt-1 block size-9 shrink-0 overflow-hidden rounded-xl shadow-sm">
-                        <Portrait memberId={member.id} name={member.name} className="size-full" />
-                      </span>
-                    ) : null}
-                    <MessageContent
-                      className={cn(
-                        "min-w-0 max-w-[min(46rem,88%)] rounded-3xl px-5 py-3.5 leading-relaxed",
-                        isUser
-                          ? "bubble-user rounded-ss-lg text-background whitespace-pre-wrap shadow-card"
-                          : "order-1 rounded-se-lg border border-border bg-card shadow-sm",
-                      )}
+                  <Message
+                    from={isUser ? "user" : "assistant"}
+                    className={cn("animate-bubble-in", isUser ? "ms-0 me-auto" : "ms-auto me-0")}
+                  >
+                    <div
+                      className={cn("group flex gap-3", isUser ? "justify-start" : "justify-end")}
                     >
-                      {isUser ? <p dir="auto">{m.body}</p> : <Markdown body={body} />}
-                      {!isUser && id === "nour" && workspace && m.body.length > 600 ? (
-                        wpConnected ? (
-                          <PublishToWordPress workspaceId={workspace.id} body={m.body} />
-                        ) : (
-                          <span className="mt-3 inline-flex">
-                            <ConnectNow
-                              workspaceId={workspace.id}
-                              provider="wordpress"
-                              size="sm"
-                              label="اربط ووردبريس وانشر المقال"
-                            />
-                          </span>
-                        )
+                      {!isUser ? (
+                        <span className="relative order-2 mt-1 block size-9 shrink-0 overflow-hidden rounded-xl shadow-sm">
+                          <Portrait memberId={member.id} name={member.name} className="size-full" />
+                        </span>
                       ) : null}
-                      {!isUser &&
-                      id === "sonny" &&
-                      workspace &&
-                      !m.body.includes("(/app/tasks)") &&
-                      looksPostable(m.body) ? (
-                        <PublishPanel
-                          workspaceId={workspace.id}
-                          employeeId="sonny"
-                          channel={requestedPublishTargets(lastUserBefore(arr, idx))[0] ?? "instagram"}
-                          request={lastUserBefore(arr, idx)}
-                          body={m.body}
-                        />
-                      ) : null}
-
-                      {!isUser
-                        ? (() => {
-                            const req = lastUserBefore(arr, idx);
-                            const handoff = detectHandoff(req, id);
-                            return handoff ? (
-                              <HandoffCard handoff={handoff} request={req} currentName={member.name} />
-                            ) : null;
-                          })()
-                        : null}
-
-                      <div
+                      <MessageContent
                         className={cn(
-                          "mt-1.5 flex items-center gap-2 text-[0.7rem]",
-                          isUser ? "text-background/60" : "text-muted-foreground",
+                          "min-w-0 max-w-[min(46rem,88%)] rounded-3xl px-5 py-3.5 leading-relaxed",
+                          isUser
+                            ? "bubble-user rounded-ss-lg text-background whitespace-pre-wrap shadow-card"
+                            : "order-1 rounded-se-lg border border-border bg-card shadow-sm",
                         )}
                       >
-                        <span>{timeOf(m.created_at)}</span>
-                        {!isUser ? (
-                          <span className="ms-auto opacity-0 transition-opacity group-hover:opacity-100 focus-within:opacity-100">
-                            <MessageActions
-                              text={body}
-                              disabled={busy}
-                              onEdit={() => {
-                                setDraft(body);
-                                inputRef.current?.focus();
-                              }}
-                              onRegenerate={
-                                lastUserBefore(arr, idx)
-                                  ? () => submit(`${lastUserBefore(arr, idx)}\n\n(أعد صياغة الرد السابق بزاوية مختلفة وأقوى، وحافظ على نفس الطلب.)`)
-                                  : null
-                              }
-                            />
-                          </span>
+                        {isUser ? <p dir="auto">{m.body}</p> : <Markdown body={body} />}
+                        {!isUser && id === "nour" && workspace && m.body.length > 600 ? (
+                          wpConnected ? (
+                            <PublishToWordPress workspaceId={workspace.id} body={m.body} />
+                          ) : (
+                            <span className="mt-3 inline-flex">
+                              <ConnectNow
+                                workspaceId={workspace.id}
+                                provider="wordpress"
+                                size="sm"
+                                label="اربط ووردبريس وانشر المقال"
+                              />
+                            </span>
+                          )
                         ) : null}
-                      </div>
-                    </MessageContent>
-                  </div>
+                        {!isUser &&
+                        id === "sonny" &&
+                        workspace &&
+                        !m.body.includes("(/app/tasks)") &&
+                        looksPostable(m.body) ? (
+                          <PublishPanel
+                            workspaceId={workspace.id}
+                            employeeId="sonny"
+                            channel={
+                              requestedPublishTargets(lastUserBefore(arr, idx))[0] ?? "instagram"
+                            }
+                            request={lastUserBefore(arr, idx)}
+                            body={m.body}
+                          />
+                        ) : null}
+
+                        {!isUser
+                          ? (() => {
+                              const req = lastUserBefore(arr, idx);
+                              const handoff = detectHandoff(req, id);
+                              return handoff ? (
+                                <HandoffCard
+                                  handoff={handoff}
+                                  request={req}
+                                  currentName={member.name}
+                                />
+                              ) : null;
+                            })()
+                          : null}
+
+                        <div
+                          className={cn(
+                            "mt-1.5 flex items-center gap-2 text-[0.7rem]",
+                            isUser ? "text-background/60" : "text-muted-foreground",
+                          )}
+                        >
+                          <span>{timeOf(m.created_at)}</span>
+                          {!isUser ? (
+                            <span className="ms-auto opacity-0 transition-opacity group-hover:opacity-100 focus-within:opacity-100">
+                              <MessageActions
+                                text={body}
+                                disabled={busy}
+                                onEdit={() => {
+                                  setDraft(body);
+                                  inputRef.current?.focus();
+                                }}
+                                onRegenerate={
+                                  lastUserBefore(arr, idx)
+                                    ? () =>
+                                        submit(
+                                          `${lastUserBefore(arr, idx)}\n\n(أعد صياغة الرد السابق بزاوية مختلفة وأقوى، وحافظ على نفس الطلب.)`,
+                                        )
+                                    : null
+                                }
+                              />
+                            </span>
+                          ) : null}
+                        </div>
+                      </MessageContent>
+                    </div>
                   </Message>
                 </div>
               );
@@ -722,7 +804,9 @@ function ChatPage() {
                 memberId={member.id}
                 name={member.name}
                 request={pending ?? pendingText ?? ""}
-                imageRequested={imageMode !== "off" && (imageMode !== "auto" || Boolean(imagePrompt.trim()))}
+                imageRequested={
+                  imageMode !== "off" && (imageMode !== "auto" || Boolean(imagePrompt.trim()))
+                }
                 attachments={attachments.length}
               />
             ) : null}
@@ -748,7 +832,8 @@ function ChatPage() {
                 <span className="min-w-0 flex-1">
                   لتنفيذ هذه المهمة فعلياً يحتاج {member.name} ربط{" "}
                   <b>{appLabel(needsConnection.provider)}</b>
-                  {needsConnection.reason ? ` — ${needsConnection.reason}` : ""}. دقيقة واحدة عبر OAuth الرسمي.
+                  {needsConnection.reason ? ` — ${needsConnection.reason}` : ""}. دقيقة واحدة عبر
+                  OAuth الرسمي.
                 </span>
                 <ConnectNow
                   workspaceId={workspace?.id}
@@ -864,10 +949,18 @@ function ChatPage() {
                 aria-label="محادثة جديدة"
                 title="محادثة جديدة"
                 disabled={!workspace || createConversation.isPending}
-                onClick={() => createConversation.mutate(undefined, { onSuccess: (row) => setConversationId(row.id) })}
+                onClick={() =>
+                  createConversation.mutate(undefined, {
+                    onSuccess: (row) => setConversationId(row.id),
+                  })
+                }
                 className="grid size-9 place-items-center rounded-xl border border-border transition-colors hover:bg-secondary disabled:opacity-50"
               >
-                {createConversation.isPending ? <Loader2 className="size-4 animate-spin" /> : <Plus className="size-4" />}
+                {createConversation.isPending ? (
+                  <Loader2 className="size-4 animate-spin" />
+                ) : (
+                  <Plus className="size-4" />
+                )}
               </button>
             </div>
             <div className="mt-3 max-h-56 space-y-1 overflow-y-auto">
@@ -876,7 +969,9 @@ function ChatPage() {
                   key={conversation.id}
                   className={cn(
                     "group flex items-center gap-1 rounded-xl border px-2 py-1.5",
-                    conversation.id === conversationId ? "border-primary/40 bg-primary/10" : "border-transparent hover:bg-secondary/70",
+                    conversation.id === conversationId
+                      ? "border-primary/40 bg-primary/10"
+                      : "border-transparent hover:bg-secondary/70",
                   )}
                 >
                   <button
@@ -896,7 +991,8 @@ function ChatPage() {
                     aria-label="حذف المحادثة"
                     title="حذف المحادثة"
                     onClick={() => {
-                      if (window.confirm("حذف هذه المحادثة ورسائلها؟")) deleteConversation.mutate(conversation.id);
+                      if (window.confirm("حذف هذه المحادثة ورسائلها؟"))
+                        deleteConversation.mutate(conversation.id);
                     }}
                     className="grid size-7 shrink-0 place-items-center rounded-lg text-muted-foreground opacity-0 transition-opacity hover:bg-coral/10 hover:text-coral group-hover:opacity-100 focus:opacity-100"
                   >
