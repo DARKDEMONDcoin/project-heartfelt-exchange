@@ -3589,3 +3589,248 @@ section:has(> .integration-grid-wave) {
 @media (prefers-reduced-motion: reduce) {
   .stripe-home *, .stripe-home *::before, .stripe-home *::after { scroll-behavior: auto !important; animation: none !important; transition-duration: .01ms !important; }
 }
+
+/* ═════ هوية سهل الذهبية — Antique Champagne + دخان ضوئي ═════ */
+.sahl-smoke {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  isolation: isolate;
+}
+.sahl-smoke i {
+  position: absolute;
+  display: block;
+  width: min(54rem, 84vw);
+  aspect-ratio: 1.45;
+  border-radius: 48% 52% 62% 38%;
+  filter: blur(72px);
+  opacity: .28;
+  mix-blend-mode: multiply;
+  will-change: transform;
+}
+.sahl-smoke i:nth-child(1) {
+  inset: -18% auto auto -16%;
+  background: color-mix(in oklab, var(--gold) 72%, transparent);
+  animation: sahl-gold-smoke-a 20s ease-in-out infinite alternate;
+}
+.sahl-smoke i:nth-child(2) {
+  inset: 12% -22% auto auto;
+  background: color-mix(in oklab, var(--sky) 42%, transparent);
+  animation: sahl-gold-smoke-b 25s ease-in-out infinite alternate;
+}
+.sahl-smoke i:nth-child(3) {
+  inset: auto 18% -27% auto;
+  background: color-mix(in oklab, var(--coral) 34%, var(--amber) 32%);
+  animation: sahl-gold-smoke-c 29s ease-in-out infinite alternate;
+}
+@keyframes sahl-gold-smoke-a {
+  to { transform: translate3d(17%, 11%, 0) rotate(8deg) scale(1.12); }
+}
+@keyframes sahl-gold-smoke-b {
+  to { transform: translate3d(-15%, 14%, 0) rotate(-10deg) scale(.92); }
+}
+@keyframes sahl-gold-smoke-c {
+  to { transform: translate3d(-9%, -16%, 0) rotate(5deg) scale(1.08); }
+}
+
+/* الصفحة الرئيسية: أبيض وحبر كقاعدة، والذهب هو الإشارة البصرية الأساسية. */
+.mono-page {
+  --mono-gold: var(--gold-deep);
+  --mono-soft: oklch(.975 .008 84);
+}
+.mono-page .nav-floating-control {
+  border-color: color-mix(in oklab, var(--mono-gold) 28%, var(--mono-line));
+}
+.mono-page .nav-floating-control:hover {
+  border-color: color-mix(in oklab, var(--mono-gold) 65%, transparent);
+  background: color-mix(in oklab, var(--gold-soft) 64%, transparent);
+}
+.mono-page .nav-glass-cta-primary,
+.mono-page .nav-glass-cta-aurora {
+  border-color: var(--mono-gold);
+  background: var(--mono-gold);
+  color: var(--primary-foreground);
+  box-shadow: 0 14px 32px -20px var(--mono-gold);
+}
+.mono-hero {
+  isolation: isolate;
+  overflow: hidden;
+}
+.mono-hero .mono-grid-field,
+.mono-final .mono-grid-field { z-index: 1; }
+.sahl-smoke-hero { inset: 0 0 18%; }
+.sahl-smoke-hero i:nth-child(1) { opacity: .42; }
+.sahl-smoke-hero i:nth-child(2) { opacity: .18; }
+.sahl-smoke-hero i:nth-child(3) { opacity: .2; }
+.mono-kicker span {
+  border-color: var(--mono-gold);
+  background: color-mix(in oklab, var(--gold-soft) 72%, transparent);
+  color: var(--mono-gold);
+}
+.mono-hero h1 em {
+  background: linear-gradient(95deg, var(--gold-deep), var(--gold) 55%, oklch(.79 .11 95));
+  background-clip: text;
+  color: transparent;
+  font-weight: 500;
+}
+.mono-actions a:first-child,
+.mono-final a {
+  border-color: var(--mono-gold);
+  background: var(--mono-gold);
+  color: var(--primary-foreground);
+  box-shadow: 0 16px 34px -22px var(--mono-gold);
+}
+.mono-window-bar > span i,
+.mono-real-media > span i,
+.mono-scene-card figcaption i { background: var(--mono-gold); }
+.mono-proof strong,
+.mono-section-head > span,
+.mono-cell-number,
+.mono-scene-card > div > span,
+.mono-use-grid a > span,
+.mono-plan-grid article > span { color: var(--mono-gold); }
+.mono-team-cell:hover,
+.mono-use-grid a:hover {
+  background: var(--gold-soft);
+  color: var(--mono-black);
+}
+.mono-team-cell:hover > img { filter: grayscale(.3) sepia(.1) contrast(1.06); }
+.mono-real-media {
+  border-color: color-mix(in oklab, var(--mono-gold) 58%, var(--mono-black));
+}
+.mono-real-media img,
+.mono-real-media video,
+.mono-scene-card video { filter: grayscale(.72) sepia(.08); }
+.mono-real-media > span,
+.mono-scene-card figcaption {
+  border-color: var(--mono-gold);
+  color: var(--mono-gold);
+}
+.mono-real-media.is-hero {
+  box-shadow: 22px 22px 0 var(--gold-soft), 22px 22px 0 1px color-mix(in oklab, var(--mono-gold) 34%, transparent);
+}
+.mono-real-media.is-tour,
+.mono-real-media.is-dark { border-color: color-mix(in oklab, var(--gold) 58%, transparent); }
+.mono-real-media.is-tour > span,
+.mono-real-media.is-dark > span {
+  border-color: color-mix(in oklab, var(--gold) 62%, transparent);
+  background: oklch(.14 .018 72 / .92);
+  color: var(--gold);
+}
+.mono-composer {
+  border-color: var(--mono-gold);
+  background: linear-gradient(120deg, oklch(1 0 0 / .94), color-mix(in oklab, var(--gold-soft) 48%, transparent));
+  box-shadow: 0 18px 42px -34px var(--mono-gold);
+}
+.mono-composer label { color: var(--mono-gold); }
+.mono-composer button,
+.mono-approval-row button:last-child {
+  background: var(--mono-gold);
+  color: var(--primary-foreground);
+}
+.mono-plan-grid article.is-highlight {
+  border-color: var(--mono-gold);
+  background: linear-gradient(155deg, oklch(.16 .015 72), oklch(.25 .055 74));
+  color: oklch(1 0 0);
+  box-shadow: 0 30px 65px -42px var(--mono-gold);
+}
+.mono-final { isolation: isolate; background: linear-gradient(180deg, oklch(1 0 0), var(--gold-soft)); }
+.sahl-smoke-final i { opacity: .2; }
+
+/* مساحة العمل: الدخان خلف المحتوى فقط، والذهبي للحالة النشطة والتركيز. */
+.app-shell {
+  position: relative;
+  isolation: isolate;
+  overflow: clip;
+}
+.app-shell > aside { position: sticky; z-index: 10; }
+.sahl-smoke-app {
+  position: fixed;
+  inset: 0 0 auto 0;
+  height: 28rem;
+  opacity: .48;
+  mask-image: linear-gradient(to bottom, black, transparent);
+}
+.sahl-smoke-app i { opacity: .12; filter: blur(94px); }
+.app-shell > div > header {
+  border-bottom-color: color-mix(in oklab, var(--gold-deep) 18%, var(--border));
+  box-shadow: 0 12px 34px -34px var(--gold-deep);
+}
+
+/* المحادثة: هالة Gemini-like حول المساحة ومربع الإدخال مع نص واضح دائماً. */
+.chat-stage::before,
+.chat-stage::after {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  pointer-events: none;
+  border-radius: 50%;
+  filter: blur(82px);
+  mix-blend-mode: multiply;
+}
+.chat-stage::before {
+  top: -8rem;
+  right: -8rem;
+  width: 28rem;
+  height: 22rem;
+  background: color-mix(in oklab, var(--gold) 20%, transparent);
+  animation: sahl-chat-aura 17s ease-in-out infinite alternate;
+}
+.chat-stage::after {
+  bottom: 4rem;
+  left: -9rem;
+  width: 25rem;
+  height: 19rem;
+  background: color-mix(in oklab, var(--sky) 12%, transparent);
+  animation: sahl-chat-aura 21s ease-in-out infinite alternate-reverse;
+}
+@keyframes sahl-chat-aura {
+  to { transform: translate3d(10%, 8%, 0) scale(1.12); }
+}
+.chat-stage > * { position: relative; z-index: 1; }
+.chat-composer {
+  position: relative;
+  isolation: isolate;
+  border-color: color-mix(in oklab, var(--gold-deep) 48%, var(--border));
+  background: color-mix(in oklab, var(--card) 88%, transparent);
+  box-shadow: 0 22px 60px -38px var(--gold-deep), inset 0 1px 0 oklch(1 0 0 / .92);
+}
+.chat-composer::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: -.45rem;
+  border-radius: inherit;
+  background: linear-gradient(105deg, color-mix(in oklab, var(--gold) 28%, transparent), color-mix(in oklab, var(--coral) 12%, transparent), color-mix(in oklab, var(--sky) 16%, transparent), color-mix(in oklab, var(--gold) 28%, transparent));
+  background-size: 260% 100%;
+  filter: blur(15px);
+  opacity: .7;
+  animation: sahl-composer-smoke 9s ease-in-out infinite alternate;
+}
+@keyframes sahl-composer-smoke {
+  to { background-position: 100% 0; transform: scale(1.012); }
+}
+.chat-composer button[type="submit"] {
+  background: var(--primary);
+  color: var(--primary-foreground);
+  box-shadow: 0 10px 24px -14px var(--gold-deep);
+}
+.bubble-user {
+  background-image: linear-gradient(145deg, oklch(.19 .012 70), oklch(.28 .055 75));
+}
+
+@media (max-width: 700px) {
+  .sahl-smoke i { width: 34rem; filter: blur(64px); opacity: .2; }
+  .sahl-smoke-hero { inset-bottom: 35%; }
+  .sahl-smoke-app { height: 20rem; opacity: .34; }
+  .chat-stage::before, .chat-stage::after { filter: blur(68px); opacity: .72; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sahl-smoke i,
+  .chat-stage::before,
+  .chat-stage::after,
+  .chat-composer::before { animation: none !important; }
+}
