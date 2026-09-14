@@ -57,7 +57,9 @@ function SidebarBody({ onNavigate }: { onNavigate?: () => void }) {
       <div className="min-h-0 flex-1">
         <div className="mb-2 flex items-center justify-between px-2">
           <p className="text-[0.68rem] font-bold text-muted-foreground">الموظفون</p>
-          <span className="rounded-full bg-primary/10 px-2 py-0.5 text-[0.62rem] font-bold text-primary">6 متاحون</span>
+          <span className="rounded-full bg-primary/10 px-2 py-0.5 text-[0.62rem] font-bold text-primary">
+            6 متاحون
+          </span>
         </div>
         <div className="space-y-1.5 overflow-y-auto">
           {team.map((m) => (
@@ -258,9 +260,7 @@ export function AppShell({
               {mobileOpen ? <X className="size-5" /> : <Menu className="size-5" />}
             </button>
             <div className="min-w-0 flex-1">
-              <h1 className="truncate font-display text-base font-black sm:text-lg">
-                {title}
-              </h1>
+              <h1 className="truncate font-display text-base font-black sm:text-lg">{title}</h1>
               {lead ? (
                 <p className="truncate text-xs text-muted-foreground sm:text-sm">{lead}</p>
               ) : null}

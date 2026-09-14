@@ -571,8 +571,12 @@ function ChatPage() {
                     <Portrait memberId={member.id} name={member.name} className="size-full" />
                   </span>
                   <span className="min-w-0">
-                    <span className="block truncate text-xs font-black">مركز عمل {member.name}</span>
-                    <span className="block truncate text-[0.68rem] text-muted-foreground">{member.role}</span>
+                    <span className="block truncate text-xs font-black">
+                      مركز عمل {member.name}
+                    </span>
+                    <span className="block truncate text-[0.68rem] text-muted-foreground">
+                      {member.role}
+                    </span>
                   </span>
                 </div>
                 <span className="inline-flex items-center gap-1.5 text-[0.68rem] font-bold text-primary">
@@ -667,7 +671,9 @@ function ChatPage() {
                 <span className="min-w-0">
                   <p className="font-display text-base font-black">جاهز يا مدير</p>
                   <p className="mt-0.5 text-sm text-ink-soft">{member.tagline}</p>
-                  <p className="mt-2 text-xs leading-5 text-muted-foreground">اختر أمراً سريعاً أو اكتب المطلوب مباشرة.</p>
+                  <p className="mt-2 text-xs leading-5 text-muted-foreground">
+                    اختر أمراً سريعاً أو اكتب المطلوب مباشرة.
+                  </p>
                 </span>
               </div>
             ) : null}
