@@ -11447,52 +11447,163 @@ section:has(> .integration-grid-wave) {
   }
 }
 
-/* مركز القيادة: كثافة عملية، حواف دقيقة، ومساحة محادثة تشبه أداة عمل حقيقية. */
+/* مركز القيادة: شريط واحد ثابت، قلب هادئ للمحادثة، ومربع إدخال زجاجي. */
 .chat-command-layout {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 18rem;
+  display: block;
   min-height: calc(100dvh - 4rem);
 }
 .chat-stage {
+  isolation: isolate;
   background:
     linear-gradient(
       to bottom,
-      color-mix(in oklab, var(--secondary) 32%, transparent),
-      transparent 11rem
+      color-mix(in oklab, var(--gold-soft) 24%, transparent),
+      transparent 17rem
     ),
     var(--background);
 }
-.chat-empty-state {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(15rem, 0.8fr);
-  align-items: center;
-  gap: 2rem;
-  width: 100%;
-  margin-block: auto;
-  padding: 2rem 0;
-  border-block: 1px solid var(--border);
-}
-.employee-workbench {
-  border-bottom: 1px solid var(--border);
-  padding-bottom: 0.9rem;
-}
-.employee-workbench-head {
+.employee-command-bar {
+  position: sticky;
+  z-index: 24;
+  top: 4rem;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-}
-.employee-workbench-section {
-  display: grid;
-  grid-template-columns: 5.5rem minmax(0, 1fr);
-  align-items: center;
   gap: 0.75rem;
-  margin-top: 0.85rem;
+  min-height: 4.25rem;
+  margin-inline: -0.4rem;
+  padding: 0.55rem 0.65rem;
+  border: 1px solid color-mix(in oklab, var(--border) 82%, transparent);
+  border-radius: 0 0 0.9rem 0.9rem;
+  background: color-mix(in oklab, var(--background) 78%, transparent);
+  box-shadow: 0 16px 38px -34px var(--foreground);
+  backdrop-filter: blur(24px) saturate(1.15);
 }
-.employee-workbench-label {
-  font-size: 0.68rem;
+.employee-command-identity {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 0.55rem;
+  padding-inline-end: 0.75rem;
+  border-inline-end: 1px solid var(--border);
+}
+.employee-command-skills {
+  min-width: 0;
+  flex: 1;
+}
+.employee-command-apps {
+  display: flex;
+  align-items: center;
+  flex: 0 0 auto;
+  gap: 0.25rem;
+}
+.employee-command-apps > span {
+  display: grid;
+  width: 2rem;
+  height: 2rem;
+  place-items: center;
+  border: 1px solid var(--border);
+  border-radius: 0.55rem;
+  background: color-mix(in oklab, var(--card) 72%, transparent);
+}
+.employee-command-history {
+  display: inline-flex;
+  min-height: 2.25rem;
+  align-items: center;
+  gap: 0.4rem;
+  flex: 0 0 auto;
+  border: 1px solid var(--border);
+  border-radius: 0.6rem;
+  padding-inline: 0.75rem;
+  background: color-mix(in oklab, var(--card) 72%, transparent);
+  font-size: 0.72rem;
   font-weight: 800;
+  transition: 180ms ease;
+}
+.employee-command-history:hover,
+.employee-command-history.is-active {
+  border-color: color-mix(in oklab, var(--primary) 45%, var(--border));
+  color: var(--primary);
+}
+.chat-welcome {
+  display: flex;
+  width: min(100%, 42rem);
+  min-height: 24rem;
+  margin: auto;
+  padding: 4rem 1rem 3rem;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.chat-welcome-portraits {
+  position: relative;
+  width: 6.6rem;
+  height: 4.6rem;
+  margin-bottom: 1.2rem;
+}
+.chat-welcome-avatar {
+  position: absolute;
+  top: 0;
+  display: block;
+  width: 4.5rem;
+  height: 4.5rem;
+  overflow: hidden;
+  border: 3px solid var(--background);
+  border-radius: 1.1rem;
+  box-shadow: 0 14px 34px -22px var(--foreground);
+}
+.chat-welcome-avatar.is-user {
+  inset-inline-start: 0;
+  transform: rotate(3deg) translateY(0.4rem);
+}
+.chat-welcome-avatar.is-employee {
+  z-index: 2;
+  inset-inline-end: 0;
+  transform: rotate(-3deg);
+}
+.chat-welcome-eyebrow {
+  color: var(--primary);
+  font-size: 0.72rem;
+  font-weight: 800;
+}
+.chat-welcome h2 {
+  margin-top: 0.35rem;
+  font-family: var(--font-display);
+  font-size: clamp(1.65rem, 4vw, 2.45rem);
+  font-weight: 900;
+}
+.chat-welcome-rotating {
+  min-height: 3.5rem;
+  max-width: 34rem;
+  margin-top: 0.65rem;
+  color: var(--foreground);
+  font-size: clamp(0.94rem, 2vw, 1.08rem);
+  line-height: 1.9;
+}
+.chat-welcome-tagline {
+  margin-top: 0.55rem;
   color: var(--muted-foreground);
+  font-size: 0.75rem;
+}
+.typewriter-caret {
+  display: inline-block;
+  width: 1px;
+  height: 1em;
+  margin-inline-start: 0.2rem;
+  vertical-align: -0.1em;
+  background: var(--primary);
+  animation: chat-caret 0.85s steps(1) infinite;
+}
+@keyframes chat-caret {
+  50% { opacity: 0; }
+}
+.chat-composer-dock {
+  background: linear-gradient(to top, var(--background) 18%, color-mix(in oklab, var(--background) 72%, transparent) 68%, transparent);
+}
+.chat-composer {
+  background: color-mix(in oklab, var(--background) 54%, transparent);
+  box-shadow: 0 18px 45px -34px var(--foreground);
+  backdrop-filter: blur(16px) saturate(1.18);
 }
 .chat-apps-grid {
   display: grid;
@@ -11512,33 +11623,69 @@ section:has(> .integration-grid-wave) {
   font-weight: 700;
 }
 .chat-thread-panel {
-  box-shadow: inset 1px 0 0 color-mix(in oklab, var(--border) 70%, transparent);
+  position: fixed;
+  z-index: 51;
+  inset-block: 4rem 0;
+  inset-inline-end: 0;
+  width: min(22rem, 92vw);
+  overflow-y: auto;
+  box-shadow: 0 24px 70px -28px var(--foreground);
+  transform: translateX(-105%);
+  transition: transform 260ms cubic-bezier(0.22, 1, 0.36, 1);
+  pointer-events: none;
+}
+.chat-thread-panel.is-open {
+  transform: translateX(0);
+  pointer-events: auto;
+}
+.chat-thread-backdrop {
+  position: fixed;
+  z-index: 50;
+  inset: 0;
+  background: color-mix(in oklab, var(--foreground) 18%, transparent);
+  backdrop-filter: blur(3px);
 }
 @media (max-width: 1023px) {
-  .chat-command-layout {
-    grid-template-columns: minmax(0, 1fr);
-  }
   .chat-thread-panel {
-    position: fixed;
-    z-index: 45;
-    inset: 4rem 0 0 auto;
     width: min(20rem, 88vw);
-    box-shadow: 0 24px 60px -24px var(--foreground);
   }
 }
 @media (max-width: 640px) {
-  .employee-workbench-section {
-    display: block;
+  .employee-command-bar {
+    top: 4rem;
+    gap: 0.45rem;
+    margin-inline: -0.2rem;
+    padding: 0.45rem;
   }
-  .employee-workbench-label {
-    margin-bottom: 0.4rem;
+  .employee-command-identity {
+    padding-inline-end: 0.45rem;
   }
-  .chat-empty-state {
-    grid-template-columns: 1fr;
-    gap: 1.25rem;
-    margin-block: 1rem auto;
-    padding: 1.25rem 0;
+  .employee-command-identity > span:last-child,
+  .employee-command-apps {
+    display: none;
   }
+  .employee-command-history {
+    width: 2.25rem;
+    padding: 0;
+    justify-content: center;
+  }
+  .employee-command-history span {
+    display: none;
+  }
+  .employee-command-skills .employee-command-scroll {
+    display: none;
+  }
+  .chat-welcome {
+    min-height: 25rem;
+    padding: 3rem 0.75rem 2rem;
+  }
+  .chat-composer-dock {
+    padding-inline: 0.7rem;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .typewriter-caret { animation: none; }
+  .chat-thread-panel { transition: none; }
 }
 
 /* الصفحة الرئيسية: أبيض وحبر كقاعدة، والذهب هو الإشارة البصرية الأساسية. */
